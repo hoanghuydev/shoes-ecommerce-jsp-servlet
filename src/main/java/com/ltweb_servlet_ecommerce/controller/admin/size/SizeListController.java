@@ -27,7 +27,7 @@ public class SizeListController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             NotifyUtil.setUp(req);
-            List<SizeModel> listSize = sizeService.findAll();
+            List<SizeModel> listSize = sizeService.findAll(null);
             if (listSize!=null) {
                 req.setAttribute(SystemConstant.LIST_MODEL, listSize);
             }

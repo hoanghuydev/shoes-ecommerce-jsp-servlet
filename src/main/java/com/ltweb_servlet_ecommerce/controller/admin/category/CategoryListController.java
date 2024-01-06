@@ -23,7 +23,7 @@ public class CategoryListController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             NotifyUtil.setUp(req);
-            List<CategoryModel> listCategory = categoryService.findAll();
+            List<CategoryModel> listCategory = categoryService.findAll(null);
             if (listCategory!=null) {
                 req.setAttribute(SystemConstant.LIST_MODEL, listCategory);
             }
@@ -41,14 +41,14 @@ public class CategoryListController extends HttpServlet {
             if (action!=null && action.equals("delete")){
                 Long id = Long.parseLong(req.getParameter("id"));
                 categoryService.delete(id);
-                resp.sendRedirect("/admin/size/list?message=delete_success&toast=success");
+                resp.sendRedirect("/admin/category/list?message=delete_success&toast=success");
             } else {
                 CategoryModel categoryModel = FormUtil.toModel(CategoryModel.class,req);
                 categoryModel = categoryService.save(categoryModel);
-                resp.sendRedirect("/admin/size/list?message=add_success&toast=success");
+                resp.sendRedirect("/admin/category/list?message=add_success&toast=success");
             }
         } catch (Exception e) {
-            resp.sendRedirect("/admin/size/list?message=error&toast=danger");
+            resp.sendRedirect("/admin/category/list?message=error&toast=danger");
         }
 
     }

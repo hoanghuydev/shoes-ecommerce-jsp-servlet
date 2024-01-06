@@ -8,6 +8,28 @@ public class AbstractModel<T> {
     private Timestamp createAt;
     private Timestamp updateAt;
 
+    private boolean isDeleted = false;
+
+    private String actionExcute;
+
+
+
+    public String getActionExcute() {
+        return actionExcute;
+    }
+
+    public void setActionExcute(String actionExcute) {
+        this.actionExcute = actionExcute;
+    }
+
+    public boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
     public Long getId() {
         return id;
     }

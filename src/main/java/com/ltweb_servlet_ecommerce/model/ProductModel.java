@@ -1,7 +1,7 @@
 package com.ltweb_servlet_ecommerce.model;
 
 public class ProductModel extends  AbstractModel<ProductModel> {
-    private String title;
+    private String name;
     private String content;
     private String shortDescription;
     private String thumbnail;
@@ -9,6 +9,15 @@ public class ProductModel extends  AbstractModel<ProductModel> {
     private String modelUrl;
     private String slug;
     private  Long categoryId;
+    private Integer totalViewAndSearch;
+
+    public Integer getTotalViewAndSearch() {
+        return totalViewAndSearch;
+    }
+
+    public void setTotalViewAndSearch(Integer totalViewAndSearch) {
+        this.totalViewAndSearch = totalViewAndSearch;
+    }
 
     public String getThumbnail() {
         return thumbnail;
@@ -18,12 +27,12 @@ public class ProductModel extends  AbstractModel<ProductModel> {
         this.thumbnail = thumbnail;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getContent() {

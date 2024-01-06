@@ -5,6 +5,7 @@ public class OrderModel extends  AbstractModel<OrderModel>{
     private String note;
     private Double totalAmount;
 
+
     public Integer getStatus() {
         return status;
     }

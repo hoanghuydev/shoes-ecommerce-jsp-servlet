@@ -19,10 +19,14 @@
         <a class="btn bg-gradient-dark mb-0" id="toggleAddProduct" data-bs-toggle="collapse" href="#formNewProduct"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add New Size</a>
         <div class="collapse multi-collapse my-3" id="formNewProduct">
             <div class="card py-2 px-4" >
-                <form id="saveNewProduct" method="POST">
+                <form id="saveNewCategory" method="POST">
                     <div class="input-group input-group-outline my-3">
-                        <label class="form-label">Size Name</label>
-                        <input type="text" class="form-control" name="sizeName">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" class="form-control" name="name">
+                    </div>
+                    <div class="input-group input-group-outline my-3">
+                        <label class="form-label">Category Code</label>
+                        <input type="text" class="form-control" name="code">
                     </div>
                     <button class="btn btn-primary" type="submit">Add Category</button>
                 </form>
@@ -34,7 +38,7 @@
     <div class="card my-4">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 class="text-white text-capitalize ps-3">Cateogry Table</h6>
+                <h6 class="text-white text-capitalize ps-3">Categories Table</h6>
             </div>
         </div>
 

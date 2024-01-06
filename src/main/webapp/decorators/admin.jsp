@@ -23,9 +23,8 @@
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
     <script defer data-site="http://localhost:8080" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet"/>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
     <title><dec:title default="Admin Nai" /></title>
-
-
 </head>
 <body class="g-sidenav-show  bg-gray-100">
 <%@ include file="/common/admin/sidebar.jsp" %>
@@ -39,7 +38,6 @@
     </main>
 <%@ include file="/common/admin/plugin-setting.jsp" %>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-
 <script src="/template/admin/assets/js/core/popper.min.js"></script>
 <script src="/template/admin/assets/js/core/bootstrap.min.js"></script>
 <script src="/template/admin/assets/js/plugins/perfect-scrollbar.min.js"></script>
@@ -48,6 +46,7 @@
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://unpkg.com/validator@latest/validator.min.js"></script>
 <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -61,6 +60,7 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="/template/admin/assets/js/material-dashboard.min.js?v=3.1.0"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/2.0.2/timeago.min.js" integrity="sha512-sl01o/gVwybF1FNzqO4NDRDNPJDupfN0o2+tMm4K2/nr35FjGlxlvXZ6kK6faa9zhXbnfLIXioHnExuwJdlTMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <c:if test="${not empty toast && not empty message}">
     <script>
         window.addEventListener("DOMContentLoaded",function (){

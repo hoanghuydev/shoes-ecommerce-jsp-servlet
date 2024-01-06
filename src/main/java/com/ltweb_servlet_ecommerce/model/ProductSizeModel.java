@@ -4,6 +4,7 @@ public class ProductSizeModel extends AbstractModel<ProductSizeModel>{
     private Long sizeId;
     private Long productId;
 
+
     public Long getSizeId() {
         return sizeId;
     }

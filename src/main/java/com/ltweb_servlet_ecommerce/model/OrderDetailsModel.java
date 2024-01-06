@@ -5,6 +5,7 @@ public class OrderDetailsModel extends AbstractModel<OrderDetailsModel>{
     private Double subTotal;
     private Long orderId;
 
+
     public Integer getQuantity() {
         return quantity;
     }

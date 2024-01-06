@@ -22,7 +22,7 @@
                     <form id="saveNewProduct" method="POST">
                         <div class="input-group input-group-outline my-3">
                             <label class="form-label">Size Name</label>
-                            <input type="text" class="form-control" name="sizeName">
+                            <input type="text" class="form-control" name="name">
                         </div>
                         <button class="btn btn-primary" type="submit">Add Size</button>
                     </form>
@@ -64,7 +64,7 @@
                                     <td>
                                         <div class="d-flex px-2 py-1">
                                             <div class="d-flex flex-column justify-content-center">
-                                                <p class="text-xs font-weight-bold mx-auto mb-0">${item.sizeName}</p>
+                                                <p class="text-xs font-weight-bold mx-auto mb-0">${item.name}</p>
                                             </div>
                                         </div>
                                     </td>

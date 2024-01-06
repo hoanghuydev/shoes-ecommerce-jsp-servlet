@@ -19,4 +19,5 @@ public class ProductImageModel extends AbstractModel<ProductImageModel>{
     }
 
     private Long productId;
+
 }

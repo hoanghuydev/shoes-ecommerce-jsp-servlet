@@ -10,6 +10,7 @@ public class UserModel extends AbstractModel<UserModel> {
     private String birthDay;
     private Boolean admin;
     private String association = "none";
+
     public String getAssociation() {
         return association;
     }

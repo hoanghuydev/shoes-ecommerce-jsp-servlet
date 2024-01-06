@@ -6,32 +6,32 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/common/taglib.jsp" %>
 <html>
 <head>
     <title>Nai Shoes & Sneakers</title>
 </head>
 <body>
+
 <!-- Start Hero Section -->
-<div class="hero">
+<div class="hero" style="
+    background-image: url(https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/running_ss24_adizero_introduce_plp_women_masthead_d_de1007a210.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+">
     <div class="container">
         <div class="row justify-content-between">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
-                    <h1>Modern Interior <span clsas="d-block">Design Studio</span></h1>
-                    <p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-                    <p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
-                </div>
-            </div>
-            <div class="col-lg-7">
-                <div class="hero-img-wrap">
-                    <img src="/template/web/images/couch.png" class="img-fluid">
+                    <h1>Experience Fast</h1>
+                    <p class="mb-4">Push your pace and stride with precision to reach your best 10k yet.</p>
+                    <p><a href="/shop" class="btn btn-secondary me-2">Shop Now</a></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- End Hero Section -->
-
 <!-- Start Product Section -->
 <div class="product-section">
     <div class="container">
@@ -41,51 +41,23 @@
             <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
                 <h2 class="mb-4 section-title">Crafted with excellent material.</h2>
                 <p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. </p>
-                <p><a href="shop.html" class="btn">Explore</a></p>
+                <p><a href="/shop" class="btn">Explore</a></p>
             </div>
             <!-- End Column 1 -->
 
             <!-- Start Column 2 -->
-            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                <a class="product-item" href="cart.html">
-                    <img src="/template/web/images/product-shoes.png" class="img-fluid product-thumbnail">
-                    <h3 class="product-title">Nordic Chair</h3>
-                    <strong class="product-price">$50.00</strong>
-
-                    <span class="icon-cross">
-								<img src="/template/web/images/cross.svg" class="img-fluid">
-							</span>
-                </a>
-            </div>
-            <!-- End Column 2 -->
-
-            <!-- Start Column 3 -->
-            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                <a class="product-item" href="cart.html">
-                    <img src="/template/web/images/product-2.png" class="img-fluid product-thumbnail">
-                    <h3 class="product-title">Kruzo Aero Chair</h3>
-                    <strong class="product-price">$78.00</strong>
-
-                    <span class="icon-cross">
-								<img src="/template/web/images/cross.svg" class="img-fluid">
-							</span>
-                </a>
-            </div>
-            <!-- End Column 3 -->
-
-            <!-- Start Column 4 -->
-            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                <a class="product-item" href="cart.html">
-                    <img src="/template/web/images/product-3.png" class="img-fluid product-thumbnail">
-                    <h3 class="product-title">Ergonomic Chair</h3>
-                    <strong class="product-price">$43.00</strong>
-
-                    <span class="icon-cross">
-								<img src="/template/web/images/cross.svg" class="img-fluid">
-							</span>
-                </a>
-            </div>
-            <!-- End Column 4 -->
+            <c:if test="${not empty LIST_MODEL}">
+                <c:forEach var="product_item" items="${LIST_MODEL}">
+                    <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
+                        <a class="product-item" href="/product-details/${product_item.id}">
+                            <img loading="lazy" src="${product_item.thumbnail}" class="img-fluid product-thumbnail">
+                            <h3 class="product-title">${product_item.name}</h3>
+                            <strong class="product-price">$${product_item.price}</strong>
+                            <span class="icon-cross"><img loading="lazy" src="/template/web/images/cross.svg" class="img-fluid"></span>
+                        </a>
+                    </div>
+                </c:forEach>
+            </c:if>
 
         </div>
     </div>
@@ -101,6 +73,7 @@
                 <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
 
                 <div class="row my-5">
+
                     <div class="col-6 col-md-6">
                         <div class="feature">
                             <div class="icon">
@@ -187,46 +160,22 @@
 <div class="popular-product">
     <div class="container">
         <div class="row">
-
-            <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-                <div class="product-item-sm d-flex">
-                    <div class="thumbnail">
-                        <img src="/template/web/images/product-shoes.png" alt="Image" class="img-fluid">
+            <c:if test="${not empty LIST_MODEL}">
+                <c:forEach var="product_item" items="${LIST_MODEL}">
+                    <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+                        <div class="product-item-sm d-flex">
+                            <div class="thumbnail">
+                                <img src="${product_item.thumbnail}" alt="Image" class="img-fluid">
+                            </div>
+                            <div class="pt-3">
+                                <h3>${product_item.name}</h3>
+                                <p>${product_item.shortDescription}</p>
+                                <p><a href="/product-details/${product_item.id}">Read More</a></p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="pt-3">
-                        <h3>Nordic Chair</h3>
-                        <p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
-                        <p><a href="#">Read More</a></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-                <div class="product-item-sm d-flex">
-                    <div class="thumbnail">
-                        <img src="/template/web/images/product-2.png" alt="Image" class="img-fluid">
-                    </div>
-                    <div class="pt-3">
-                        <h3>Kruzo Aero Chair</h3>
-                        <p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
-                        <p><a href="#">Read More</a></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-                <div class="product-item-sm d-flex">
-                    <div class="thumbnail">
-                        <img src="/template/web/images/product-3.png" alt="Image" class="img-fluid">
-                    </div>
-                    <div class="pt-3">
-                        <h3>Ergonomic Chair</h3>
-                        <p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
-                        <p><a href="#">Read More</a></p>
-                    </div>
-                </div>
-            </div>
-
+                </c:forEach>
+            </c:if>
         </div>
     </div>
 </div>
@@ -244,7 +193,6 @@
         <div class="row justify-content-center">
             <div class="col-lg-12">
                 <div class="testimonial-slider-wrap text-center">
-
                     <div id="testimonial-nav">
                         <span class="prev" data-controls="prev"><span class="fa fa-chevron-left"></span></span>
                         <span class="next" data-controls="next"><span class="fa fa-chevron-right"></span></span>
@@ -328,61 +276,8 @@
         </div>
     </div>
 </div>
-<!-- End Testimonial Slider -->
 
-<!-- Start Blog Section -->
-<div class="blog-section">
-    <div class="container">
-        <div class="row mb-5">
-            <div class="col-md-6">
-                <h2 class="section-title">Recent Blog</h2>
-            </div>
-            <div class="col-md-6 text-start text-md-end">
-                <a href="#" class="more">View All Posts</a>
-            </div>
-        </div>
 
-        <div class="row">
 
-            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                <div class="post-entry">
-                    <a href="#" class="post-thumbnail"><img src="/template/web/images/post-1.jpg" alt="Image" class="img-fluid"></a>
-                    <div class="post-content-entry">
-                        <h3><a href="#">First Time Home Owner Ideas</a></h3>
-                        <div class="meta">
-                            <span>by <a href="#">Kristin Watson</a></span> <span>on <a href="#">Dec 19, 2021</a></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                <div class="post-entry">
-                    <a href="#" class="post-thumbnail"><img src="/template/web/images/post-2.jpg" alt="Image" class="img-fluid"></a>
-                    <div class="post-content-entry">
-                        <h3><a href="#">How To Keep Your Furniture Clean</a></h3>
-                        <div class="meta">
-                            <span>by <a href="#">Robert Fox</a></span> <span>on <a href="#">Dec 15, 2021</a></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                <div class="post-entry">
-                    <a href="#" class="post-thumbnail"><img src="/template/web/images/post-3.jpg" alt="Image" class="img-fluid"></a>
-                    <div class="post-content-entry">
-                        <h3><a href="#">Small Space Furniture Apartment Ideas</a></h3>
-                        <div class="meta">
-                            <span>by <a href="#">Kristin Watson</a></span> <span>on <a href="#">Dec 12, 2021</a></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!-- End Blog Section -->
 </body>
 </html>

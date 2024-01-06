@@ -2,7 +2,10 @@ package com.ltweb_servlet_ecommerce.mapper.impl;
 
 import com.ltweb_servlet_ecommerce.mapper.GenericMapper;
 import com.ltweb_servlet_ecommerce.mapper.result.MapSQLAndParamsResult;
+import com.ltweb_servlet_ecommerce.paging.Pageble;
+import com.ltweb_servlet_ecommerce.utils.SqlPagebleUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -15,11 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 public class AbstractMapper<T> implements GenericMapper<T> {
-//    Map model thành câu lệnh sql update
-//StringBuilder sql = new StringBuilder("UPDATE news SET ");
+//    Map model thành câu lệnh sqlBuilder update
+//StringBuilder sqlBuilder = new StringBuilder("UPDATE news SET ");
 //    thay news thành bảng cần update
     @Override
-    public MapSQLAndParamsResult mapSQL(StringBuilder sql, T model, String typeSQL) {
+    public MapSQLAndParamsResult mapSQL(StringBuilder sqlBuilder, T model, String typeSQL, Pageble pageble) {
         List<Object> params = new ArrayList<>();
         for (Field field : model.getClass().getDeclaredFields()) {
             field.setAccessible(true);
@@ -27,10 +30,10 @@ public class AbstractMapper<T> implements GenericMapper<T> {
                 Object value = field.get(model);
                 if (value != null) {
                     if (typeSQL.toLowerCase().equals("update") || typeSQL.toLowerCase().equals("insert")) {
-                        sql.append(field.getName()).append(" = ?, ");
+                        sqlBuilder.append(field.getName()).append(" = ?, ");
                         params.add(value);
                     } else if (typeSQL.toLowerCase().equals("select")) {
-                        sql.append(" AND ").append(field.getName()).append(" = ?");
+                        sqlBuilder.append(" AND ").append(field.getName()).append(" = ?");
                         params.add(value);
                     }
                     // Append the field name and placeholder to the SQL statement
@@ -46,10 +49,10 @@ public class AbstractMapper<T> implements GenericMapper<T> {
                 Object value = field.get(model);
                 if (value != null) {
                     if ((typeSQL.toLowerCase().equals("update") || typeSQL.toLowerCase().equals("insert")) && field.getName()!="id" ) {
-                        sql.append(field.getName()).append(" = ?, ");
+                        sqlBuilder.append(field.getName()).append(" = ?, ");
                         params.add(value);
                     } else if (typeSQL.toLowerCase().equals("select")) {
-                        sql.append(" AND ").append(field.getName()).append(" = ?");
+                        sqlBuilder.append(" AND ").append(field.getName()).append(" = ?");
                         params.add(value);
                     }
                 }
@@ -58,12 +61,12 @@ public class AbstractMapper<T> implements GenericMapper<T> {
             }
         }
 
-        if (sql.length() > 2 && sql.charAt(sql.length() - 2) == ',' && typeSQL.toLowerCase().equals("update") || typeSQL.toLowerCase().equals("insert")) {
-            sql.delete(sql.length() - 2, sql.length());
+        if (sqlBuilder.length() > 2 && sqlBuilder.charAt(sqlBuilder.length() - 2) == ',' && typeSQL.toLowerCase().equals("update") || typeSQL.toLowerCase().equals("insert")) {
+            sqlBuilder.delete(sqlBuilder.length() - 2, sqlBuilder.length());
         }
         //        Nếu là update thì mới set where id
         if (typeSQL.toLowerCase().equals("update")) {
-            sql.append(" WHERE id = ?");
+            sqlBuilder.append(" WHERE id = ?");
             try {
                 Field idField = model.getClass().getSuperclass().getDeclaredField("id");
                 idField.setAccessible(true);
@@ -72,12 +75,13 @@ public class AbstractMapper<T> implements GenericMapper<T> {
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
             }
+        }else if (typeSQL.toLowerCase().equals("select")) {
+            SqlPagebleUtil.addSQlPageble(sqlBuilder,pageble);
         }
-        return new MapSQLAndParamsResult(sql.toString(),params);
+        return new MapSQLAndParamsResult(sqlBuilder.toString(),params);
     }
 //    Map kết quả từ sql
     public T mapper(ResultSet resultSet, Class<T> modelClass) throws SQLException, InstantiationException, IllegalAccessException, InvocationTargetException {
-
         Map<String,String[]> resultMap = new HashMap<String,String[]>();
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -91,7 +95,6 @@ public class AbstractMapper<T> implements GenericMapper<T> {
                 resultMap.put(columnName, columnValues);
             }
         }
-
         T object = modelClass.newInstance();
         BeanUtils.populate(object,resultMap);
         resultMap.clear();

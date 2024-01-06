@@ -5,6 +5,7 @@ public class AdressModel extends AbstractModel<AdressModel>{
     private Integer phoneNumber;
     private String  province;
 
+
     public String getFullName() {
         return fullName;
     }

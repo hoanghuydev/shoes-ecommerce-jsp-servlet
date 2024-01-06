@@ -6,6 +6,9 @@
     <listener>
         <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
     </listener>
+    <listener>
+        <listener-class>com.ltweb_servlet_ecommerce.cron.CronMarketingMail</listener-class>
+    </listener>
     <filter>
         <filter-name>sitemesh</filter-name>
         <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>

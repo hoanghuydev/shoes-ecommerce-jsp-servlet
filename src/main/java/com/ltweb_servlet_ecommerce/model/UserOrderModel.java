@@ -3,6 +3,7 @@ package com.ltweb_servlet_ecommerce.model;
 public class UserOrderModel extends AbstractModel<UserOrderModel> {
     private Long userId;
 
+
     public Long getUserId() {
         return userId;
     }

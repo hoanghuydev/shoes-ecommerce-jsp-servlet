@@ -4,6 +4,7 @@ public class UserAddressModel extends AbstractModel<UserAddressModel>{
     private Long addressId;
     private  Long userId;
 
+
     public Long getAddressId() {
         return addressId;
     }

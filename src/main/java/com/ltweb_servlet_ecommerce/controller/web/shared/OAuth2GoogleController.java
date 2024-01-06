@@ -77,7 +77,7 @@ public class OAuth2GoogleController extends HttpServlet {
            resp.sendRedirect(req.getContextPath()+"/home?message=welcome&toast=success");
        } else if (tmpUser!=null && tmpUser.getAssociation().equals("google")) {
 //           If have user then login
-           SessionUtil.getInstance().putValue(req,"USER_MODEL",userModel);
+           SessionUtil.getInstance().putValue(req,"USER_MODEL",tmpUser);
            resp.sendRedirect(req.getContextPath()+"/home");
 
        } else if (tmpUser!=null && !tmpUser.getAssociation().equals("google")) {

@@ -3,7 +3,11 @@ package com.ltweb_servlet_ecommerce.dao.impl;
 
 import com.ltweb_servlet_ecommerce.dao.GenericDAO;
 import com.ltweb_servlet_ecommerce.mapper.RowMapper;
+import com.ltweb_servlet_ecommerce.paging.Pageble;
+import com.ltweb_servlet_ecommerce.subquery.SubQuery;
+import com.ltweb_servlet_ecommerce.utils.SqlPagebleUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
@@ -21,6 +25,92 @@ public class AbstractDAO<T> implements GenericDAO<T> {
             return null;
         }
 
+    }
+    private String getInClauseParameters(int size) {
+        StringBuilder parameters = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            parameters.append("?");
+            if (i < size - 1) {
+                parameters.append(",");
+            }
+        }
+        return parameters.toString();
+    }
+
+    @Override
+    public Map<String, Object> queryCustom(String sql, List<Object> parameters) throws SQLException {
+        List<T> results = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+
+            if (parameters != null) {
+                setParameter(preparedStatement, parameters);
+            }
+            resultSet = preparedStatement.executeQuery();
+            Map<String,Object> resultMap = new HashMap<String,Object>();
+            while (resultSet.next()) {
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    List<String> colVal = new ArrayList<>();
+                    Object values =  resultSet.getObject(columnName);
+                    resultMap.put(columnName, values);
+                }
+            }
+            return resultMap;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            connection.close();
+            if (results != null && preparedStatement != null) {
+                preparedStatement.close();
+                resultSet.close();
+            }
+        }
+    }
+
+    @Override
+    public <T> List<T> queryWithSubQuery(StringBuilder sqlBuilder, RowMapper<T> rowMapper, List<SubQuery> subQueryList, String type, Class<T> modelClass, Pageble pageble) throws SQLException {
+        List<T> results = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "";
+        try {
+            connection = getConnection();
+            List<Object> parameters = new ArrayList<>();
+            for (SubQuery subQuery : subQueryList) {
+                sqlBuilder.append(" and "+subQuery.getColumnName()+" "+subQuery.getType()+" ("+getInClauseParameters(subQuery.getDatasQuery().size())+")");
+                for (Object param : subQuery.getDatasQuery()) {
+                    parameters.add(param);
+                }
+            }
+           SqlPagebleUtil.addSQlPageble(sqlBuilder,pageble);
+            sql = sqlBuilder.toString();
+            preparedStatement = connection.prepareStatement(sql);
+
+            if (parameters != null) {
+                setParameter(preparedStatement, parameters);
+            }
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                results.add(rowMapper.mapRow(resultSet, modelClass));
+            }
+            return results;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            connection.close();
+            if (results != null && preparedStatement != null) {
+                preparedStatement.close();
+                resultSet.close();
+            }
+        }
     }
 
     @Override
@@ -40,14 +130,8 @@ public class AbstractDAO<T> implements GenericDAO<T> {
                 results.add(rowMapper.mapRow(resultSet, modelClass));
             }
             return results;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             return null;
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
         } finally {
             connection.close();
             if (results != null && preparedStatement != null) {
@@ -63,7 +147,6 @@ public class AbstractDAO<T> implements GenericDAO<T> {
         Connection connection = null;
         ResultSet rs = null;
         PreparedStatement preparedStatement = null;
-
         try {
             connection = getConnection();
             connection.setAutoCommit(false);

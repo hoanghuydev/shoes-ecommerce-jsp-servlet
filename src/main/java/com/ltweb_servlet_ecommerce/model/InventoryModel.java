@@ -4,6 +4,7 @@ public class InventoryModel extends AbstractModel<InventoryModel> {
     private Integer amount;
     private Long productSizeId;
 
+
     public Integer getAmount() {
         return amount;
     }
