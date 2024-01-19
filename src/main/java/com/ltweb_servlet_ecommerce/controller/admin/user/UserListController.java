@@ -41,7 +41,7 @@ public class UserListController extends HttpServlet {
             String action = req.getParameter("action");
             if (action!=null && action.equals("delete")){
                 Long id = Long.parseLong(req.getParameter("id"));
-                userService.delete(id);
+                userService.softDelete(id);
                 resp.sendRedirect("/admin/user/list?message=delete_success&toast=success");
             } else {
                 UserModel model = FormUtil.toModel(UserModel.class,req);

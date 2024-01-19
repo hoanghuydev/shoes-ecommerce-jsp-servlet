@@ -42,9 +42,13 @@ public class CategoryListController extends HttpServlet {
                 Long id = Long.parseLong(req.getParameter("id"));
                 categoryService.delete(id);
                 resp.sendRedirect("/admin/category/list?message=delete_success&toast=success");
-            } else {
+            } else if (action!=null && action.equals("add")) {
                 CategoryModel categoryModel = FormUtil.toModel(CategoryModel.class,req);
                 categoryModel = categoryService.save(categoryModel);
+                resp.sendRedirect("/admin/category/list?message=add_success&toast=success");
+            } else if (action!=null && action.equals("update")) {
+                CategoryModel categoryModel = FormUtil.toModel(CategoryModel.class,req);
+                categoryModel = categoryService.update(categoryModel);
                 resp.sendRedirect("/admin/category/list?message=add_success&toast=success");
             }
         } catch (Exception e) {

@@ -51,7 +51,7 @@
                                     </svg>
                                 </div> <!-- /.icon -->
                                 <div class="service-contents">
-                                    <p>43 Raymouth Rd. Baltemoer, London 3910</p>
+                                    <p>Nong Lam University, Linh Trung,Thu Duc</p>
                                 </div> <!-- /.service-contents-->
                             </div> <!-- /.service -->
                         </div>
@@ -64,7 +64,7 @@
                                     </svg>
                                 </div> <!-- /.icon -->
                                 <div class="service-contents">
-                                    <p>info@yourdomain.com</p>
+                                    <p>tranvohoanghuy12ab@gmail.com</p>
                                 </div> <!-- /.service-contents-->
                             </div> <!-- /.service -->
                         </div>
@@ -77,37 +77,27 @@
                                     </svg>
                                 </div> <!-- /.icon -->
                                 <div class="service-contents">
-                                    <p>+1 294 3925 3939</p>
+                                    <p>+84 702 315 160</p>
                                 </div> <!-- /.service-contents-->
                             </div> <!-- /.service -->
                         </div>
                     </div>
 
-                    <form>
+                    <form method="POST">
                         <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label class="text-black" for="fname">First name</label>
-                                    <input type="text" class="form-control" id="fname">
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label class="text-black" for="lname">Last name</label>
-                                    <input type="text" class="form-control" id="lname">
-                                </div>
+                            <div class="form-group">
+                                <label class="text-black" for="fullName">Full name</label>
+                                <input type="text" class="form-control" id="fullName" name="fullName">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="text-black" for="email">Email address</label>
-                            <input type="email" class="form-control" id="email">
+                            <input type="email" class="form-control" id="email" name="email">
                         </div>
-
                         <div class="form-group mb-5">
                             <label class="text-black" for="message">Message</label>
-                            <textarea name="" class="form-control" id="message" cols="30" rows="5"></textarea>
+                            <textarea name="message" class="form-control" id="message" cols="30" rows="5"></textarea>
                         </div>
-
                         <button type="submit" class="btn btn-primary-hover-outline">Send Message</button>
                     </form>
 

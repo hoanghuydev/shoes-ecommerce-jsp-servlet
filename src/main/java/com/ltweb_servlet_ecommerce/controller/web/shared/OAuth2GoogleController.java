@@ -1,7 +1,10 @@
 package com.ltweb_servlet_ecommerce.controller.web.shared;
 
 import com.ltweb_servlet_ecommerce.model.UserModel;
+import com.ltweb_servlet_ecommerce.service.ICartService;
+import com.ltweb_servlet_ecommerce.service.IOrderDetailsService;
 import com.ltweb_servlet_ecommerce.service.IUserService;
+import com.ltweb_servlet_ecommerce.utils.CartUtil;
 import com.ltweb_servlet_ecommerce.utils.HttpUtil;
 import com.ltweb_servlet_ecommerce.utils.SessionUtil;
 import org.apache.http.HttpResponse;
@@ -27,6 +30,10 @@ import java.util.ResourceBundle;
 public class OAuth2GoogleController extends HttpServlet {
     @Inject
     IUserService userService;
+    @Inject
+    IOrderDetailsService orderDetailsService;
+    @Inject
+    ICartService cartService;
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Lấy mã xác thực từ Google sau khi người dùng đăng nhập
@@ -74,10 +81,12 @@ public class OAuth2GoogleController extends HttpServlet {
 //       If not exist user then register new user
            userModel = userService.save(userModel);
            SessionUtil.getInstance().putValue(req,"USER_MODEL",userModel);
+           CartUtil.setCartFromSessionForUser(SessionUtil.getInstance(),req,orderDetailsService,cartService,tmpUser.getId());
            resp.sendRedirect(req.getContextPath()+"/home?message=welcome&toast=success");
        } else if (tmpUser!=null && tmpUser.getAssociation().equals("google")) {
 //           If have user then login
            SessionUtil.getInstance().putValue(req,"USER_MODEL",tmpUser);
+           CartUtil.setCartFromSessionForUser(SessionUtil.getInstance(),req,orderDetailsService,cartService,tmpUser.getId());
            resp.sendRedirect(req.getContextPath()+"/home");
 
        } else if (tmpUser!=null && !tmpUser.getAssociation().equals("google")) {

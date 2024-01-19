@@ -42,20 +42,10 @@ public class ShopController extends HttpServlet {
 
         try {
             String productName = req.getParameter("productName");
-            List<ProductModel> productList = null;
             if (StringUtils.isNotBlank(productName)) {
-                List<SubQuery> subQueryList = new ArrayList<>();
-                List<Object> dataSubQuery = new ArrayList<>();
-                dataSubQuery.add("%" + productName.toLowerCase() + "%");
-                subQueryList.add(new SubQuery("name", "like", dataSubQuery));
-                productList = productService.findByColumnValues(subQueryList, pagebleProduct);
                 req.setAttribute("productName",productName);
-            } else {
-                productList = productService.findAll(pagebleProduct);
             }
             List<SizeModel> listSize = sizeService.findAll(null);
-            req.setAttribute("TOTAL_PRODUCT", productList.size());
-            req.setAttribute(SystemConstant.LIST_MODEL,productList);
             req.setAttribute("LIST_CATEGORY",categoryService.findAll(null));
             req.setAttribute("LIST_SIZE",listSize);
             RequestDispatcher rd = req.getRequestDispatcher("/views/web/shop.jsp");

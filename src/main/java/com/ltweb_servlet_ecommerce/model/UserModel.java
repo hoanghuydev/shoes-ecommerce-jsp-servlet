@@ -1,5 +1,6 @@
 package com.ltweb_servlet_ecommerce.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class UserModel extends AbstractModel<UserModel> {
@@ -8,8 +9,17 @@ public class UserModel extends AbstractModel<UserModel> {
     private  String password;
     private  String fullName;
     private String birthDay;
+    private Timestamp lastLogged;
     private Boolean admin;
     private String association = "none";
+
+    public Timestamp getLastLogged() {
+        return lastLogged;
+    }
+
+    public void setLastLogged(Timestamp lastLogged) {
+        this.lastLogged = lastLogged;
+    }
 
     public String getAssociation() {
         return association;

@@ -56,8 +56,7 @@ public class AbstractDAO<T> implements GenericDAO<T> {
                 ResultSetMetaData metaData = resultSet.getMetaData();
                 int columnCount = metaData.getColumnCount();
                 for (int i = 1; i <= columnCount; i++) {
-                    String columnName = metaData.getColumnName(i);
-                    List<String> colVal = new ArrayList<>();
+                    String columnName = metaData.getColumnLabel(i);
                     Object values =  resultSet.getObject(columnName);
                     resultMap.put(columnName, values);
                 }

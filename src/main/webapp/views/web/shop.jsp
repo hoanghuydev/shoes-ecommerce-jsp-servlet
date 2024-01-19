@@ -38,27 +38,74 @@
                 <p style="font-weight: 600; font-size: ">Result for "${productName}"</p>
             </div>
         </c:if>
-        <div class="row" id="listProduct">
-            <c:if test="${not empty LIST_MODEL}">
-                <c:forEach var="product_item" items="${LIST_MODEL}">
-                    <div class="col-12 col-md-4 col-lg-3 mb-5">
-                        <a class="product-item" href="/product-details/${product_item.id}">
-                            <img loading="lazy" src="${product_item.thumbnail}" class="img-fluid product-thumbnail">
-                            <h3 class="product-title">${product_item.name}</h3>
-                            <strong class="product-price">$${product_item.price}</strong>
+        <div class="row" id="listProduct"></div>
+    </div>
+</div>
+<script !src="">
+    window.addEventListener("DOMContentLoaded",function (){
+        let page = 1;
+        let isDone = false;
+        const productName = "${productName}";
+        const loadMoreProduct = (name) => {
+            let result;
+            $.ajax({
+                url: "/search/product",
+                method: "GET",
+                async: false, // Set to synchronous
+                data: {
+                    page : page,
+                    maxPageItem: 8,
+                    productName: name,
+                    sortBy : "createAt",
+                    sortBy : "desc"
+                },
+                success: function (listProduct) {
+                    page++;
+                    result = listProduct;
+                }
+            });
+            return result;
+        }
+        const renderMoreProduct = (name) => {
+            let listProductHtml = ``;
+            const listProduct = loadMoreProduct(name);
+            if (listProduct.length>0){
+                for (let i = 0; i < listProduct.length; i++) {
+                    const product = listProduct[i];
+                    listProductHtml+=`
+                     <div class="col-12 col-md-4 col-lg-3 mb-5">
+                        <a class="product-item" href="/product-details/`+product.id+`">
+                            <img loading="lazy" src="`+product.thumbnail+`" class="img-fluid product-thumbnail">
+                            <h3 class="product-title">`+product.name+`</h3>
+                            <strong class="product-price">$`+product.price+`</strong>
                             <span class="icon-cross"><img loading="lazy" src="/template/web/images/cross.svg" class="img-fluid"></span>
                         </a>
                     </div>
-                </c:forEach>
-            </c:if>
-            <c:if test="${empty LIST_MODEL}">
-                    <div class="d-flex">
+                `
+                }
+            } else if (listProduct.length==0 && productName!="" && page==2) {
+                const notFoundHtml = `<div class="d-flex">
                         <p class="mx-auto">Not found product</p>
-                    </div>
-            </c:if>
+                    </div>`
+                $("#listProduct").append(notFoundHtml);
+            } else if (listProduct.length==0) {
+                isDone = true;
+            }
+            $("#listProduct").append(listProductHtml);
+        }
+        $(window).scroll(function() {
+            if (!isDone){
+                const scrollContainer = $('#listProduct');
+                const scrollPosition = $(window).scrollTop() + $(window).height();
+                const containerPosition = scrollContainer.offset().top + 500; // Adjust as needed
+                if (scrollPosition >= containerPosition) {
+                    renderMoreProduct(productName);
+                }
+            }
 
-            </div>
-    </div>
-</div>
+        });
+        renderMoreProduct(productName);
+    })
+</script>
 </body>
 </html>

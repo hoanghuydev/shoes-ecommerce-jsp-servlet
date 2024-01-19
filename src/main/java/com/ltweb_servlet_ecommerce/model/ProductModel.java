@@ -10,6 +10,43 @@ public class ProductModel extends  AbstractModel<ProductModel> {
     private String slug;
     private  Long categoryId;
     private Integer totalViewAndSearch;
+    private Long sizeId;
+    private String sizeName;
+    private Integer quantity;
+    private Double subTotal;
+
+
+    public Long getSizeId() {
+        return sizeId;
+    }
+
+    public void setSizeId(Long sizeId) {
+        this.sizeId = sizeId;
+    }
+
+    public Double getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(Double subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    public String getSizeName() {
+        return sizeName;
+    }
+
+    public void setSizeName(String sizeName) {
+        this.sizeName = sizeName;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 
     public Integer getTotalViewAndSearch() {
         return totalViewAndSearch;

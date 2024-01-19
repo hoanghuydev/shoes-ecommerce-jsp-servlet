@@ -1,6 +1,6 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<footer class="footer-section">
+<footer class="footer-section" style="margin-top: 160px">
     <div class="container relative">
 
         <div class="sofa-img">

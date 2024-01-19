@@ -24,6 +24,7 @@
                             <label class="form-label">Size Name</label>
                             <input type="text" class="form-control" name="name">
                         </div>
+                        <input type="hidden" name="action" value="add">
                         <button class="btn btn-primary" type="submit">Add Size</button>
                     </form>
                 </div>
@@ -78,8 +79,8 @@
                                     <!-- End Size Name -->
                                     <!-- Action -->
                                     <td class="align-middle">
-                                        <a class="btn btn-link text-dark px-1 mb-0" ><i class="material-icons text-sm me-1">edit</i>Edit</a>
-                                        <a class="btn btn-link text-danger text-gradient px-1 mb-0"  data-bs-toggle="modal" href="#deleteModal" onclick="setId(${item.id})"><i class="material-icons text-sm me-1">delete</i>Delete</a>
+                                        <a class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" href="#updateModal" onclick="setIdUpdate(${item.id},'${item.name}')"><i class="material-icons text-sm me-1">edit</i>Edit</a>
+                                        <a class="btn btn-link text-danger text-gradient px-1 mb-0"  data-bs-toggle="modal" href="#deleteModal" onclick="setIdDelete(${item.id},'${item.name}')"><i class="material-icons text-sm me-1">delete</i>Delete</a>
                                     </td>
                                     <!-- End action -->
                                 </tr>
@@ -88,6 +89,34 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+<%--    Modal update--%>
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-normal" id="updateModalLabel"></h5>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST">
+                    <div class="modal-body">
+                        <div class="input-group input-group-outline my-3">
+                            <label class="form-label">Size Name</label>
+                            <input type="text" class="form-control" name="name" id="sizeNameUpdate">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-block btn-light" data-bs-dismiss="modal">Close</button>
+                        <input type="hidden" name="action" value="update">
+                        <input type="hidden" name="id" id="idUpdate">
+                        <button type="submit" class="btn bg-gradient-danger">Update</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -116,9 +145,14 @@
         </div>
       </div>
       <script>
-        const setId = (id) => {
-            $("#deleteModalLabel").text("Delete Size Id "+id+"?");
+        const setIdDelete = (id,name) => {
+            $("#deleteModalLabel").text("Delete Size "+name+"?");
             $("#idDelete").val(id);
+        }
+        const setIdUpdate = (id,name) => {
+            $("#updateModalLabel").text("Update Size "+name);
+            $("#idUpdate").val(id);
+            $("#sizeNameUpdate").val(name);
         }
       </script>
       <!-- End Delete Modal -->

@@ -71,15 +71,25 @@
           <c:forEach var="product_item" items="${LIST_MODEL}">
             <div class="col-xl-3 col-md-4 col-sm-6 col-12 mb-4">
               <div class="card py-3">
-                <div class="card-header p-0  mx-3">
-                  <a class="d-block shadow-xl border-radius-xl">
+                <div class="card-header p-0  mx-3 border-radius-lg">
+                  <a href="/product-details/${product_item.id}" style="background: rgb(171,172,171);
+                     background: linear-gradient(125deg, rgba(171,172,171,1) 35%, rgba(205,205,205,1) 100%);
+                     cursor:pointer;" class="d-block shadow-xl border-radius-lg">
                     <img loading="lazy" src="${product_item.thumbnail}" alt="Image Shoes" class="img-fluid shadow border-radius-lg">
                   </a>
                 </div>
                 <div class="card-body p-3">
                   <p class="mb-0 text-sm" >Shoes #${product_item.id}</p>
-                  <a href="javascript:;">
-                    <h5 >
+                  <a href="/product-details/${product_item.id}">
+                    <h5 style="
+                    line-height: 1.5em;
+                    height: 2em;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    width: 100%;
+                    cursor: pointer;
+                    ">
                         ${product_item.name}
                     </h5>
                   </a>
@@ -96,7 +106,7 @@
                     ${product_item.shortDescription}
                   </p>
                   <div class="d-flex align-items-center justify-content-between">
-                    <a href="/product-details/${product_item.id}" type="button" class="btn btn-outline-primary btn-sm mb-0 mx-auto">View Product Detail</a>
+                    <a href="/product-details/${product_item.id}" type="button" class="btn btn-outline-primary btn-sm mb-0 mx-auto">Edit Product</a>
                   </div>
                 </div>
               </div>

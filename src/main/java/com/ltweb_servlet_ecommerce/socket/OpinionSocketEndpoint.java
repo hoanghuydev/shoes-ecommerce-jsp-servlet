@@ -53,16 +53,22 @@ public class OpinionSocketEndpoint {
         boolean admin =  (boolean) userSession.getUserProperties().get("admin");
         IOpinionDAO opinionDAO = new OpinionDAO();
         if (userId!=null) {
+            IUserDAO userDAO = new UserDAO();
+
+//            Xóa nếu là deleted = true
             if (inOpinionModelMsg.getIsDeleted() && inOpinionModelMsg.getId()!=null) {
                 inOpinionModelMsg = opinionDAO.findById(inOpinionModelMsg.getId());
                 if (inOpinionModelMsg != null && (inOpinionModelMsg.getUserId().equals(userId) || admin) ) {
                     opinionDAO.softDelete(inOpinionModelMsg.getId());
                     outOpinionModelMsg = inOpinionModelMsg;
                     outOpinionModelMsg.setIsDeleted(true);
+                    String userName = userDAO.findById(userId).getFullName();
+                    outOpinionModelMsg.setUserName(userName);
                     broadcastComment(outOpinionModelMsg,productId);
+                    sendNotifyOpinionForAdmin(outOpinionModelMsg);
                 }
+//                Nếu không thì thêm opinion
             } else {
-                IUserDAO userDAO = new UserDAO();
                 try {
                     inOpinionModelMsg.setUserId(userId);
                     Long opinionId = opinionDAO.save(inOpinionModelMsg);
@@ -71,11 +77,28 @@ public class OpinionSocketEndpoint {
                     String userName = userDAO.findById(userId).getFullName();
                     outOpinionModelMsg.setUserName(userName);
                     broadcastComment(outOpinionModelMsg,productId);
+                    sendNotifyOpinionForAdmin(outOpinionModelMsg);
                 } catch (Exception e) {
                     String t = e.toString();
                 }
             }
 
+        }
+    }
+    public void sendNotifyOpinionForAdmin(OpinionModel opinionModelMsg) {
+        Set<Session> sessions = room.get("0");
+        if (sessions != null) {
+            for (Session session : sessions) {
+                if (session.isOpen()  && (boolean) session.getUserProperties().get("admin")) {
+                    try {
+                        session.getBasicRemote().sendObject(opinionModelMsg);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (EncodeException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
         }
     }
     public void broadcastComment(OpinionModel opinionModelMsg, String productId) {
@@ -85,10 +108,8 @@ public class OpinionSocketEndpoint {
                 if (session.isOpen()) {
                     try {
                         session.getBasicRemote().sendObject(opinionModelMsg);
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
-                    } catch (EncodeException e) {
-                        throw new RuntimeException(e);
                     }
                 }
             }

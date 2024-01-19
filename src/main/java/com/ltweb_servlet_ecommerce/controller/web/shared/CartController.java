@@ -1,17 +1,74 @@
 package com.ltweb_servlet_ecommerce.controller.web.shared;
 
+import com.ltweb_servlet_ecommerce.model.*;
+import com.ltweb_servlet_ecommerce.service.*;
+import com.ltweb_servlet_ecommerce.utils.SessionUtil;
+
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.Session;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 @WebServlet(urlPatterns = {"/cart"})
 public class CartController extends HttpServlet {
+    @Inject
+    ICartService cartService;
+    @Inject
+    IOrderDetailsService orderDetailsService;
+    @Inject
+    IProductService productService;
+    @Inject
+    IProductSizeService productSizeService;
+     @Inject
+    ISizeService sizeService;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher rd = req.getRequestDispatcher("/views/web/cart.jsp");
-        rd.forward(req, resp);
+        try {
+            UserModel user = (UserModel) SessionUtil.getInstance().getValue(req,"USER_MODEL");
+            if (user==null) {
+                List<OrderDetailsModel> orderDetailsModelList = (List<OrderDetailsModel>) SessionUtil.getInstance().getValue(req,"LIST_ORDER_DETAILS");
+                List<ProductModel> productModelList = new ArrayList<>();
+                if (orderDetailsModelList!=null) {
+                    for ( OrderDetailsModel orderDetailsModel : orderDetailsModelList) {
+                        setListProductOfCart(productModelList,orderDetailsModel);
+                    }
+                }
+                req.setAttribute("LIST_PRODUCT_OF_CART",productModelList);
+            } else {
+                CartModel cartModelSql = new CartModel();
+                cartModelSql.setUserId(user.getId());
+                List<CartModel> cartModelList = cartService.findAllWithFilter(cartModelSql,null);
+                List<OrderDetailsModel> orderDetailsModelList = new ArrayList<>();
+                List<ProductModel> productModelList = new ArrayList<>();
+                for (CartModel cart : cartModelList) {
+                   OrderDetailsModel orderDetailsModel = orderDetailsService.findById(cart.getOrderDetailsId());
+                    setListProductOfCart(productModelList,orderDetailsModel);
+                }
+                req.setAttribute("LIST_PRODUCT_OF_CART",productModelList);
+            }
+            RequestDispatcher rd = req.getRequestDispatcher("/views/web/cart.jsp");
+            rd.forward(req, resp);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void setListProductOfCart(List<ProductModel> productModelList, OrderDetailsModel orderDetailsModel) throws SQLException {
+        ProductSizeModel productSizeModel = productSizeService.findById(orderDetailsModel.getProductSizeId());
+        SizeModel sizeModel = sizeService.findById(productSizeModel.getSizeId());
+        ProductModel productModel = new ProductModel();
+        productModel = productService.findById(productSizeModel.getProductId());
+        productModel.setQuantity(orderDetailsModel.getQuantity());
+        productModel.setSizeName(sizeModel.getName());
+        productModel.setSizeId(sizeModel.getId());
+        productModel.setSubTotal(orderDetailsModel.getSubTotal());
+        productModelList.add(productModel);
     }
 }

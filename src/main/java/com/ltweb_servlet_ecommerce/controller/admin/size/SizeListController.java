@@ -47,10 +47,14 @@ public class SizeListController extends HttpServlet {
                 Long id = Long.parseLong(req.getParameter("id"));
                 sizeService.delete(id);
                 resp.sendRedirect("/admin/size/list?message=delete_success&toast=success");
-            } else {
+            } else if (action!=null && action.equals("add")) {
                 SizeModel sizeModel = FormUtil.toModel(SizeModel.class,req);
                 sizeModel = sizeService.save(sizeModel);
                 resp.sendRedirect("/admin/size/list?message=add_success&toast=success");
+            } else if (action!=null && action.equals("update")) {
+                SizeModel sizeModel = FormUtil.toModel(SizeModel.class,req);
+                sizeModel = sizeService.update(sizeModel);
+                resp.sendRedirect("/admin/size/list?message=update_success&toast=success");
             }
 
         } catch (Exception e) {

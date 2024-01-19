@@ -1,13 +1,11 @@
 package com.ltweb_servlet_ecommerce.controller.web.shared;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.ltweb_servlet_ecommerce.model.UserModel;
 import com.ltweb_servlet_ecommerce.service.IUserService;
 import com.ltweb_servlet_ecommerce.utils.FormUtil;
-import com.ltweb_servlet_ecommerce.utils.HtmlMailUtil;
+import com.ltweb_servlet_ecommerce.utils.SendMailUtil;
 import com.ltweb_servlet_ecommerce.utils.NotifyUtil;
 import com.ltweb_servlet_ecommerce.utils.SessionUtil;
-import com.mysql.cj.Session;
 
 import javax.inject.Inject;
 import javax.mail.Authenticator;
@@ -49,33 +47,11 @@ public class RegisterController extends HttpServlet {
             tmpUser.setEmail(userModel.getEmail());
             tmpUser = userService.findWithFilter(tmpUser);
             if (tmpUser==null) {
-                ResourceBundle resourceBundle = ResourceBundle.getBundle("env");
 
-                String fromEmail = resourceBundle.getString("EMAIL_ADDRESS");
-                String username = resourceBundle.getString("EMAIL_ADDRESS");
-                String password = resourceBundle.getString("EMAIL_PASSWORD");
-
-                Properties props = new Properties();
-                props.put("mail.smtp.host", "smtp.gmail.com");
-                props.put("mail.smtp.port", "587");
-                props.put("mail.smtp.auth", "true");
-                props.put("mail.smtp.starttls.enable", "true");
-                props.put("mail.smtp.ssl.trust", "*");
-
-                javax.mail.Session sessionEmail = javax.mail.Session.getInstance(props, new Authenticator() {
-                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                        return new javax.mail.PasswordAuthentication(username, password);
-                    }
-                });
                 try {
-                    MimeMessage message = new MimeMessage(sessionEmail);
-                    message.setFrom(new InternetAddress(username));
-                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userModel.getEmail()));
-                    message.setSubject("Vertify our email");
                     Random random = new Random();
                     Integer OTP = 100_000 + random.nextInt(900_000);
-                    message.setContent(HtmlMailUtil.templateOTPMail(OTP+""), "text/html;charset=UTF-8");
-                    Transport.send(message);
+                    SendMailUtil.sendMail(userModel.getEmail(),"Vertify your email",SendMailUtil.templateOTPMail(OTP+""));
                     SessionUtil.putValue(req,"OTP",OTP);
                     SessionUtil.getInstance().putValue(req,"REGISTER_USER",userModel);
                     resp.sendRedirect("/vertify-email");

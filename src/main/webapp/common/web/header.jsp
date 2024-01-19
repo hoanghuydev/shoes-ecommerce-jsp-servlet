@@ -42,12 +42,12 @@
                         </c:if>
                     </ul>
                 </li>
-                <li><a class="nav-link" href="cart.html"><img src="/template/web/images/cart.svg"></a></li>
+                <li><a class="nav-link" href="/cart"><img src="/template/web/images/cart.svg"></a></li>
             </ul>
         </div>
     </div>
 </nav>
-<div style="margin-top: 80px;"></div>
+<div style="height: 80px;"></div>
 <%--Modal search--%>
 <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="padding: 0">
     <div class="modal-dialog modal-dialog-top m-0" style="width: 100%;max-width:unset">

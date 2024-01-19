@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = {"/product/opinion"})
+@WebServlet(urlPatterns = {"/ajax/product/opinion"})
 public class OpinionAjax extends HttpServlet {
     @Inject
     IOpinionService opinionService;

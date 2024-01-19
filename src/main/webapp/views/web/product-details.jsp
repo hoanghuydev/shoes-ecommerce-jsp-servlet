@@ -89,11 +89,10 @@
 
                         <c:out value="${MODEL.content}" escapeXml="false"/>
                         <hr />
-                        <form method="GET">
                             <div class="row mb-4">
                                 <div class="col-md-4 col-6">
                                     <label class="mb-2">Size</label>
-                                    <select class="form-select border border-secondary" name="sizeId" style="height: 35px;" required>
+                                    <select class="form-select border border-secondary" name="sizeId" id="sizeId" style="height: 35px;" required>
                                         <c:forEach var="size_item" items="${LIST_SIZE}">
                                             <option value="${size_item.id}">${size_item.name}</option>
                                         </c:forEach>
@@ -101,10 +100,9 @@
                                 </div>
                                 <input type="hidden" name="productId" value="${MODEL.id}">
                             </div>
-                            <button type="submit" class="btn btn-warning shadow-0"> Buy now </button>
-                            <a href="#" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </a>
+                            <button class="btn btn-warning shadow-0" id="buyNow"> Buy now </button>
+                            <button  class="btn btn-primary shadow-0" id="addToCart"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </button>
                             <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i> Save </a>
-                        </form>
                     </div>
                 </main>
             </div>
@@ -207,13 +205,35 @@
     </c:if>
     <script !src="">
         window.addEventListener("DOMContentLoaded",function (){
+
             const maxPageItemOpinion = 3;
             let totalCurrentItem = 0;
             let nextPage = 1;
+            //     Add to cart
+            $('#addToCart').click(function () {
+                $.ajax({
+                    url : '/ajax/cart',
+                    method : 'POST',
+                    data : JSON.stringify({
+                        productId : ${MODEL.id},
+                        sizeId : parseInt($('#sizeId').val()),
+                        quantity : 1,
+                    }),
+                    success : function (data) {
+                        showToast("Added product to your cart.Check here!","success","/cart");
+                    },
+                    error : function (error) {
+                        showToast("Error : "+error.error_desc+"","danger");
+                    }
+                })
+            })
+            $('#buyNow').click(function () {
+                window.location.href = "/checkout?productId=${MODEL.id}&quantity=1&sizeId="+$('#sizeId').val();
+            })
             // Get opinion and render
             const getOpinion = ()=> {
                 $.ajax({
-                    url : '/product/opinion',
+                    url : '/ajax/product/opinion',
                     method : 'GET',
                     data : {
                         productId: ${MODEL.id},
@@ -237,7 +257,6 @@
                     error : function (e) {
                         $(".loadMoreOpinion").empty();
                     }
-
                 })
             }
             $(".loadMoreOpinion").click(()=> {
@@ -263,6 +282,7 @@
             }
             // append opinon html
             const appendOpionion = (id,title,content,rating,userId,userName,createAt,position)=> {
+                console.log("test");
                 let starHtml = ``;
                 for (let i=0; i<5;i++) {
                     if (i<rating) {
@@ -316,22 +336,21 @@
             // revice message from socket
             socket.onmessage = function onMessage(message) {
                 const opinionData = JSON.parse(message.data);
-                console.log(opinionData);
                 if (opinionData.isDeleted) {
                     $("#opinion"+opinionData.id).remove();
                     let averageRating = parseFloat($('#averageRating').text());
                     let amountOpinion = parseInt($('#amountOpinion').text());
-                    let amountOpinionNew = amountOpinion-1;
-                    let averageRatingNew = ((averageRating*amountOpinion)-opinionData.rating)/amountOpinionNew;
+                    let amountOpinionNew = (amountOpinion-1);
+                    let averageRatingNew = 5;
+                    if (amountOpinionNew!=0) {
+                        averageRatingNew = ((averageRating*amountOpinion)-opinionData.rating)/amountOpinionNew;
+                    }
                     $('.averageRating').text(averageRatingNew.toFixed(2));
                     $('#amountOpinion').text(amountOpinionNew);
                     renderRatingStar("averageRatingStar",averageRatingNew);
                     <c:if test="${not empty USER_MODEL}">
                     if (opinionData.userId == ${USER_MODEL.id}) {
                         showToast("Deleted your review","success");
-                    }
-                    if ( ${USER_MODEL.admin}) {
-                        showToast("User #"+opinionData.id+" deleted they review","danger");
                     }
                     </c:if>
                 } else {
@@ -381,7 +400,6 @@
                     id,
                     isDeleted : true
                 }
-                console.log(opinionData);
                 socket.send(JSON.stringify(opinionData));
             })
 
