@@ -34,11 +34,6 @@ public class ShopController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         NotifyUtil.setUp(req);
-        Integer page = req.getParameter("page")==null ? 1 : Integer.parseInt(req.getParameter("page").toString());
-        Integer maxPageItem =req.getParameter("maxPageItem")==null ? 8 : Integer.parseInt(req.getParameter("maxPageItem").toString());
-        String sortName = req.getParameter("sortName")==null ? "createAt" : req.getParameter("sortName");
-        String sortBy = req.getParameter("sortBy")==null ? "desc" : req.getParameter("sortBy");
-        Pageble pagebleProduct = new PageRequest(page,maxPageItem,new Sorter(sortName, sortBy));
 
         try {
             String productName = req.getParameter("productName");

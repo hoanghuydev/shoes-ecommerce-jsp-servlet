@@ -50,7 +50,7 @@
                                         <span class="text-muted me-2">Size:</span><span>${product_item.sizeName}</span>
                                     </p>
                                     <p class="mb-4">
-                                        <a href="" id="removeCart"  class="text-muted pe-3 border-end" data-index="${loop.index}" data-product-id="${product_item.id}" data-size-id="${product_item.sizeId}"><small><i
+                                        <a href="" id=""  class="text-muted pe-3 border-end removeCart" data-index="${loop.index}" data-product-id="${product_item.id}" data-size-id="${product_item.sizeId}"><small><i
                                                 class="fas fa-trash me-2"></i>Remove</small></a>
                                     </p>
                                 </div>
@@ -216,7 +216,7 @@
                 }
             })
         }
-        $("#removeCart").click(function (e) {
+        $(".removeCart").click(function (e) {
             e.preventDefault();
             const productId = parseInt($(this).attr("data-product-id"));
             const sizeId = parseInt($(this).attr("data-size-id"));

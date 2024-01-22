@@ -37,33 +37,33 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-outline mb-4">
+                                    <label class="form-label" for="fullName">Full name<sup style="color :red;">*</sup></label>
                                     <input type="text" id="fullName" name="fullName" class="form-control" required />
-                                    <label class="form-label" for="fullName">Full name</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-outline mb-4">
+                                    <label class="form-label" for="phoneNumber">Phone number<sup style="color :red;">*</sup></label>
                                     <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" required />
-                                    <label class="form-label" for="phoneNumber">Phone number</label>
                                     <p style="color : red; font-size: 12px" id="phoneNumberValidate"></p>
                                 </div>
                             </div>
                         </div>
                         <div class="row justify-content-between">
                             <div class="col-md-4">
-                                <label for="province" class="form-label">Province</label>
+                                <label for="province" class="form-label">Province<sup style="color :red;">*</sup></label>
                                 <select class="form-select" name="province" id="province" required>
 
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="district" class="form-label">District</label>
+                                <label for="district" class="form-label">District<sup style="color :red;">*</sup></label>
                                 <select class="form-select" name="district" id="district" required disabled>
 
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="commune" class="form-label">Commune</label>
+                                <label for="commune" class="form-label">Commune<sup style="color :red;">*</sup></label>
                                 <select class="form-select" name="commune" id="commune" required disabled>
 
                                 </select>
@@ -71,33 +71,28 @@
                         </div>
                         <div class="row justify-content-between mt-4">
                             <div class="col-md-4">
-                                <label for="ward_street" class="form-label">Ward - Street</label>
-                                <select class="form-select" name="ward_street" id="ward_street" required disabled>
+                                <label for="hamlet1" class="form-label">Ward - Street<sup style="color :red;">*</sup></label>
+                                <select class="form-select" name="hamlet1" id="hamlet1" required disabled>
 
                                 </select>
                             </div>
                             <div class="col-md-8">
-                                <label for="hamlet" class="form-label">More Address</label>
-                                <input class="form-control" type="text" id="hamlet" name="hamlet" placeholder="Enter your detail address..." required>
+                                <label for="hamlet2" class="form-label">More Address</label>
+                                <input class="form-control" type="text" id="hamlet2" name="hamlet2" placeholder="Enter your detail address...">
                                 <p>Ex : House number 28/12</p>
                             </div>
 
                         </div>
-                        <h5 class="mb-4">Payment method</h5>
-                        <div class="accordion accordion-flush mb-4" id="accordionFlushExampleX0">
-                            <select class="form-select selectpicker"  data-live-search="true" aria-label="Select payment method" is="ms-dropdown">
-                                <option value="cod" selected data-image="/template/shared/images/cod.png" data-description="Pay at your doorstep...">COD</option>
-                                <option value="payPal" data-image="/template/shared/images/logoPaypal.png" data-description="Pay and get paid...">PayPal</option>
-                                <option value="zaloPay" data-image="/template/shared/images/logoZalopay.png" data-description="Touch to tranfer money...">Zalo Pay</option>
-                                <option value="momo" data-image="/template/shared/images/logoMomo.svg" data-description="Pay fast, get cutes gifts...">Momo</option>
-                                <option value="vnPay" data-image="/template/shared/images/logoVnpay.png" data-description="All you need...">VnPay</option>
-                            </select>
+                        <div class="form-group">
+                            <label for="note" class="form-label">Note for shop</label>
+                            <input class="form-control" type="text" id="note" name="note" placeholder="Enter your note..." required>
                         </div>
+
                         <c:forEach var="product_item" items="${LIST_PRODUCT_OF_CART}">
                             <input type="hidden" name="product[]" value="${product_item.id}-${product_item.sizeId}-${product_item.quantity}">
                         </c:forEach>
                         <div class="pt-1 mb-3">
-                            <button class="btn btn-dark btn-lg px-5">Pay order</button>
+                            <button type="submit" class="btn btn-dark btn-lg px-5">Pay order</button>
                             <p class="small text-muted mt-4 mb-0">By clicking "Proceed to PayPal" I confirm I have read <a href="#!">Privacy Notice</a> and <a href="#!">Cookie Notice</a>. I agree to the <a href="#!">terms & conditions</a> of the store. "I also accept that the store will process my personal data to manage my order, in accordance with the store's <a href="#!">privacy notice</a>"</p>
                         </div>
                     </form>
@@ -177,19 +172,19 @@
                 url : (idDistrict) => "https://vnprovinces.pythonanywhere.com/api/wards/?district_id="+idDistrict+"&basic=true&limit=100"
             },
             {
-                typeAddress: "ward_street",
+                typeAddress: "hamlet1",
                 url : (province,district,commune) => '/address/4?province='+province+'&district='+district+'&commune='+commune
             }
         ]
         const loadDataAddress = (typeAddress,id) => {
             let dataListAddress = [];
             const infoAddress = listInfoAddress.filter((address) => address.typeAddress === typeAddress)[0];
-            const url = infoAddress.typeAddress === "province" ? infoAddress.url() : infoAddress.typeAddress === "ward_street" ? infoAddress.url($("#province").val(),$("#district").val(),$("#commune").val()) : infoAddress.url(id);
+            const url = infoAddress.typeAddress === "province" ? infoAddress.url() : infoAddress.typeAddress === "hamlet1" ? infoAddress.url($("#province").val(),$("#district").val(),$("#commune").val()) : infoAddress.url(id);
             $.ajax({
                 url,
                 method : "GET",
                 success : function (dataResp) {
-                    dataListAddress = infoAddress.typeAddress === "ward_street" ? JSON.parse(dataResp).data : dataResp.results;
+                    dataListAddress = infoAddress.typeAddress === "hamlet1" ? JSON.parse(dataResp).data : dataResp.results;
                     updateDOMAddressSelect(typeAddress,dataListAddress);
                 }
             });
@@ -197,7 +192,7 @@
         const updateDOMAddressSelect = (typeAddress,data) => {
             $("#"+typeAddress).empty();
             let dataAdressHtml = '<option value="" selected>-- Select '+typeAddress+' --</option>';
-            if (typeAddress === "ward_street") {
+            if (typeAddress === "hamlet1") {
                 for (const address of data) {
                     dataAdressHtml += `<option data-id="`+address+`" value="`+address+`">`+address+`</option>`
                 }
@@ -236,7 +231,11 @@
             e.preventDefault();
             let phoneExp = /^(^\+251|^251|^0)?(9|7)\d{8}$/;
             if (!phoneExp.test($("#phoneNumber").val())) {
-                $("#phoneNumberValidate").text("Please enter valid phone number")
+                $("#phoneNumberValidate").text("Please enter valid phone number");
+                $('html, body').animate({
+                    scrollTop: $('#'+id).offset().top
+                }, 150);
+                return;
             } else {
                 $("#phoneNumberValidate").text("");
             }
@@ -244,6 +243,7 @@
             for (const address of listInfoAddress) {
                 console.log($('#'+address.typeAddress).val());
             }
+            this.submit();
 
         })
     })

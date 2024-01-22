@@ -2,6 +2,8 @@ package com.ltweb_servlet_ecommerce.controller.web.shared;
 
 import com.ltweb_servlet_ecommerce.model.*;
 import com.ltweb_servlet_ecommerce.service.*;
+import com.ltweb_servlet_ecommerce.utils.CartUtil;
+import com.ltweb_servlet_ecommerce.utils.NotifyUtil;
 import com.ltweb_servlet_ecommerce.utils.SessionUtil;
 
 import javax.inject.Inject;
@@ -11,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.Session;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,13 +33,14 @@ public class CartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            NotifyUtil.setUp(req);
             UserModel user = (UserModel) SessionUtil.getInstance().getValue(req,"USER_MODEL");
             if (user==null) {
                 List<OrderDetailsModel> orderDetailsModelList = (List<OrderDetailsModel>) SessionUtil.getInstance().getValue(req,"LIST_ORDER_DETAILS");
                 List<ProductModel> productModelList = new ArrayList<>();
                 if (orderDetailsModelList!=null) {
                     for ( OrderDetailsModel orderDetailsModel : orderDetailsModelList) {
-                        setListProductOfCart(productModelList,orderDetailsModel);
+                        new CartUtil().setListProductFromOrderDetails(productModelList,orderDetailsModel,productSizeService,productService,sizeService);
                     }
                 }
                 req.setAttribute("LIST_PRODUCT_OF_CART",productModelList);
@@ -50,7 +52,7 @@ public class CartController extends HttpServlet {
                 List<ProductModel> productModelList = new ArrayList<>();
                 for (CartModel cart : cartModelList) {
                    OrderDetailsModel orderDetailsModel = orderDetailsService.findById(cart.getOrderDetailsId());
-                    setListProductOfCart(productModelList,orderDetailsModel);
+                    new CartUtil().setListProductFromOrderDetails(productModelList,orderDetailsModel,productSizeService,productService,sizeService);
                 }
                 req.setAttribute("LIST_PRODUCT_OF_CART",productModelList);
             }
@@ -60,15 +62,5 @@ public class CartController extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
-    private void setListProductOfCart(List<ProductModel> productModelList, OrderDetailsModel orderDetailsModel) throws SQLException {
-        ProductSizeModel productSizeModel = productSizeService.findById(orderDetailsModel.getProductSizeId());
-        SizeModel sizeModel = sizeService.findById(productSizeModel.getSizeId());
-        ProductModel productModel = new ProductModel();
-        productModel = productService.findById(productSizeModel.getProductId());
-        productModel.setQuantity(orderDetailsModel.getQuantity());
-        productModel.setSizeName(sizeModel.getName());
-        productModel.setSizeId(sizeModel.getId());
-        productModel.setSubTotal(orderDetailsModel.getSubTotal());
-        productModelList.add(productModel);
-    }
+
 }

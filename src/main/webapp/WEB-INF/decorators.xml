@@ -5,7 +5,18 @@
     <excludes>
         <pattern>/api*</pattern>
     </excludes>
-
+    <decorator name="login" page="login.jsp">
+        <pattern>/sign-in*</pattern>
+    </decorator>
+    <decorator name="register" page="login.jsp">
+        <pattern>/sign-up*</pattern>
+    </decorator>
+    <decorator name="vertify" page="login.jsp">
+        <pattern>/vertify-email*</pattern>
+    </decorator>
+    <decorator name="order" page="order.jsp">
+        <pattern>/order-details*</pattern>
+    </decorator>
     <!-- apply Sitemesh default template -->
     <decorator name="admin" page="admin.jsp">
         <pattern>/admin*</pattern>
@@ -17,13 +28,5 @@
 <!--    <decorator name="error" page="web.jsp">-->
 <!--        <pattern>/error/*</pattern>-->
 <!--    </decorator>-->
-    <decorator name="login" page="login.jsp">
-        <pattern>/sign-in*</pattern>
-    </decorator>
-    <decorator name="register" page="login.jsp">
-        <pattern>/sign-up*</pattern>
-    </decorator>
-    <decorator name="vertify" page="login.jsp">
-        <pattern>/vertify-email*</pattern>
-    </decorator>
+
 </decorators>

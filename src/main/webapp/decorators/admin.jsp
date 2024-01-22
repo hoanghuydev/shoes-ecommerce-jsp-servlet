@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="<c:url value="/template/admin/assets/css/editImage.css"/>" rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value="https://www.nike.com/favicon.ico"/> ">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -25,6 +26,8 @@
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet"/>
     <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
     <title><dec:title default="Admin Nai" /></title>
+    <script src="<c:url value="/packages/node_modules/ffmpeg-old/assets/ffmpeg/package/dist/umd/ffmpeg.js"/>"></script>
+    <script src="<c:url value="/packages/node_modules/ffmpeg-old/assets/util/package/dist/umd/index.js"/> "></script>
 </head>
 <body class="g-sidenav-show  bg-gray-100">
 <%@ include file="/common/admin/sidebar.jsp" %>
@@ -96,6 +99,7 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
 <script src="/template/admin/assets/js/core/popper.min.js"></script>
 <script src="/template/admin/assets/js/core/bootstrap.min.js"></script>
 <script src="/template/admin/assets/js/plugins/perfect-scrollbar.min.js"></script>
@@ -154,5 +158,6 @@
         })
     </script>
 </c:if>
+
 </body>
 </html>

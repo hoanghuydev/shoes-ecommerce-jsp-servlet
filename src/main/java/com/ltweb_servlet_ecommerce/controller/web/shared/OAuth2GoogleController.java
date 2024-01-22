@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
 @WebServlet(urlPatterns = {"/oauth2-google"})
@@ -85,10 +86,13 @@ public class OAuth2GoogleController extends HttpServlet {
            resp.sendRedirect(req.getContextPath()+"/home?message=welcome&toast=success");
        } else if (tmpUser!=null && tmpUser.getAssociation().equals("google")) {
 //           If have user then login
+           UserModel updateUserLogged = tmpUser;
+           updateUserLogged.setLastLogged(new Timestamp(System.currentTimeMillis()));
+           updateUserLogged.setId(tmpUser.getId());
+           tmpUser = userService.update(updateUserLogged);
            SessionUtil.getInstance().putValue(req,"USER_MODEL",tmpUser);
            CartUtil.setCartFromSessionForUser(SessionUtil.getInstance(),req,orderDetailsService,cartService,tmpUser.getId());
            resp.sendRedirect(req.getContextPath()+"/home");
-
        } else if (tmpUser!=null && !tmpUser.getAssociation().equals("google")) {
            resp.sendRedirect(req.getContextPath()+req.getRequestURI()+"?message=exist_user&toast=danger");
        }

@@ -3,6 +3,7 @@ package com.ltweb_servlet_ecommerce.controller.web.shared;
 import com.ltweb_servlet_ecommerce.constant.SystemConstant;
 import com.ltweb_servlet_ecommerce.model.UserModel;
 import com.ltweb_servlet_ecommerce.utils.FormUtil;
+import com.ltweb_servlet_ecommerce.utils.NotifyUtil;
 import com.ltweb_servlet_ecommerce.utils.SendMailUtil;
 
 import javax.servlet.RequestDispatcher;
@@ -18,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 public class ContactController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        NotifyUtil.setUp(req);
         req.setAttribute("tab", SystemConstant.CONTACT_TAB);
         RequestDispatcher rd = req.getRequestDispatcher("/views/web/contact.jsp");
         rd.forward(req,resp);

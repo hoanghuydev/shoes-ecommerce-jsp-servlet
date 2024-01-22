@@ -1,9 +1,7 @@
 package com.ltweb_servlet_ecommerce.utils;
 
-import com.ltweb_servlet_ecommerce.model.CartModel;
-import com.ltweb_servlet_ecommerce.model.OrderDetailsModel;
-import com.ltweb_servlet_ecommerce.service.ICartService;
-import com.ltweb_servlet_ecommerce.service.IOrderDetailsService;
+import com.ltweb_servlet_ecommerce.model.*;
+import com.ltweb_servlet_ecommerce.service.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -25,5 +23,16 @@ public class CartUtil {
             }
             SessionUtil.getInstance().removeValue(req,"LIST_ORDER_DETAILS");
         }
+    }
+    public void setListProductFromOrderDetails(List<ProductModel> productModelList, OrderDetailsModel orderDetailsModel,IProductSizeService productSizeService,IProductService productService,ISizeService sizeService) throws SQLException {
+        ProductSizeModel productSizeModel = productSizeService.findById(orderDetailsModel.getProductSizeId());
+        SizeModel sizeModel = sizeService.findById(productSizeModel.getSizeId());
+        ProductModel productModel = new ProductModel();
+        productModel = productService.findById(productSizeModel.getProductId());
+        productModel.setQuantity(orderDetailsModel.getQuantity());
+        productModel.setSizeName(sizeModel.getName());
+        productModel.setSizeId(sizeModel.getId());
+        productModel.setSubTotal(orderDetailsModel.getSubTotal());
+        productModelList.add(productModel);
     }
 }

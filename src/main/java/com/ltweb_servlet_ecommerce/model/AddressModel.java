@@ -1,10 +1,12 @@
 package com.ltweb_servlet_ecommerce.model;
 
-public class AdressModel extends AbstractModel<AdressModel>{
+public class AddressModel extends AbstractModel<AddressModel>{
     private String fullName;
     private Integer phoneNumber;
     private String  province;
-
+    private String district;
+    private String commune;
+    private String hamlet;
 
     public String getFullName() {
         return fullName;
@@ -54,7 +56,5 @@ public class AdressModel extends AbstractModel<AdressModel>{
         this.hamlet = hamlet;
     }
 
-    private String district;
-    private String commune;
-    private String hamlet;
+
 }

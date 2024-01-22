@@ -2,6 +2,7 @@ package com.ltweb_servlet_ecommerce.model;
 
 public class UserOrderModel extends AbstractModel<UserOrderModel> {
     private Long userId;
+    private Long orderId;
 
 
     public Long getUserId() {
@@ -20,5 +21,4 @@ public class UserOrderModel extends AbstractModel<UserOrderModel> {
         this.orderId = orderId;
     }
 
-    private Long orderId;
 }

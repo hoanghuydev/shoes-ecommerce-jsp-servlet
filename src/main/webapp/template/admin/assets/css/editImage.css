@@ -1,0 +1,40 @@
+#addText, #addOverlay {
+    padding: 7px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    background: #dedcdc;
+    height: fit-content;
+}
+#listImageEdit {
+    max-height: 50px;
+}
+#actionConfigEdit button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+#listConfigEdit >div {
+    padding: 7px 10px;
+    border-radius: 5px;
+    background: #dedcdc;
+    height: fit-content;
+}
+#listConfigEdit > div.active {
+    border : solid 1px #5f5fec;
+}
+.removeEdit:hover {
+    cursor: pointer;
+    opacity: 0.83;
+}
+
+#preview {
+    position: relative;
+}
+#preview > * {
+    user-select: none;
+    cursor: pointer;
+}
+#preview > p {
+    font-weight: 400;
+    color: black;
+
+}

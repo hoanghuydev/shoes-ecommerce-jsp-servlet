@@ -85,7 +85,7 @@ public class CartAjax extends HttpServlet {
 
                 if (resultExistCartItem.get("id") != null) {
                     Long orderDetailsId = Long.parseLong(resultExistCartItem.get("id").toString());
-                    if (req.getMethod().equalsIgnoreCase("DELETE")) {
+                    if (req.getMethod().equalsIgnoreCase("DELETE") || quantity < 1) {
                         cartModel.setOrderDetailsId(orderDetailsId);
                         cartModel = cartService.findWithFilter(cartModel);
                         cartService.delete(cartModel.getId());
@@ -119,7 +119,7 @@ public class CartAjax extends HttpServlet {
 //                    If exist orderDetails in session then update quantity
                     if (existOrderDetails != null) {
                         Integer indexOfOrderDetails = orderDetailsModelList.indexOf(existOrderDetails);
-                        if (req.getMethod().equalsIgnoreCase("DELETE")) {
+                        if (req.getMethod().equalsIgnoreCase("DELETE") || quantity <1) {
                             orderDetailsModelList.remove(indexOfOrderDetails.intValue());
                         } else  {
                             orderDetailsModelList.set(indexOfOrderDetails, orderDetailsModel);

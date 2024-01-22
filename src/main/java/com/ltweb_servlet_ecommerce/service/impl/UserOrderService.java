@@ -14,64 +14,64 @@ import java.util.Map;
 
 public class UserOrderService implements IUserOrderService {
     @Inject
-    IUserOrderDAO opinionDAO;
+    IUserOrderDAO userDAO;
 
     @Override
     public List<UserOrderModel> findAllWithFilter(UserOrderModel model, Pageble pageble) throws SQLException {
-        return opinionDAO.findAllWithFilter(model,pageble);
+        return userDAO.findAllWithFilter(model,pageble);
     }
 
     @Override
     public UserOrderModel findWithFilter(UserOrderModel model) throws SQLException {
-        return opinionDAO.findWithFilter(model);
+        return userDAO.findWithFilter(model);
     }
 
     @Override
     public List<UserOrderModel> findByColumnValues(List<SubQuery> subQueryList, Pageble pageble) throws SQLException {
-        return opinionDAO.findByColumnValues(subQueryList,pageble);
+        return userDAO.findByColumnValues(subQueryList,pageble);
     }
     @Override
     public Map<String,Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException {
-        return opinionDAO.findWithCustomSQL(sql,params);
+        return userDAO.findWithCustomSQL(sql,params);
     }
 
     @Override
     public UserOrderModel update(UserOrderModel model) throws SQLException {
-        UserOrderModel oldModel = opinionDAO.findById(model.getId());
+        UserOrderModel oldModel = userDAO.findById(model.getId());
         model.setUpdateAt(new Timestamp(System.currentTimeMillis()));
-        opinionDAO.update(model);
-        return opinionDAO.findById(model.getId());
+        userDAO.update(model);
+        return userDAO.findById(model.getId());
     }
 
     @Override
     public UserOrderModel delete(Long id) throws SQLException {
-        UserOrderModel oldModel = opinionDAO.findById(id);
-        opinionDAO.delete(id);
+        UserOrderModel oldModel = userDAO.findById(id);
+        userDAO.delete(id);
         return oldModel;
     }
 
     @Override
     public List<UserOrderModel> findAll(Pageble pageble) throws SQLException {
-        return opinionDAO.findAll(pageble);
+        return userDAO.findAll(pageble);
     }
 
     @Override
     public UserOrderModel softDelete(Long id) throws SQLException {
-        UserOrderModel model = opinionDAO.findById(id);
+        UserOrderModel model = userDAO.findById(id);
         model.setUpdateAt(new Timestamp(System.currentTimeMillis()));
         model.setIsDeleted(true);
-        opinionDAO.update(model);
-        return opinionDAO.findById(model.getId());
+        userDAO.update(model);
+        return userDAO.findById(model.getId());
     }
 
     @Override
     public UserOrderModel findById(Long id) throws SQLException {
-        return opinionDAO.findById(id);
+        return userDAO.findById(id);
     }
 
     @Override
     public UserOrderModel save(UserOrderModel model) throws SQLException {
-        Long productId = opinionDAO.save(model);
-        return opinionDAO.findById(productId);
+        Long productId = userDAO.save(model);
+        return userDAO.findById(productId);
     }
 }
