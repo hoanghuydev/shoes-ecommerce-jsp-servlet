@@ -2,6 +2,10 @@ package com.ltweb_servlet_ecommerce.controller.admin.product;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.*;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.ltweb_servlet_ecommerce.constant.SystemConstant;
 import com.ltweb_servlet_ecommerce.model.ProductImageModel;
 import com.ltweb_servlet_ecommerce.model.ProductModel;
@@ -11,6 +15,8 @@ import com.ltweb_servlet_ecommerce.utils.FormUtil;
 import com.ltweb_servlet_ecommerce.utils.NotifyUtil;
 import org.apache.commons.io.IOUtils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Base64;
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -101,6 +107,11 @@ public class ProductListController  extends HttpServlet {
                             resp.sendRedirect("/admin/product/list?message=error&toast=danger");
                             return;
                         }
+                    } else if (part.getName().equals("model")) {
+                        if (part!=null) {
+                            productModel.setModelUrl(uploadFileToFirebase(part));
+                            productModel = productService.update(productModel);
+                        }
                     }
                 }
                 resp.sendRedirect("/admin/product/list?message=add_success&toast=success");
@@ -110,6 +121,40 @@ public class ProductListController  extends HttpServlet {
         } catch ( Exception e) {
             resp.sendRedirect("/admin/product/list?message=error&toast=danger");
         }
+    }
+    private String uploadFileToFirebase(Part partModel) throws IOException {
+        if (FirebaseApp.getApps().isEmpty()) {
+//                InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("serviceAccountFirebase.json");
+            FileInputStream serviceAccount = new FileInputStream("E:\\New\\Become Dev\\LTWEB_Servlet_Ecommerce\\src\\main\\resources\\serviceAccountFirebase.json");
+            // Use the InputStream as needed
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .build();
+            FirebaseApp.initializeApp(options);
+        }
+        if (FirebaseApp.getApps().isEmpty()) {
+            System.out.println("Empty");
+        }
+        Storage storage = StorageOptions.getDefaultInstance().getService();
+        Bucket bucket = storage.get("lovepoint-744b7.appspot.com");
+        String fileName = "test.obj";
+        String filePath = "shoes_ecommerce_servlet/model/" + fileName;
+        String contentType = partModel.getContentType();
+        InputStream fileStream = partModel.getInputStream();
+        BlobId blobId = BlobId.of("lovepoint-744b7.appspot.com", filePath);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(contentType).build();
+        Blob blob = storage.create(blobInfo, fileStream);
+        String objectUrl = blob.getMediaLink();
+        return objectUrl;
+    }
+    private String getFileName(Part part) {
+        String contentDisposition = part.getHeader("content-disposition");
+        if(!contentDisposition.contains("filename=")) {
+            return null;
+        }
+        int beginIndex = contentDisposition.indexOf("filename=")+10;
+        int endIndex = contentDisposition.length()-1;
+        return contentDisposition.substring(beginIndex,endIndex);
     }
 
 

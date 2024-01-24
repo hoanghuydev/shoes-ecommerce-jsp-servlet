@@ -61,6 +61,10 @@
                 <div class="row preview-img-product">
 
                 </div>
+                <div class="input-group input-group-static mb-4">
+                  <label for="model" class="me-2">Model :</label>
+                  <input type="file" accept="" id="model" name="model"/>
+                </div>
                 <button class="btn btn-primary" type="submit">Add Product</button>
 
               </form>

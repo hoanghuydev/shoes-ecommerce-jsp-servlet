@@ -5,7 +5,6 @@ import com.ltweb_servlet_ecommerce.model.SizeModel;
 import com.ltweb_servlet_ecommerce.service.ISizeService;
 import com.ltweb_servlet_ecommerce.utils.FormUtil;
 import com.ltweb_servlet_ecommerce.utils.NotifyUtil;
-import com.sun.glass.ui.Size;
 
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 

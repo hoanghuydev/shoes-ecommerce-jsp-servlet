@@ -50,7 +50,6 @@ public class ProductSearchAjax extends HttpServlet {
                 subQueryList.add(new SubQuery("name", "like", dataSubQuery));
                 productModelList = productService.findByColumnValues(subQueryList, pageble);
                 objectMapper.writeValue(resp.getOutputStream(), productModelList);
-
             } else {
                 productModelList = productService.findAll(pageble);
                 objectMapper.writeValue(resp.getOutputStream(), productModelList);

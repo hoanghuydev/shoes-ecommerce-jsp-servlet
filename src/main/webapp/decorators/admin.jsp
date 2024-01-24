@@ -26,8 +26,8 @@
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet"/>
     <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
     <title><dec:title default="Admin Nai" /></title>
-    <script src="<c:url value="/packages/node_modules/ffmpeg-old/assets/ffmpeg/package/dist/umd/ffmpeg.js"/>"></script>
-    <script src="<c:url value="/packages/node_modules/ffmpeg-old/assets/util/package/dist/umd/index.js"/> "></script>
+    <script src="<c:url value="/packages/node_modules/@ffmpeg/ffmpeg/dist/umd/ffmpeg.js"/>"></script>
+    <script src="<c:url value="/packages/node_modules/@ffmpeg/util/dist/umd/index.js"/> "></script>
 </head>
 <body class="g-sidenav-show  bg-gray-100">
 <%@ include file="/common/admin/sidebar.jsp" %>

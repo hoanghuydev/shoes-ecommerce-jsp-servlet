@@ -13,10 +13,12 @@
 </head>
 <body>
 <%--Choose img and preview--%>
-    <div class="d-flex justify-content-between p-4" style="background: #f3f3f3; border-radius: 10px;margin-bottom: 15px;max-height: 45vh;overflow-y: auto ">
-        <input type="file" accept="image/*" multiple id="listImageEdit"/>
+    <div id="fileAndPreview" class="d-flex  justify-content-between p-4" style="background: #f3f3f3; border-radius: 10px;margin-bottom: 15px;max-height: 45vh;overflow-y: auto ">
+        <div>
+            <input type="file" accept="image/*" multiple id="listImageEdit"/>
+        </div>
        <div style="min-width: 300px; max-width: 400px;display: flex" >
-           <div id="preview" style="margin: auto">
+           <div id="preview" style="margin: auto;overflow: hidden;">
                <img src="" id="previewImg" width="100%" height="100%"/>
            </div>
        </div>
@@ -106,8 +108,9 @@
             const id = uuidv4();
             const textConfigEditDefault = formatConfigEdit(id,TYPE_TEXT,formatInfoConfig("Text"+id,16,0,0,0));
             $("#listConfigEdit").append(DOMTextConfigEdit(id,textConfigEditDefault.infoConfig));
-            listConfigEdit.push(textConfigEditDefault);
             renderDOMEitPreview(textConfigEditDefault);
+            textConfigEditDefault.infoConfig.height = $("#previewEdit"+id).height();
+            listConfigEdit.push(textConfigEditDefault);
             reloadEventElement();
         })
         $("#addOverlay").click(function () {
@@ -132,7 +135,12 @@
                     if (tmpConfigEdit) {
                         if (name==="content" && tmpConfigEdit.type === TYPE_OVERLAY) {
                             tmpConfigEdit.infoConfig[name] = inputDiv[0].files[0];
-                        } else {
+                        } else if (name==="width" && tmpConfigEdit.type === TYPE_TEXT){
+                            tmpConfigEdit.infoConfig[name] = inputDiv.val();
+                            tmpConfigEdit.infoConfig.height = $("#previewEdit"+id).height();
+                            console.log($("#previewEdit"+id).height())
+                            console.log(tmpConfigEdit);
+                        } else  {
                             tmpConfigEdit.infoConfig[name] = inputDiv.val();
                         }
                         renderDOMEitPreview(tmpConfigEdit);
@@ -187,13 +195,15 @@
                 filter_complex += breakCommand+"["+i+"]overlay="+x +":" +y
             }
             for (let i = 1;i<=listConfigEditText.length;i++) {
-
                 const infoConfigText = listConfigEditText[i-1].infoConfig;
                 const breakCommand = i===1 ? (listConfigEditOverlay.length>0) ? "," : "": "";
                 const x = Math.round(infoConfigText.x * ratioPixel);
                 const y = Math.round(infoConfigText.y * ratioPixel);
                 const fontSize = Math.round(infoConfigText.width * ratioPixel);
-                filter_complex +=breakCommand+ "drawtext=fontfile=" +fontName +":text='" +infoConfigText.content +"':x=" +x +":y=" +(y+fontSize) +":fontsize=" +fontSize;
+                const heightText = Math.round(infoConfigText.height * ratioPixel)
+                console.log(infoConfigText);
+                console.log("HEIGHT : "+heightText);
+                filter_complex +=breakCommand+ "drawtext=fontfile=" +fontName +":text='" +infoConfigText.content +"':x=" +x +":y=" +(y+heightText) +":fontsize=" +fontSize;
             }
             execCommandArr.push(filter_complex);
             execCommandArr.push("tempOutput.png");
@@ -236,7 +246,7 @@
                 `
             } else if (formatConfigEdit.type === TYPE_TEXT) {
                 previewEdit = `
-                    <p  style="position: absolute;top: `+formatConfigEdit.infoConfig.y+`px; left: `+formatConfigEdit.infoConfig.x+`px;font-size: `+formatConfigEdit.infoConfig.width+`px;" id="previewEdit`+formatConfigEdit.id+`" data-id="`+formatConfigEdit.id+`">`+formatConfigEdit.infoConfig.content+`</p>
+                    <p  style="white-space: nowrap;width: fit-content;position: absolute;top: `+formatConfigEdit.infoConfig.y+`px; left: `+formatConfigEdit.infoConfig.x+`px;font-size: `+formatConfigEdit.infoConfig.width+`px;" id="previewEdit`+formatConfigEdit.id+`" data-id="`+formatConfigEdit.id+`">`+formatConfigEdit.infoConfig.content+`</p>
                 `
             }
             previewDiv.append(previewEdit);
@@ -331,7 +341,7 @@
                     console.log("Process : "+progress*100);
                 });
                 await ffmpeg.load({
-                    coreURL: "/packages/node_modules/ffmpeg-old/assets/core/package/dist/umd/ffmpeg-core.js",
+                    coreURL: "/packages/node_modules/@ffmpeg/core/dist/umd/ffmpeg-core.js",
                 });
             }
         }

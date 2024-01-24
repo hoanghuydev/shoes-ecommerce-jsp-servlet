@@ -13,11 +13,9 @@ import java.util.ResourceBundle;
 public class SendMailUtil {
     public static void sendMail(String toEmailAddress,String titleMail,String templateMail) throws MessagingException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("env");
-
         String fromEmail = resourceBundle.getString("EMAIL_ADDRESS");
         String username = resourceBundle.getString("EMAIL_ADDRESS");
         String password = resourceBundle.getString("EMAIL_PASSWORD");
-
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");

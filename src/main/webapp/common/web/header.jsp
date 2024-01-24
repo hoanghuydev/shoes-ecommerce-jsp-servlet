@@ -56,7 +56,7 @@
                 <svg aria-hidden="true" class="pre-logo-svg" focusable="false" viewBox="0 0 24 24" role="img" width="55px" height="55px" fill="none"><path fill="currentColor" fill-rule="evenodd" d="M21 8.719L7.836 14.303C6.74 14.768 5.818 15 5.075 15c-.836 0-1.445-.295-1.819-.884-.485-.76-.273-1.982.559-3.272.494-.754 1.122-1.446 1.734-2.108-.144.234-1.415 2.349-.025 3.345.275.2.666.298 1.147.298.386 0 .829-.063 1.316-.19L21 8.719z" clip-rule="evenodd"></path></svg>
                <div style="display: flex; border-radius: 30px; background-color: #e5e5e5; width: 70%;padding: 5px 10px">
                    <i class="fa-solid fa-magnifying-glass m-2"></i>
-                   <input id="nameProductSearch" placeholder="Search" style="outline: none; border: none;background-color: transparent;width: 100%"/>
+                   <input id="nameProductSearch" placeholder="Enter product name to search" style="outline: none; border: none;background-color: transparent;width: 100%"/>
                </div>
                 <a data-bs-dismiss="modal" aria-label="Close" style="cursor: pointer">Cancel</a>
             </div>
