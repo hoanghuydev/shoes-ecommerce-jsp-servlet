@@ -3,6 +3,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 src/main/resources/
+!**/src/main/webapp/packages/node_modules
 
 ### IntelliJ IDEA ###
 .idea/*
