@@ -47,8 +47,15 @@ To get started with the Web Super Film project, follow these steps:
     ```
     cd shoes-ecommerce-jsp-servlet-jquery
     ```
-3. **Open in Your IDE:**
-   Open the project in your preferred Java IDE.
+3. **Execute SQL File:**
+   Excute file sql in database/shoes_web.sql to create table of project
+4. **Edit Configuration:**
+   Open the src/main/resources/env.properties file and edit it with your specific configuration details.
+   ```
+    sudo vi /src/main/resources/env.properties 
+   ```
+5. **Run Project:**
+   Using tomcat to run project on local server.
 
 ## Usage
 
