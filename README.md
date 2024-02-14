@@ -33,11 +33,11 @@ To get started with the Web Super Film project, follow these steps:
 
 1. **Clone the Repository:**
     ```
-    https://github.com/hoanghuydev/shoes-ecommerce-jsp-servlet.git
+    https://github.com/hoanghuydev/shoes-ecommerce-jsp-servlet-jquery.git
     ```
 2. **Navigate to the Project Directory:**
     ```
-    cd shoes-ecommerce-jsp-servlet
+    cd shoes-ecommerce-jsp-servlet-jquery
     ```
 3. **Open in Your IDE:**
    Open the project in your preferred Java IDE.
