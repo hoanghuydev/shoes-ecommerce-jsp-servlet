@@ -14,13 +14,21 @@ Web Shoes Ecommerce is a Java-based web application that allows users to browse,
 ## Features
 
 **User Authentication:** Secure login and registration functionality.
+
 **Email Communication:** Send emails for various purposes like registration confirmation, password reset, etc.
+
 **Image Editing:** Edit shoe images using FFmpeg for customization.
+
 **Real-time Feedback:** Real-time opinions and reviews using socket communication.
+
 **Shopping Cart:** Manage shopping cart items with both session and database storage.
+
 **Payment Integration:** Support for payment gateways like Momo and VNPay.
+
 **Image Upload:** Utilize Cloudinary for secure image uploads.
+
 **External API Integration**: Use the GHTK API for shipping information.
+
 **CRUD Operations:** Implement CRUD operations for orders, products, users, sizes, etc.
 
 ## Demo
