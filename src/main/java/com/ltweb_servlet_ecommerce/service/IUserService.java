@@ -17,7 +17,12 @@ public interface IUserService {
     UserModel update(UserModel model) throws SQLException;
     UserModel findById(Long id) throws SQLException;
     List<UserModel> findAll(Pageble pageble) throws SQLException;
-    UserModel softDelete(Long id) throws SQLException;
+    boolean softDelete(Long[] ids);
     Map<String,Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException;
 
+    boolean changePassword(long userId, String password);
+
+    List<UserModel> getListAdmin();
+    boolean validateString(String input);
+    int getUserCount();
 }

@@ -24,7 +24,7 @@ import java.util.Map;
 public class CategoryDAO extends AbstractDAO<CategoryModel> implements ICategoryDAO {
     @Override
     public List<CategoryModel> findAllWithFilter(CategoryModel model, Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM category WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM categories WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new CategoryMapper().mapSQLAndParams(sqlStrBuilder,model,"select",pageble);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -33,14 +33,14 @@ public class CategoryDAO extends AbstractDAO<CategoryModel> implements ICategory
     }
     @Override
     public List<CategoryModel> findAll(Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM category");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM categories where isDeleted = 0 ");
         SqlPagebleUtil.addSQlPageble(sqlStrBuilder,pageble);
         return query(sqlStrBuilder.toString(),new CategoryMapper(),null, CategoryModel.class);
     }
 
     @Override
     public CategoryModel findById(Long id) throws SQLException {
-        String sql = "select * from category where id=?";
+        String sql = "select * from categories where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         List<CategoryModel> result =  query(sql,new CategoryMapper(),params,CategoryModel.class);
@@ -48,7 +48,7 @@ public class CategoryDAO extends AbstractDAO<CategoryModel> implements ICategory
     }
     @Override
     public CategoryModel findWithFilter(CategoryModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM category WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM categories WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new CategoryMapper().mapSQLAndParams(sqlStrBuilder,model,"select",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -58,14 +58,14 @@ public class CategoryDAO extends AbstractDAO<CategoryModel> implements ICategory
 
     @Override
     public List<CategoryModel> findByColumnValues(List<SubQuery> subQueryList,Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM category WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM categories WHERE 1=1 ");
         List<CategoryModel> result = queryWithSubQuery(sqlStrBuilder,new CategoryMapper(),subQueryList,"in",CategoryModel.class,pageble);
         return result;
     }
 
     @Override
     public Long save(CategoryModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO category SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO categories SET ");
         MapSQLAndParamsResult sqlAndParams = new CategoryMapper().mapSQLAndParams(sqlStrBuilder,model,"insert",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -74,7 +74,7 @@ public class CategoryDAO extends AbstractDAO<CategoryModel> implements ICategory
 
     @Override
     public void update(CategoryModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE category SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE categories SET ");
         MapSQLAndParamsResult sqlAndParams = new CategoryMapper().mapSQLAndParams(sqlStrBuilder,model,"update",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -83,7 +83,7 @@ public class CategoryDAO extends AbstractDAO<CategoryModel> implements ICategory
 
     @Override
     public void delete(Long id) throws SQLException {
-        String sql = "delete from category where id=?";
+        String sql = "delete from categories where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         delete(sql,params);

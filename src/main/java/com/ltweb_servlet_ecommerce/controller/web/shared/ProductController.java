@@ -1,5 +1,6 @@
 package com.ltweb_servlet_ecommerce.controller.web.shared;
 
+import com.google.gson.Gson;
 import com.ltweb_servlet_ecommerce.constant.SystemConstant;
 import com.ltweb_servlet_ecommerce.model.*;
 import com.ltweb_servlet_ecommerce.paging.PageRequest;
@@ -56,13 +57,17 @@ public class ProductController extends HttpServlet {
                 ProductSizeModel productSizeModel = new ProductSizeModel();
                 productSizeModel.setProductId(productModel.getId());
                 List<ProductSizeModel> productSizeModelList = productSizeService.findAllWithFilter(productSizeModel,null);
+                Gson gson = new Gson();
+                String jsonList = gson.toJson(productSizeModelList);
+                req.setAttribute("LIST_PRODUCT_SIZE", jsonList);
                 List<Object> listSizeId = new ArrayList<>();
                 for (ProductSizeModel productSizeModel1 : productSizeModelList) {
                     listSizeId.add(productSizeModel1.getSizeId());
                 }
                 List<SubQuery> subQueryList = new ArrayList<>();
                 subQueryList.add(new SubQuery("id","in",listSizeId));
-                List<SizeModel> sizeModelList = sizeService.findByColumnValues(subQueryList,null);
+                Pageble pagebleSizename = new PageRequest(1,8,new Sorter("name", "asc"));
+                List<SizeModel> sizeModelList = sizeService.findByColumnValues(subQueryList,pagebleSizename);
                 req.setAttribute("LIST_SIZE",sizeModelList);
 //                Get recommned product
                 ProductModel recommnedProductModel = new ProductModel();

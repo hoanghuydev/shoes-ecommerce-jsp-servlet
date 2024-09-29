@@ -10,7 +10,7 @@
 
 <html>
 <head>
-    <title>Nai - Vertify Email</title>
+    <title>Nai - Xác thực email</title>
 </head>
 <body>
 <section class="vh-100 d-flex">
@@ -20,8 +20,8 @@
             <div class="row gx-lg-5 align-items-center">
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <h1 class="my-5 display-3 fw-bold ls-tight">
-                        The best shoes <br />
-                        <span class="text-primary">for your outfit</span>
+                        Đôi giày tốt nhất <br />
+                        <span class="text-primary">cho phong cách của bạn</span>
                     </h1>
                     <p style="color: hsl(217, 10%, 50.8%)">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -39,10 +39,10 @@
 
                                 <div class="form-outline mb-4">
                                     <input type="number" id="otp" class="form-control" name="otp"/>
-                                    <label class="form-label" for="otp">OTP</label>
+                                    <label class="form-label" for="otp">Mã OTP</label>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-block mb-4">
-                                    Vertify
+                                    Xác thực
                                 </button>
                             </form>
                         </div>

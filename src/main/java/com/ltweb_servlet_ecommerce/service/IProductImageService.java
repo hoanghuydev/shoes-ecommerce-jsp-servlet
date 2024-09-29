@@ -20,4 +20,5 @@ public interface IProductImageService {
     List<ProductImageModel> findAll(Pageble pageble) throws SQLException;
     ProductImageModel softDelete(Long id) throws SQLException;
     Map<String,Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException;
+    void saveAll(List<ProductImageModel> imageModels);
 }

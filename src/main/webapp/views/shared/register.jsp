@@ -9,7 +9,7 @@
 <%@include file="/common/taglib.jsp" %>
 <html>
 <head>
-    <title>Nai - Sign Up</title>
+    <title>Nai - Đăng ký</title>
 </head>
 <body>
 <!-- Section: Design Block -->
@@ -20,8 +20,8 @@
             <div class="row gx-lg-5 align-items-center">
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <h1 class="my-5 display-3 fw-bold ls-tight">
-                        The best shoes <br />
-                        <span class="text-primary">for your outfit</span>
+                        Đôi giày tốt nhất <br />
+                        <span class="text-primary">cho phong cách của bạn</span>
                     </h1>
                     <p style="color: hsl(217, 10%, 50.8%)">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -38,41 +38,47 @@
                                 <!-- 2 column grid layout with text inputs for the first and last names -->
                                 <div class="form-outline mb-4">
                                     <input type="text" id="fullName" class="form-control" name="fullName"/>
-                                    <label class="form-label" for="fullName">Full name</label>
+                                    <label class="form-label" for="fullName">Họ và tên</label>
                                 </div>
                                 <div class="form-outline mb-4">
                                     <input type="text" id="userName" class="form-control" name="userName"/>
-                                    <label class="form-label" for="userName">User name</label>
+                                    <label class="form-label" for="userName">Tên đăng nhập</label>
                                 </div>
 
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
                                     <input type="email" id="email" name="email" class="form-control" />
-                                    <label class="form-label" for="email">Email address</label>
+                                    <label class="form-label" for="email">Email</label>
                                 </div>
 
                                 <!-- Password input -->
                                 <div class="form-outline mb-4">
                                     <input type="password" id="password" name="password" class="form-control" />
-                                    <label class="form-label" for="password">Password</label>
+                                    <label class="form-label" for="password">Mật khẩu</label>
+                                </div>
+
+                                <!-- Re-Password input -->
+                                <div class="form-outline mb-4">
+                                    <input type="password" id="repassword" name="repassword" class="form-control" />
+                                    <label class="form-label" for="password">Nhập Lại Mật khẩu</label>
                                 </div>
 
                                 <!-- Checkbox -->
                                 <div class="form-check d-flex justify-content-center mb-4">
                                     <input class="form-check-input me-2" type="checkbox" value="" name="subcribeNewLetter" id="form2Example33" checked />
                                     <label class="form-check-label" for="form2Example33">
-                                        I have read the terms of use and agree
+                                        Tôi đã đọc và đồng ý với các điều khoản
                                     </label>
                                 </div>
                                 <input type="hidden" value="register" name="action">
                                 <!-- Submit button -->
                                 <button type="submit" class="btn btn-primary btn-block mb-4">
-                                    Sign up
+                                    Đăng ký
                                 </button>
 
                                 <!-- Register buttons -->
                                 <div class="text-center">
-                                    <p>or sign up with:</p>
+                                    <p>hoặc đăng ký với:</p>
                                     <button type="button" class="btn btn-link btn-floating mx-1">
                                         <i class="fab fa-facebook-f"></i>
                                     </button>

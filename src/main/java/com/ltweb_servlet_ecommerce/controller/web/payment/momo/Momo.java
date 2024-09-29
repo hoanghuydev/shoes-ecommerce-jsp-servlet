@@ -104,7 +104,7 @@ public class Momo extends HttpServlet {
         String partnerCode = "MOMO";
 
         String requestType = "payWithATM";
-        int amountInt = (int) (order.getTotalAmount()*23000);
+        int amountInt = (int) (order.getTotalAmount()*1);
         String amount = amountInt +"";
         String data =
                 "accessKey=" +

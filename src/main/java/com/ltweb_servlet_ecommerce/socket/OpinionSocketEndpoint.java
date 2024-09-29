@@ -1,5 +1,6 @@
 package com.ltweb_servlet_ecommerce.socket;
 
+import com.ltweb_servlet_ecommerce.constant.SystemConstant;
 import com.ltweb_servlet_ecommerce.dao.IOpinionDAO;
 import com.ltweb_servlet_ecommerce.dao.IUserDAO;
 import com.ltweb_servlet_ecommerce.dao.impl.OpinionDAO;
@@ -33,11 +34,15 @@ public class OpinionSocketEndpoint {
     static Map<String, Set<Session>> room = new HashMap<>();
     @OnOpen
     public void onOpen(Session userSession,  @PathParam("productId") String productId, EndpointConfig config ) {
-        System.out.println("Connect to product "+productId);
+        if (Integer.parseInt(productId)==0) {
+            System.out.println("Connect to admin page ");
+        } else {
+            System.out.println("Connect to product "+productId);
+        }
         UserModel userModel = (UserModel) config.getUserProperties().get(UserModel.class.getName());
         if (userModel!=null) {
             userSession.getUserProperties().put("userId", userModel.getId());
-            userSession.getUserProperties().put("admin", userModel.getAdmin());
+            userSession.getUserProperties().put(SystemConstant.ADMIN_ROLE, userModel.getAdmin());
         }
         if (room.containsKey(productId)) {
             room.get(productId).add(userSession);
@@ -50,7 +55,7 @@ public class OpinionSocketEndpoint {
     public void onMessage(OpinionModel inOpinionModelMsg, Session userSession, @PathParam("productId") String productId) throws SQLException {
         OpinionModel outOpinionModelMsg = new OpinionModel();
         Long userId = (Long) userSession.getUserProperties().get("userId");
-        boolean admin =  (boolean) userSession.getUserProperties().get("admin");
+        boolean admin =  (boolean) userSession.getUserProperties().get(SystemConstant.ADMIN_ROLE);
         IOpinionDAO opinionDAO = new OpinionDAO();
         if (userId!=null) {
             IUserDAO userDAO = new UserDAO();
@@ -89,7 +94,7 @@ public class OpinionSocketEndpoint {
         Set<Session> sessions = room.get("0");
         if (sessions != null) {
             for (Session session : sessions) {
-                if (session.isOpen()  && (boolean) session.getUserProperties().get("admin")) {
+                if (session.isOpen()  && (boolean) session.getUserProperties().get(SystemConstant.ADMIN_ROLE)) {
                     try {
                         session.getBasicRemote().sendObject(opinionModelMsg);
                     } catch (IOException e) {

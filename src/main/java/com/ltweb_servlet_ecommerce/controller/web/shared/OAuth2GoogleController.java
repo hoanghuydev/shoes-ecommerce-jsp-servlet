@@ -1,5 +1,6 @@
 package com.ltweb_servlet_ecommerce.controller.web.shared;
 
+import com.ltweb_servlet_ecommerce.constant.SystemConstant;
 import com.ltweb_servlet_ecommerce.model.UserModel;
 import com.ltweb_servlet_ecommerce.service.ICartService;
 import com.ltweb_servlet_ecommerce.service.IOrderDetailsService;
@@ -81,18 +82,20 @@ public class OAuth2GoogleController extends HttpServlet {
        if (tmpUser==null) {
 //       If not exist user then register new user
            userModel = userService.save(userModel);
-           SessionUtil.getInstance().putValue(req,"USER_MODEL",userModel);
+           SessionUtil.getInstance().putValue(req, SystemConstant.USER_MODEL,userModel);
            CartUtil.setCartFromSessionForUser(SessionUtil.getInstance(),req,orderDetailsService,cartService,tmpUser.getId());
            resp.sendRedirect(req.getContextPath()+"/home?message=welcome&toast=success");
        } else if (tmpUser!=null && tmpUser.getAssociation().equals("google")) {
 //           If have user then login
-           UserModel updateUserLogged = tmpUser;
-           updateUserLogged.setLastLogged(new Timestamp(System.currentTimeMillis()));
-           updateUserLogged.setId(tmpUser.getId());
-           tmpUser = userService.update(updateUserLogged);
-           SessionUtil.getInstance().putValue(req,"USER_MODEL",tmpUser);
+           tmpUser.setLastLogged(new Timestamp(System.currentTimeMillis()));
+           tmpUser.setId(tmpUser.getId());
+           tmpUser = userService.update(tmpUser);
+           SessionUtil.getInstance().putValue(req, SystemConstant.USER_MODEL, tmpUser);
            CartUtil.setCartFromSessionForUser(SessionUtil.getInstance(),req,orderDetailsService,cartService,tmpUser.getId());
-           resp.sendRedirect(req.getContextPath()+"/home");
+           if (tmpUser.getRole().getValue().equalsIgnoreCase(SystemConstant.ADMIN_ROLE) || tmpUser.getRole().getValue().equalsIgnoreCase(SystemConstant.MODERATOR_ROLE))
+               resp.sendRedirect(req.getContextPath() + "/admin/home");
+           else
+               resp.sendRedirect(req.getContextPath() + "/home");
        } else if (tmpUser!=null && !tmpUser.getAssociation().equals("google")) {
            resp.sendRedirect(req.getContextPath()+req.getRequestURI()+"?message=exist_user&toast=danger");
        }

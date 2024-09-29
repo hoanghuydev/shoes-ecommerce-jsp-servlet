@@ -680,6 +680,10 @@ a {
 .allImageProduct {
   display: flex;
   flex-direction: row-reverse;
+  height: fit-content;
+  position: sticky;
+  top: 84px;
+
 }
 .mainDivImageProduct , .otherImageProduct{
   margin: 0;
@@ -690,6 +694,8 @@ a {
 }
 @media (max-width: 991px) {
   .allImageProduct {
+    position: relative;
+    top: unset;
     display: flex;
     flex-direction: column;
   }

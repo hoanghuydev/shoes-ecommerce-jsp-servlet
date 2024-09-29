@@ -13,6 +13,7 @@ import com.ltweb_servlet_ecommerce.model.ProductSizeModel;
 import com.ltweb_servlet_ecommerce.service.*;
 import com.ltweb_servlet_ecommerce.utils.FormUtil;
 import com.ltweb_servlet_ecommerce.utils.NotifyUtil;
+import com.ltweb_servlet_ecommerce.validate.Validator;
 import org.apache.commons.io.IOUtils;
 
 import java.io.FileInputStream;
@@ -65,6 +66,18 @@ public class ProductListController  extends HttpServlet {
         String base64Url = "data:" + filePart.getContentType() + ";base64," + encoded;
         return base64Url;
     }
+    private boolean validateAddProduct(ProductModel product,String... others) {
+        if (!Validator.isNotNullOrEmpty(product.getName())
+        || !Validator.isNotNullOrEmpty(product.getContent())
+        || !Validator.isNotNullOrEmpty(product.getShortDescription())
+        || product.getPrice()==null || product.getPrice() == 0
+        || product.getCategoryId()==null || product.getCategoryId() == 0
+        ) return false;
+        for (String other : others) {
+            if (!Validator.isNotNullOrEmpty(other)) return false;
+        }
+        return true;
+    }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
@@ -74,19 +87,28 @@ public class ProductListController  extends HttpServlet {
         ));
         cloudinary.config.secure = true;
         try {
+
             ProductModel productModel = FormUtil.toModel(ProductModel.class,req);
             Part thumbnailPart = req.getPart("thumbnailProduct");
             String thumbnailProduct = encodeFileToBase64(thumbnailPart);
+            if (validateAddProduct(productModel,thumbnailProduct)) {
+                resp.sendRedirect("/admin/product/list?message=field_is_blank&toast=danger");
+                return;
+            }
             Map<String, Object> uploadThumbnail = cloudinary.uploader().upload(thumbnailProduct, ObjectUtils.emptyMap());
             String thumbnailProductUrl = (String) uploadThumbnail.get("url");
             productModel.setThumbnail(thumbnailProductUrl);
             productModel = productService.save(productModel);
             if (productModel!=null) {
                 String[] sizesId = req.getParameterValues("sizeId[]");
-                for (String sizeId : sizesId) {
+                String[] listSizePrice = req.getParameterValues("sizePrice[]");
+                for (int i = 0; i < sizesId.length; i++) {
+                    String sizeId = sizesId[i];
+                    String price = listSizePrice[i];
                     ProductSizeModel productSizeModel = new ProductSizeModel();
                     productSizeModel.setProductId(productModel.getId());
                     productSizeModel.setSizeId(Long.parseLong(sizeId));
+                    productSizeModel.setPrice(Double.parseDouble(price));
                     productSizeModel = productSizeService.save(productSizeModel);
                     if (productSizeModel==null) {
                         resp.sendRedirect("/admin/product/list?message=error&toast=danger");
@@ -109,7 +131,7 @@ public class ProductListController  extends HttpServlet {
                         }
                     } else if (part.getName().equals("model")) {
                         if (part!=null) {
-                            productModel.setModelUrl(uploadFileToFirebase(part));
+                            productModel.setModelUrl("");
                             productModel = productService.update(productModel);
                         }
                     }
@@ -119,6 +141,7 @@ public class ProductListController  extends HttpServlet {
                 resp.sendRedirect("/admin/product/list?message=error&toast=danger");
             }
         } catch ( Exception e) {
+            System.out.println(e.getMessage());
             resp.sendRedirect("/admin/product/list?message=error&toast=danger");
         }
     }

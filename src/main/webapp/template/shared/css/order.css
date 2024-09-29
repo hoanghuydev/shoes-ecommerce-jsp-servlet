@@ -92,7 +92,8 @@ body{
 #progressbar li {
     list-style-type: none;
     font-size: x-small;
-    width: 25%;
+    width: 33.3333%;
+    /*width: 25%;*/
     float: left;
     position: relative;
     font-weight: 400;
@@ -160,7 +161,8 @@ body{
     padding: 0 8%;
 }
 #progressbar li:nth-child(2):after {
-    margin-right: auto;
+    margin: auto;
+    /*margin-right: auto;*/
 }
 
 #progressbar li:nth-child(1):after {
@@ -169,7 +171,7 @@ body{
 
 #progressbar li:nth-child(3):after {
     float: left;
-    width: 68%;
+    /*width: 68%;*/
 }
 #progressbar li:nth-child(4):after {
     margin-left: auto;

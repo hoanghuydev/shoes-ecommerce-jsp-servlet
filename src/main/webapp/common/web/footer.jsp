@@ -1,4 +1,4 @@
-
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <footer class="footer-section" style="margin-top: 160px">
     <div class="container relative">
@@ -10,14 +10,14 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="subscription-form">
-                    <h3 class="d-flex align-items-center"><span class="me-1"><img src="/template/web/images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+                    <h3 class="d-flex align-items-center"><span class="me-1"><img src="/template/web/images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Đăng ký để nhận tin tức</span></h3>
 
                     <form action="#" class="row g-3">
                         <div class="col-auto">
-                            <input type="text" class="form-control" placeholder="Enter your name">
+                            <input type="text" class="form-control" placeholder="Nhập tên">
                         </div>
                         <div class="col-auto">
-                            <input type="email" class="form-control" placeholder="Enter your email">
+                            <input type="email" class="form-control" placeholder="Nhập email">
                         </div>
                         <div class="col-auto">
                             <button class="btn btn-primary">
@@ -47,37 +47,37 @@
                 <div class="row links-wrap">
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a href="/about">About us</a></li>
-                            <li><a href="#">Services</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Contact us</a></li>
+                            <li><a href="/about">Giới thiệu</a></li>
+                            <li><a href="#">Dịch vụ</a></li>vụ
+                            <li><a href="#">Bài viết</a></li>
+                            <li><a href="#">Liên hệ</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a href="#">Support</a></li>
-                            <li><a href="#">Knowledge base</a></li>
-                            <li><a href="#">Live chat</a></li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Kiến thức nền tảng</a></li>
+                            <li><a href="#">Trò chuyện trực tuyến</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a href="#">Jobs</a></li>
-                            <li><a href="#">Our team</a></li>
-                            <li><a href="#">Leadership</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Công việc</a></li>
+                            <li><a href="#">Nhóm chúng tôi</a></li>
+<%--                            <li><a href="#">Leadership</a></li>--%>
+                            <li><a href="#">Chính sách bảo mật</a></li>
                         </ul>
                     </div>
 
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
-                            <li><a href="#">Nordic Chair</a></li>
-                            <li><a href="#">Kruzo Aero</a></li>
-                            <li><a href="#">Ergonomic Chair</a></li>
-                        </ul>
-                    </div>
+<%--                    <div class="col-6 col-sm-6 col-md-3">--%>
+<%--                        <ul class="list-unstyled">--%>
+<%--                            <li><a href="#">Nordic Chair</a></li>--%>
+<%--                            <li><a href="#">Kruzo Aero</a></li>--%>
+<%--                            <li><a href="#">Ergonomic Chair</a></li>--%>
+<%--                        </ul>--%>
+<%--                    </div>--%>
                 </div>
             </div>
 

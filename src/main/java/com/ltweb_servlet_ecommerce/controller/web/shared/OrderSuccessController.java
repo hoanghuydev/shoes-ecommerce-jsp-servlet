@@ -49,7 +49,11 @@ public class OrderSuccessController extends HttpServlet {
             order.setSlug(orderSlug);
             order = orderService.findWithFilter(order);
             if (order!=null) {
-                resp.sendRedirect("/payment/"+req.getParameter("payment")+"/"+orderSlug);
+                String paymentMethod = req.getParameter("payment");
+                if (!paymentMethod.equals("cod"))
+                    resp.sendRedirect("/payment/"+req.getParameter("payment")+"/"+orderSlug);
+                else
+                    resp.sendRedirect("/order-details/"+orderSlug);
             } else {
                 resp.sendRedirect("/error/404");
             }

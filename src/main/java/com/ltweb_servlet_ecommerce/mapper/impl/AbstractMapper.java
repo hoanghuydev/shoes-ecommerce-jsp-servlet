@@ -28,8 +28,13 @@ public class AbstractMapper<T> implements GenericMapper<T> {
             field.setAccessible(true);
             try {
                 Object value = field.get(model);
-                if (value != null) {
+                if ((value != null && !value.equals(0)) ) {
                     if (typeSQL.toLowerCase().equals("update") || typeSQL.toLowerCase().equals("insert")) {
+
+                        if (field.getName().equals("totalPrice")) {
+                            continue;
+                        }
+
                         sqlBuilder.append(field.getName()).append(" = ?, ");
                         params.add(value);
                     } else if (typeSQL.toLowerCase().equals("select")) {
@@ -37,7 +42,6 @@ public class AbstractMapper<T> implements GenericMapper<T> {
                         params.add(value);
                     }
                     // Append the field name and placeholder to the SQL statement
-
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

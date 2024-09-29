@@ -21,15 +21,15 @@
             </svg>
         </div>
         <div class="text-center">
-            <h1>Your order is succes!</h1>
-            <p>Order Code : ${orderSlug}</p>
-            <p>The order has been placed, thank you for trusting us. Your order will be delivered as soon as possible. You can save your order path to easily track order progress or log in to record your order history </p>
-            <a href="/order-details/${orderSlug}" class="btn btn-primary">View order details</a>
-            <p class="mt-2">or pay your order online</p>
+            <h1>Đơn hàng của bạn đã thành công!</h1>
+            <p>Mã đặt hàng : ${orderSlug}</p>
+            <p>Đơn hàng đã được đặt, cảm ơn bạn đã tin tưởng chúng tôi. Đơn hàng của bạn sẽ được giao trong thời gian sớm nhất. Bạn có thể lưu đường dẫn đặt hàng để dễ dàng theo dõi tiến trình đặt hàng hoặc đăng nhập để ghi lại lịch sử đơn hàng. </p>
+            <a href="/order-details/${orderSlug}" class="btn btn-primary">xem chi tiết đơn hàng</a>
+            <p class="mt-2">hoặc thanh toán đơn hàng trực tuyến</p>
             <div class="text-center">
                 <form method="POST" class="text-center">
                     <div class="accordion accordion-flush mb-4" id="accordionFlushExampleX0">
-                        <h5 class="mt-1">Payment method</h5>
+                        <h5 class="mt-1">Phương thức thanh toán</h5>
                         <select class="form-select selectpicker"  data-live-search="true" aria-label="Select payment method" is="ms-dropdown" name="payment">
                             <option value="cod" selected data-image="/template/shared/images/cod.png" data-description="Pay at your doorstep...">COD</option>
                             <option value="paypal" data-image="/template/shared/images/logoPaypal.png" data-description="Pay and get paid...">PayPal</option>
@@ -37,10 +37,10 @@
                             <option value="momo" data-image="/template/shared/images/logoMomo.svg" data-description="Pay fast, get cutes gifts...">Momo</option>
                             <option value="vnpay" data-image="/template/shared/images/logoVnpay.png" data-description="All you need...">VnPay</option>
                         </select>
-                        <p>The default payment method will be cod, if you want to pay online, choose the method you want</p>
+                        <p>Phương thức thanh toán mặc định sẽ là cod, nếu bạn muốn thanh toán trực tuyến thì hãy chọn phương thức bạn muốn</p>
                         <input type="hidden" value="${orderSlug}" name="orderSlug"/>
                     </div>
-                    <button class="btn btn-primary btn-sm">Pay</button>
+                    <button class="btn btn-primary btn-sm">Thanh toán</button>
                 </form>
 
             </div>

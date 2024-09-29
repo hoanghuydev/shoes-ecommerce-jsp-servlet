@@ -17,16 +17,15 @@ public class FormUtil {
         Map<String, String[]> paramMap = escapeParameterMap(request.getParameterMap());
         T object = tClass.newInstance();
         Map<String, String[]> resultMap = new HashMap<>();
-        try {
-            for (Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                String paramName = entry.getKey();
-                String[] paramValue = entry.getValue();
-
-                // Check if the class has a property with the same name
-                if (PropertyUtils.isWriteable(object, paramName)) {
-                    resultMap.put(paramName, paramValue);
-                }
+        for (Map.Entry<String, String[]> entry : paramMap.entrySet()) {
+            String paramName = entry.getKey();
+            String[] paramValue = entry.getValue();
+            // Check if the class has a property with the same name
+            if (PropertyUtils.isWriteable(object, paramName) && !paramName.endsWith("[]")) {
+                resultMap.put(paramName, paramValue);
             }
+        }
+        try {
             BeanUtils.populate(object, resultMap);
         } catch (Exception e) {
             // Handle exceptions if needed

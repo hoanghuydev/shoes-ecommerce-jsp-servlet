@@ -1,6 +1,8 @@
 package com.ltweb_servlet_ecommerce.dao;
 
+import com.ltweb_servlet_ecommerce.model.ProductModel;
 import com.ltweb_servlet_ecommerce.model.ProductSizeModel;
+import com.ltweb_servlet_ecommerce.model.SizeModel;
 import com.ltweb_servlet_ecommerce.paging.Pageble;
 import com.ltweb_servlet_ecommerce.subquery.SubQuery;
 
@@ -18,4 +20,10 @@ public interface IProductSizeDAO {
     void update(ProductSizeModel model) throws SQLException;
     void delete(Long id) throws SQLException;
     Map<String,Object> findWithCustomSQL(String sql,List<Object> params) throws SQLException;
+
+    int getAvailableProducts(Long productSizeId);
+
+    ProductSizeModel findByProductId(Long productId) throws SQLException;
+
+    void deleteByProductId(Long id);
 }

@@ -18,4 +18,7 @@ public interface ISizeDAO {
     void update(SizeModel model) throws SQLException;
     void delete(Long id) throws SQLException;
     Map<String,Object> findWithCustomSQL(String sql,List<Object> params) throws SQLException;
+
+    Map<Long, SizeModel> findSizesByProductSizeIds(List<Long> productSizeIds);
+
 }

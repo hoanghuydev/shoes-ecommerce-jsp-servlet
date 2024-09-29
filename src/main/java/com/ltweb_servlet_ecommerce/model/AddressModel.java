@@ -2,7 +2,7 @@ package com.ltweb_servlet_ecommerce.model;
 
 public class AddressModel extends AbstractModel<AddressModel>{
     private String fullName;
-    private Integer phoneNumber;
+    private String phoneNumber;
     private String  province;
     private String district;
     private String commune;
@@ -16,11 +16,11 @@ public class AddressModel extends AbstractModel<AddressModel>{
         this.fullName = fullName;
     }
 
-    public Integer getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Integer phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

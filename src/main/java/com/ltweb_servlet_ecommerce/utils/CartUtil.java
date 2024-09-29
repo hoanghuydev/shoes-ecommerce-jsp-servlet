@@ -27,12 +27,15 @@ public class CartUtil {
     public void setListProductFromOrderDetails(List<ProductModel> productModelList, OrderDetailsModel orderDetailsModel,IProductSizeService productSizeService,IProductService productService,ISizeService sizeService) throws SQLException {
         ProductSizeModel productSizeModel = productSizeService.findById(orderDetailsModel.getProductSizeId());
         SizeModel sizeModel = sizeService.findById(productSizeModel.getSizeId());
-        ProductModel productModel = new ProductModel();
-        productModel = productService.findById(productSizeModel.getProductId());
+        ProductModel productModel = productService.findById(productSizeModel.getProductId());
         productModel.setQuantity(orderDetailsModel.getQuantity());
+        productModel.setAvailable(productSizeService.getAvailableProducts(orderDetailsModel.getProductSizeId()));
         productModel.setSizeName(sizeModel.getName());
         productModel.setSizeId(sizeModel.getId());
         productModel.setSubTotal(orderDetailsModel.getSubTotal());
+        productModel.setPrice(productSizeModel.getPrice());
+        productModel.setProductSizeId(productSizeModel.getId());
+        productModel.setAvailable(productSizeService.getAvailableProducts(productSizeModel.getId()));
         productModelList.add(productModel);
     }
 }

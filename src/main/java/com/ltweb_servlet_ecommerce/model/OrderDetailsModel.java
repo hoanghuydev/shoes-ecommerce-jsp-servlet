@@ -4,8 +4,7 @@ public class OrderDetailsModel extends AbstractModel<OrderDetailsModel>{
     private Integer quantity;
     private Double subTotal;
     private Long orderId;
-
-
+    private Long productSizeId;
     public Integer getQuantity() {
         return quantity;
     }
@@ -38,6 +37,6 @@ public class OrderDetailsModel extends AbstractModel<OrderDetailsModel>{
         this.productSizeId = productSizeId;
     }
 
-    private Long productSizeId;
+
 
 }

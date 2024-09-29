@@ -40,6 +40,17 @@ public class ProductImageService implements IProductImageService {
     }
 
     @Override
+    public void saveAll(List<ProductImageModel> imageModels) {
+        imageModels.forEach(model -> {
+            try {
+                productImageDAO.save(model);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
+    }
+
+    @Override
     public ProductImageModel update(ProductImageModel model) throws SQLException {
         ProductImageModel oldModel = productImageDAO.findById(model.getId());
         model.setUpdateAt(new Timestamp(System.currentTimeMillis()));

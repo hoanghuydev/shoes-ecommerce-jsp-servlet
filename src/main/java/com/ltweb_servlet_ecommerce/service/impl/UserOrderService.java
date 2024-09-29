@@ -1,10 +1,14 @@
 package com.ltweb_servlet_ecommerce.service.impl;
 
+import com.ltweb_servlet_ecommerce.constant.SystemConstant;
 import com.ltweb_servlet_ecommerce.dao.IUserOrderDAO;
+import com.ltweb_servlet_ecommerce.log.LoggerHelper;
 import com.ltweb_servlet_ecommerce.model.UserOrderModel;
 import com.ltweb_servlet_ecommerce.paging.Pageble;
 import com.ltweb_servlet_ecommerce.service.IUserOrderService;
 import com.ltweb_servlet_ecommerce.subquery.SubQuery;
+import com.ltweb_servlet_ecommerce.utils.RuntimeInfo;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import java.sql.SQLException;
@@ -18,7 +22,7 @@ public class UserOrderService implements IUserOrderService {
 
     @Override
     public List<UserOrderModel> findAllWithFilter(UserOrderModel model, Pageble pageble) throws SQLException {
-        return userDAO.findAllWithFilter(model,pageble);
+        return userDAO.findAllWithFilter(model, pageble);
     }
 
     @Override
@@ -28,11 +32,12 @@ public class UserOrderService implements IUserOrderService {
 
     @Override
     public List<UserOrderModel> findByColumnValues(List<SubQuery> subQueryList, Pageble pageble) throws SQLException {
-        return userDAO.findByColumnValues(subQueryList,pageble);
+        return userDAO.findByColumnValues(subQueryList, pageble);
     }
+
     @Override
-    public Map<String,Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException {
-        return userDAO.findWithCustomSQL(sql,params);
+    public Map<String, Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException {
+        return userDAO.findWithCustomSQL(sql, params);
     }
 
     @Override
@@ -72,6 +77,16 @@ public class UserOrderService implements IUserOrderService {
     @Override
     public UserOrderModel save(UserOrderModel model) throws SQLException {
         Long productId = userDAO.save(model);
-        return userDAO.findById(productId);
+        UserOrderModel result = userDAO.findById(productId);
+
+        //logging
+        String status = String.format("Saved userOrder %s", result != null ? "successfully" : "failed");
+        JSONObject value = new JSONObject().put(SystemConstant.STATUS_LOG, status)
+                .put(SystemConstant.VALUE_LOG, result != null ? new JSONObject(result) : new JSONObject());
+
+        LoggerHelper.log(result != null ? SystemConstant.WARN_LEVEL : SystemConstant.ERROR_LEVEL,
+                "INSERT", RuntimeInfo.getCallerClassNameAndLineNumber(), value);
+
+        return result;
     }
 }

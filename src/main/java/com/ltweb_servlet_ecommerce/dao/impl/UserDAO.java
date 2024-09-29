@@ -22,7 +22,7 @@ import java.util.Map;
 public class UserDAO extends AbstractDAO<UserModel> implements IUserDAO {
     @Override
     public List<UserModel> findAllWithFilter(UserModel model,Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM `user` WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM `users` WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new UserMapper().mapSQLAndParams(sqlStrBuilder,model,"select",pageble);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -31,14 +31,14 @@ public class UserDAO extends AbstractDAO<UserModel> implements IUserDAO {
     }
     @Override
     public List<UserModel> findAll(Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM `user`");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM `users` WHERE isDeleted=0 ");
         SqlPagebleUtil.addSQlPageble(sqlStrBuilder,pageble);
         return query(sqlStrBuilder.toString(),new UserMapper(),null, UserModel.class);
     }
 
     @Override
     public UserModel findById(Long id) throws SQLException {
-        String sql = "select * from `user` where id=?";
+        String sql = "select * from `users` where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         List<UserModel> result =  query(sql,new UserMapper(),params,UserModel.class);
@@ -46,7 +46,7 @@ public class UserDAO extends AbstractDAO<UserModel> implements IUserDAO {
     }
     @Override
     public UserModel findWithFilter(UserModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM `user` WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM `users` WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new UserMapper().mapSQLAndParams(sqlStrBuilder,model,"select",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -56,14 +56,14 @@ public class UserDAO extends AbstractDAO<UserModel> implements IUserDAO {
 
     @Override
     public List<UserModel> findByColumnValues(List<SubQuery> subQueryList,Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM `user` WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM `users` WHERE 1=1 ");
         List<UserModel> result = queryWithSubQuery(sqlStrBuilder,new UserMapper(),subQueryList,"in",UserModel.class,pageble);
         return result;
     }
 
     @Override
     public Long save(UserModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO `user` SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO `users` SET ");
         MapSQLAndParamsResult sqlAndParams = new UserMapper().mapSQLAndParams(sqlStrBuilder,model,"insert",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -72,7 +72,7 @@ public class UserDAO extends AbstractDAO<UserModel> implements IUserDAO {
 
     @Override
     public void update(UserModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE `user` SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE `users` SET ");
         MapSQLAndParamsResult sqlAndParams = new UserMapper().mapSQLAndParams(sqlStrBuilder,model,"update",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -81,7 +81,7 @@ public class UserDAO extends AbstractDAO<UserModel> implements IUserDAO {
 
     @Override
     public void delete(Long id) throws SQLException {
-        String sql = "delete from `user` where id=?";
+        String sql = "delete from `users` where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         delete(sql,params);

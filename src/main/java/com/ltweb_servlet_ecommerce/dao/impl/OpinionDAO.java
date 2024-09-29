@@ -17,70 +17,72 @@ import java.util.Map;
 
 public class OpinionDAO extends AbstractDAO<OpinionModel> implements IOpinionDAO {
     @Override
-    public List<OpinionModel> findAllWithFilter(OpinionModel model,Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM opinion WHERE 1=1 ");
-        MapSQLAndParamsResult sqlAndParams = new OpinionMapper().mapSQLAndParams(sqlStrBuilder,model,"select",pageble);
+    public List<OpinionModel> findAllWithFilter(OpinionModel model, Pageble pageble) throws SQLException {
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM opinions WHERE 1=1 ");
+        MapSQLAndParamsResult sqlAndParams = new OpinionMapper().mapSQLAndParams(sqlStrBuilder, model, "select", pageble);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
-        List<OpinionModel> result = query(sql.toString(), new OpinionMapper(),params,OpinionModel.class);
+        List<OpinionModel> result = query(sql.toString(), new OpinionMapper(), params, OpinionModel.class);
         return result;
     }
+
     @Override
     public List<OpinionModel> findAll(Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM opinion");
-        SqlPagebleUtil.addSQlPageble(sqlStrBuilder,pageble);
-        return query(sqlStrBuilder.toString(),new OpinionMapper(),null, OpinionModel.class);
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM opinions");
+        SqlPagebleUtil.addSQlPageble(sqlStrBuilder, pageble);
+        return query(sqlStrBuilder.toString(), new OpinionMapper(), null, OpinionModel.class);
     }
 
     @Override
     public OpinionModel findById(Long id) throws SQLException {
-        String sql = "select * from opinion where id=?";
+        String sql = "select * from opinions where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
-        List<OpinionModel> result =  query(sql,new OpinionMapper(),params,OpinionModel.class);
-        return result.isEmpty() ? null : result.get(0);
-    }
-    @Override
-    public OpinionModel findWithFilter(OpinionModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM opinion WHERE 1=1 ");
-        MapSQLAndParamsResult sqlAndParams = new OpinionMapper().mapSQLAndParams(sqlStrBuilder,model,"select",null);
-        String sql = sqlAndParams.getSql();
-        List<Object> params = sqlAndParams.getParams();
-        List<OpinionModel> result = query(sql.toString(), new OpinionMapper(),params,OpinionModel.class);
+        List<OpinionModel> result = query(sql, new OpinionMapper(), params, OpinionModel.class);
         return result.isEmpty() ? null : result.get(0);
     }
 
     @Override
-    public List<OpinionModel> findByColumnValues(List<SubQuery> subQueryList,Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM opinion WHERE 1=1 ");
-        List<OpinionModel> result = queryWithSubQuery(sqlStrBuilder,new OpinionMapper(),subQueryList,"in",OpinionModel.class,pageble);
+    public OpinionModel findWithFilter(OpinionModel model) throws SQLException {
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM opinions WHERE 1=1 ");
+        MapSQLAndParamsResult sqlAndParams = new OpinionMapper().mapSQLAndParams(sqlStrBuilder, model, "select", null);
+        String sql = sqlAndParams.getSql();
+        List<Object> params = sqlAndParams.getParams();
+        List<OpinionModel> result = query(sql.toString(), new OpinionMapper(), params, OpinionModel.class);
+        return result.isEmpty() ? null : result.get(0);
+    }
+
+    @Override
+    public List<OpinionModel> findByColumnValues(List<SubQuery> subQueryList, Pageble pageble) throws SQLException {
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM opinions WHERE 1=1 ");
+        List<OpinionModel> result = queryWithSubQuery(sqlStrBuilder, new OpinionMapper(), subQueryList, "in", OpinionModel.class, pageble);
         return result;
     }
 
     @Override
     public Long save(OpinionModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO opinion SET ");
-        MapSQLAndParamsResult sqlAndParams = new OpinionMapper().mapSQLAndParams(sqlStrBuilder,model,"insert",null);
+        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO opinions SET ");
+        MapSQLAndParamsResult sqlAndParams = new OpinionMapper().mapSQLAndParams(sqlStrBuilder, model, "insert", null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
-        return insert(sql,params);
+        return insert(sql, params);
     }
 
     @Override
     public void update(OpinionModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE opinion SET ");
-        MapSQLAndParamsResult sqlAndParams = new OpinionMapper().mapSQLAndParams(sqlStrBuilder,model,"update",null);
+        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE opinions SET ");
+        MapSQLAndParamsResult sqlAndParams = new OpinionMapper().mapSQLAndParams(sqlStrBuilder, model, "update", null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
-        update(sql,params);
+        update(sql, params);
     }
 
     @Override
     public void delete(Long id) throws SQLException {
-        String sql = "delete from opinion where id=?";
+        String sql = "delete from opinions where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
-        delete(sql,params);
+        delete(sql, params);
     }
 
     @Override
@@ -88,16 +90,16 @@ public class OpinionDAO extends AbstractDAO<OpinionModel> implements IOpinionDAO
         OpinionModel model = new OpinionModel();
         model.setId(id);
         model.setIsDeleted(true);
-        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE opinion SET ");
-        MapSQLAndParamsResult sqlAndParams = new OpinionMapper().mapSQLAndParams(sqlStrBuilder,model,"update",null);
+        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE opinions SET ");
+        MapSQLAndParamsResult sqlAndParams = new OpinionMapper().mapSQLAndParams(sqlStrBuilder, model, "update", null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
-        update(sql,params);
+        update(sql, params);
     }
 
     @Override
     public Map<String, Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException {
-        return queryCustom(sql,params);
+        return queryCustom(sql, params);
     }
 
 

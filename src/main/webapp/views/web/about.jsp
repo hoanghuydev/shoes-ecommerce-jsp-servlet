@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Nai - About Us</title>
+    <title>Nai - Về chúng tôi</title>
 </head>
 <body>
 
@@ -22,9 +22,9 @@
         <div class="row justify-content-between">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
-                    <h1>About Us</h1>
-                    <p class="mb-4">Push your pace and stride with precision to reach your best 10k yet.</p>
-                    <p><a href="/shop" class="btn btn-secondary me-2">Shop Now</a></p>
+                    <h1>Về chúng tôi</h1>
+                    <p class="mb-4">Đẩy nhanh tốc độ và bước chân của bạn một cách chính xác để đạt được kỷ lục tốt nhất!</p>
+                    <p><a href="/shop" class="btn btn-secondary me-2">Mua ngay</a></p>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
 
         <div class="row mb-5">
             <div class="col-lg-5 mx-auto text-center">
-                <h2 class="section-title">Our Team</h2>
+                <h2 class="section-title">Đội ngũ của chúng tôi</h2>
             </div>
         </div>
 
@@ -50,7 +50,7 @@
                 <span class="d-block position mb-4">CEO, Founder, Atty.</span>
                 <p>Separated they live in.
                     Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                <p class="mb-0"><a href="#" class="more dark">Learn More <span class="icon-arrow_forward"></span></a></p>
+                <p class="mb-0"><a href="#" class="more dark">Tìm hiểu thêm <span class="icon-arrow_forward"></span></a></p>
             </div>
             <!-- End Column 1 -->
 
@@ -62,7 +62,7 @@
                 <span class="d-block position mb-4">CEO, Founder, Atty.</span>
                 <p>Separated they live in.
                     Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                <p class="mb-0"><a href="#" class="more dark">Learn More <span class="icon-arrow_forward"></span></a></p>
+                <p class="mb-0"><a href="#" class="more dark">Tìm hiểu thêm <span class="icon-arrow_forward"></span></a></p>
 
             </div>
             <!-- End Column 2 -->
@@ -74,7 +74,7 @@
                 <span class="d-block position mb-4">CEO, Founder, Atty.</span>
                 <p>Separated they live in.
                     Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                <p class="mb-0"><a href="#" class="more dark">Learn More <span class="icon-arrow_forward"></span></a></p>
+                <p class="mb-0"><a href="#" class="more dark">Tìm hiểu thêm <span class="icon-arrow_forward"></span></a></p>
             </div>
             <!-- End Column 3 -->
 
@@ -86,7 +86,7 @@
                 <span class="d-block position mb-4">CEO, Founder, Atty.</span>
                 <p>Separated they live in.
                     Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                <p class="mb-0"><a href="#" class="more dark">Learn More <span class="icon-arrow_forward"></span></a></p>
+                <p class="mb-0"><a href="#" class="more dark">Tìm hiểu thêm <span class="icon-arrow_forward"></span></a></p>
 
 
             </div>

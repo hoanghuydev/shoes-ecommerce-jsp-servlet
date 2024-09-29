@@ -150,7 +150,7 @@ public class Vnpay extends HttpServlet {
         String vnp_TxnRef = ConfigVnpay.getRandomNumber(8);
         String vnp_IpAddr = ConfigVnpay.getIpAddress(req);
         String vnp_TmnCode = ConfigVnpay.vnp_TmnCode;
-        int amount =  (int) (order.getTotalAmount()*100*23000);
+        int amount =  (int) (order.getTotalAmount()*100*1);
         Map vnp_Params = new HashMap();
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);

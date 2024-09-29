@@ -5,6 +5,8 @@ import com.ltweb_servlet_ecommerce.model.UserModel;
 import com.ltweb_servlet_ecommerce.utils.FormUtil;
 import com.ltweb_servlet_ecommerce.utils.NotifyUtil;
 import com.ltweb_servlet_ecommerce.utils.SendMailUtil;
+import com.ltweb_servlet_ecommerce.validate.Validator;
+import org.apache.poi.ss.formula.functions.Vlookup;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,6 +32,12 @@ public class ContactController extends HttpServlet {
         try {
             UserModel userModel = FormUtil.toModel(UserModel.class,req);
             String message = req.getParameter("message");
+            if (!Validator.isNotNullOrEmpty(message)
+            || !Validator.isNotNullOrEmpty(userModel.getEmail())
+            || !Validator.isNotNullOrEmpty(userModel.getFullName())) {
+                resp.sendRedirect("/contact?message=field_is_blank&toast=danger");
+                return;
+            }
             SendMailUtil.sendMail("tranvohoanghuy12ab@gmail.com","New support mail send to us",SendMailUtil.templateMailContact(userModel.getFullName(),userModel.getEmail(),message));
             resp.sendRedirect("/contact?message=send_mail_contact_success&toast=success");
         } catch (Exception e) {

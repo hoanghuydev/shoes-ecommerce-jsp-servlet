@@ -7,7 +7,7 @@
         <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
     </listener>
     <listener>
-        <listener-class>com.ltweb_servlet_ecommerce.cron.CronMarketingMail</listener-class>
+        <listener-class>com.ltweb_servlet_ecommerce.cron.CronJob</listener-class>
     </listener>
     <filter>
         <filter-name>sitemesh</filter-name>
@@ -15,6 +15,22 @@
     </filter>
     <filter-mapping>
         <filter-name>sitemesh</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>com.ltweb_servlet_ecommerce.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter>
@@ -33,7 +49,32 @@
         <filter-name>authorFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <filter>
+        <filter-name>IPAddressFilter</filter-name>
+        <filter-class>com.ltweb_servlet_ecommerce.filter.IPAddressFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>IPAddressFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>com.ltweb_servlet_ecommerce.filter.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
+
+    <session-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
 </web-app>

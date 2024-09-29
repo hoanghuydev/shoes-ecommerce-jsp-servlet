@@ -1,5 +1,12 @@
 package com.ltweb_servlet_ecommerce.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryModel extends AbstractModel<CategoryModel> {
 
     private String name;

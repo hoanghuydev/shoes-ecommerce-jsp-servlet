@@ -33,7 +33,9 @@ public class AddressLevel4 extends HttpServlet {
                 put("Token",rb.getString("TOKEN_GHTK"));
             }};
             org.json.JSONObject addressJson = HttpUtil.doGet(urlGetAddressLv4,headerReq);
+            resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(addressJson.toString());
+            return;
         } catch (Exception e) {
             HttpUtil.returnError500Json(objectMapper,resp,e.toString());
         }

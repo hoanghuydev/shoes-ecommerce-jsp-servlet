@@ -1,15 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Nai - Product</title>
+    <title>Admin Nai - Sản phẩm</title>
 </head>
 <body>
     <div class="col-12 mt-4">
         <div class="mb-2 ps-3">
-            <a class="btn bg-gradient-dark mb-0" id="toggleAddProduct" data-bs-toggle="collapse" href="#formNewProduct"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add New Product</a>
+            <a class="btn bg-gradient-dark mb-0" id="toggleAddProduct" data-bs-toggle="collapse" href="#formNewProduct"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Thêm sản phẩm mới</a>
           <div class="collapse multi-collapse my-3" id="formNewProduct">
             <div class="card py-2 px-4" >
               <form method="POST" enctype="multipart/form-data">
@@ -18,20 +19,20 @@
                   <input type="text" class="form-control" name="name" required>
                 </div>
                 <div class="my-3">
-                  <label>Content</label>
+                  <label>Nội dung</label>
                   <textarea type="text" class="" rows="10" style="height: 200px" name="content" id="content"></textarea>
-                  <p class="text-sm">Dont enter text have <code>'</code></p>
+                  <p class="text-sm">Nội dung không được chứa kí tự <code>'</code></p>
                 </div>
                 <div class="input-group input-group-outline my-3">
-                  <label class="form-label">Short Description</label>
+                  <label class="form-label">Mô tả ngắn</label>
                   <input type="text" class="form-control" name="shortDescription" required/>
                 </div>
                 <div class="input-group input-group-outline my-3">
-                  <label class="form-label">Price</label>
-                  <input type="number" step="0.01" class="form-control" name="price" required>
+                  <label class="form-label">Giá hiển thị</label>
+                  <input type="number" id="price"  min="500000" step="1000" class="form-control" name="price" required>
                 </div>
                 <div class="input-group input-group-static mb-4">
-                  <label for="category" class="ms-0">Category</label>
+                  <label for="category" class="ms-0">Danh mục</label>
                   <select class="form-control" id="category" name="categoryId" required>
                     <option value="" selected>-- Select category --</option>
                    <c:forEach var="category_item" items="${LIST_CATEGORY}">
@@ -39,23 +40,27 @@
                    </c:forEach>
                   </select>
                 </div>
+
                 <div class="input-group input-group-static mb-4">
-                  <label for="size" class="ms-0">Size</label>
+                  <label for="size" class="ms-0">Kích thước</label>
                   <select multiple class="form-control" id="size" name="sizeId[]" required>
                     <c:forEach var="size_item" items="${LIST_SIZE}">
                       <option value="${size_item.id}">${size_item.name}</option>
                     </c:forEach>
                   </select>
                 </div>
+                <div class="list-price-sizes">
+
+                </div>
                 <div class="input-group input-group-static mb-4">
-                  <label for="thumbnailProduct" class="me-2">Thumbnail Product:</label>
+                  <label for="thumbnailProduct" class="me-2">Ảnh bia sản phẩm:</label>
                   <input type="file" accept="image/*" id="thumbnailProduct" name="thumbnailProduct" required/>
                 </div>
                 <div class="row preview-thumbnail-product">
 
                 </div>
                 <div class="input-group input-group-static mb-4">
-                  <label for="imageProduct" class="me-2">Image Product:</label>
+                  <label for="imageProduct" class="me-2">Ảnh mô tả sản phẩm:</label>
                   <input type="file" multiple accept="image/*" id="imageProduct" name="imageProduct" required/>
                 </div>
                 <div class="row preview-img-product">
@@ -65,7 +70,7 @@
                   <label for="model" class="me-2">Model :</label>
                   <input type="file" accept="" id="model" name="model"/>
                 </div>
-                <button class="btn btn-primary" type="submit">Add Product</button>
+                <button class="btn btn-primary" type="submit">Thêm sản phẩm</button>
 
               </form>
             </div>
@@ -73,7 +78,7 @@
         </div>
         <div class="row justify-content-center">
           <c:forEach var="product_item" items="${LIST_MODEL}">
-            <div class="col-xl-3 col-md-4 col-sm-6 col-12 mb-4">
+            <div class="col-xl-3 col-md-4 col-sm-6 col-12 mb-4" id="productItem${product_item.id}">
               <div class="card py-3">
                 <div class="card-header p-0  mx-3 border-radius-lg">
                   <a href="/product-details/${product_item.id}" style="background: rgb(171,172,171);
@@ -109,8 +114,9 @@
                   >
                     ${product_item.shortDescription}
                   </p>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <a href="/product-details/${product_item.id}" type="button" class="btn btn-outline-primary btn-sm mb-0 mx-auto">Edit Product</a>
+                  <div class="d-flex align-items-center ">
+                    <a type="button" class="flex-grow-1 btn btn-outline-primary btn-sm mb-0 me-1 deleteProduct" data-product-id="${product_item.id}">Xóa</a>
+                    <a href="<c:url value="/admin/product/update?id=${product_item.id}"/>" type="button" class="flex-grow-1 btn btn-outline-primary btn-sm mb-0  ms-1">Chỉnh sửa</a>
                   </div>
                 </div>
               </div>
@@ -120,6 +126,47 @@
     </div>
     <script>
       window.addEventListener("DOMContentLoaded", function () {
+        // Handle delete product
+        $(".deleteProduct").click(function() {
+          const productId = $(this).data('product-id');
+          $.ajax({
+            url: '/ajax/admin/product',
+            type: 'DELETE'
+            data: {
+              productId: productId
+            },
+            success: (data) => {
+              showToastAdmin("success", "Đã xóa thành công", "Đã xóa thành công sản phẩm với id là " + productId, new Date());
+              $("#productItem" + productId).remove();
+            },
+            error: (data) => {
+              showToastAdmin("error", "Đã xảy ra lỗi", "Lỗi không thể xóa sản phẩm với id là " + productId, new Date());
+            }
+          });
+        })
+        // handle change size
+        const listSize = [
+          <c:forEach items="${LIST_SIZE}" var="item" varStatus="loop">
+          {id: '${item.id}', name: '${item.name}'}<c:if test="${!loop.last}">,</c:if>
+          </c:forEach>
+        ];
+        $('#size').change(function (){
+          const arrListSizeSelected = $(this).val();
+          $('.list-price-sizes').empty();
+          const objListSizeSelected = listSize.filter((size)=> arrListSizeSelected.includes(size.id))
+          const defaultPrice = $('#price').val()
+          console.log(objListSizeSelected)
+          for (let i = 0; i < objListSizeSelected.length ; i++) {
+            const size = objListSizeSelected[i];
+            $('.list-price-sizes').append(`
+                <div class="my-3">
+                    <label class="form-label bg-white">Nhập giá tiền cho kích thước `+size.name+`</label>
+                    <input type="number" class="ms-3" min="10000" value="`+defaultPrice+`" step="1000" name="sizePrice[]" required/>
+                    <input type="hidden" name="sizeIdForPrice[]" value="`+size.id+`" required/>
+                  </div>
+            `)
+          }
+        })
         ClassicEditor
                 .create( document.querySelector( '#content' ))
                 .catch( error => {

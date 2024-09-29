@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Nai - Contact Us</title>
+    <title>Nai - Liên hệ với chúng tôi</title>
 </head>
 <body>
 
@@ -22,9 +22,9 @@
         <div class="row justify-content-between">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
-                   <h1>Contact Us</h1>
-                    <p class="mb-4">Push your pace and stride with precision to reach your best 10k yet.</p>
-                    <p><a href="/shop" class="btn btn-secondary me-2">Shop Now</a></p>
+                   <h1>Liên hệ với chúng tôi</h1>
+                    <p class="mb-4">Đẩy nhanh tốc độ và bước chân của bạn một cách chính xác để đạt được kỷ lục tốt nhất!</p>
+                    <p><a href="/shop" class="btn btn-secondary me-2">Mua ngay</a></p>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
                                     </svg>
                                 </div> <!-- /.icon -->
                                 <div class="service-contents">
-                                    <p>Nong Lam University, Linh Trung,Thu Duc</p>
+                                    <p>Đại học Nông Lâm, Linh Trung, Thủ Đức</p>
                                 </div> <!-- /.service-contents-->
                             </div> <!-- /.service -->
                         </div>
@@ -86,19 +86,19 @@
                     <form method="POST">
                         <div class="row">
                             <div class="form-group">
-                                <label class="text-black" for="fullName">Full name</label>
-                                <input type="text" class="form-control" id="fullName" name="fullName">
+                                <label class="text-black" for="fullName">Họ và tên</label>
+                                <input type="text" class="form-control" id="fullName" required name="fullName">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="text-black" for="email">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email">
+                            <label class="text-black" for="email">Địa chỉ email</label>
+                            <input type="email" class="form-control" id="email" required name="email">
                         </div>
                         <div class="form-group mb-5">
-                            <label class="text-black" for="message">Message</label>
-                            <textarea name="message" class="form-control" id="message" cols="30" rows="5"></textarea>
+                            <label class="text-black" for="message">Tin nhắn</label>
+                            <textarea name="message" class="form-control" id="message" required cols="30" rows="5"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary-hover-outline">Send Message</button>
+                        <button type="submit" class="btn btn-primary-hover-outline">Gửi tin nhắn</button>
                     </form>
 
                 </div>

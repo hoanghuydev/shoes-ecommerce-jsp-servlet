@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="vi_VN"/>
 <%--
   Created by IntelliJ IDEA.
   User: HUY
@@ -10,7 +12,7 @@
 <%@include file="/common/taglib.jsp" %>
 <html>
 <head>
-    <title>Nai - Shop</title>
+    <title>Nai - Cửa hàng</title>
 </head>
 <body>
 <!-- Start Hero Section -->
@@ -23,8 +25,8 @@
         <div class="row justify-content-between">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
-                    <h1>Shop</h1>
-                    <p class="mb-4">Push your pace and stride with precision to reach your best 10k yet.</p>
+                    <h1>Cửa hàng</h1>
+                    <p class="mb-4">Đẩy nhanh tốc độ và bước chân của bạn một cách chính xác để đạt được kỷ lục tốt nhất!</p>
                 </div>
             </div>
         </div>
@@ -33,76 +35,192 @@
 <!-- End Hero Section -->
 <div class="untree_co-section product-section before-footer-section">
     <div class="container">
-        <c:if test="${not empty productName}">
-            <div>
-                <p style="font-weight: 600; font-size: ">Result for "${productName}"</p>
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <div class="position-sticky bg-transparent rounded-3 overflow-hidden" style="top: 90px;">
+                    <div class="d-flex gap-3 py-3 bg-white rounded-3" style="margin-bottom: 2px">
+                        <i class="fa-solid fa-bars my-auto ps-2"></i>
+                        <p class="my-0 fw-bold">Bộ lọc</p>
+                    </div>
+                    <div class="bg-white rounded-3 overflow-y-auto" style="overflow-y: auto; max-height: 500px ">
+                        <div class="accordion" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                        Danh mục
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <div class="form-check">
+                                            <c:forEach var="category_item" items="${LIST_CATEGORY}">
+                                                <div style="cursor: pointer">
+                                                    <input class="form-check-input categoryFilter" type="checkbox" value="${category_item.id}" id="categoryCheck${category_item.id}">
+                                                    <label class="form-check-label" for="categoryCheck${category_item.id}">
+                                                            ${category_item.name}
+                                                    </label>
+                                                </div>
+
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                        Kích thước
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                                    <div class="accordion-body">
+                                        <c:forEach var="size_item" items="${LIST_SIZE}">
+                                            <div style="cursor: pointer">
+                                                <input class="form-check-input sizeFilter" type="checkbox" value="${size_item.id}" id="sizeCheck${size_item.id}">
+                                                <label class="form-check-label" for="sizeCheck${size_item.id}">
+                                                        ${size_item.name}
+                                                </label>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </c:if>
-        <div class="row" id="listProduct"></div>
+            <div class="col-12 col-md-9">
+                <div>
+                    <div class="d-flex justify-content-between">
+                        <c:if test="${not empty productName}">
+                            <p style="font-weight: 600; font-size: 30px">Kết quả cho "${productName}"</p>
+                        </c:if>
+                        <c:if test="${ empty productName}">
+                            <p style="font-weight: 600; font-size: 30px">Danh sách sản phẩm</p>
+                        </c:if>
+                        <div>
+                            <select class="form-select" id="sortFilter" style="max-width: 150px" aria-label="Default select example">
+                                <option selected value="createAt-DESC">Mới nhất</option>
+                                <option value="totalViewAndSearch-DESC">Được quan tâm nhiều nhất</option>
+                                <option value="price-ASC">Giá từ thấp đến cao</option>
+                                <option value="price-DESC">Giá từ cao đến thấp</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row" id="listProduct"></div>
+                </div>
+            </div>
+
+
+        </div>
     </div>
 </div>
 <script !src="">
     window.addEventListener("DOMContentLoaded",function (){
         let page = 1;
         let isDone = false;
+        let isLoadProduct = false;
         const productName = "${productName}";
-        const loadMoreProduct = (name) => {
-            let result;
-            $.ajax({
-                url: "/search/product",
-                method: "GET",
-                async: false, // Set to synchronous
-                data: {
-                    page : page,
-                    maxPageItem: 8,
-                    productName: name,
-                    sortBy : "createAt",
-                    sortBy : "desc"
-                },
-                success: function (listProduct) {
-                    page++;
-                    result = listProduct;
-                }
+        const loadMoreProduct = async (name) => {
+            const sortFilter = $('#sortFilter').val().split('-');
+            const sortName = sortFilter[0]
+            const sortBy = sortFilter[1]
+            const categories = $(".categoryFilter:checked").map(function() {
+                return $(this).val();
+            }).get();
+            const sizes = $(".sizeFilter:checked").map(function() {
+                return $(this).val();
+            }).get();
+            return await new Promise((resolve,reject) => {
+                setTimeout(()=>{
+                    $.ajax({
+                        url: "/search/product",
+                        method: "GET",
+                        async: true,
+                        data: {
+                            page: page,
+                            maxPageItem: 8,
+                            productName: name,
+                            categories : categories,
+                            sizes : sizes,
+                            sortName : sortName,
+                            sortBy : sortBy
+                        },
+                        success: function (listProduct) {
+                            page++;
+                            resolve(listProduct)
+                        }
+                    });
+                }, 500)
             });
-            return result;
         }
-        const renderMoreProduct = (name) => {
+        const renderMoreProduct = async (name,reRender= false) => {
+            isLoadProduct = true
+            const listProductDOM = $("#listProduct");
+            if (reRender) {
+                listProductDOM.empty()
+                page =1
+            }
+            listProductDOM.append(`
+            <div class="d-flex" id="loadingProduct">
+                <div class="spinner-grow text-success m-auto" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            `)
             let listProductHtml = ``;
-            const listProduct = loadMoreProduct(name);
+            let listProduct = await loadMoreProduct(name);
             if (listProduct.length>0){
                 for (let i = 0; i < listProduct.length; i++) {
                     const product = listProduct[i];
-                    listProductHtml+=`
-                     <div class="col-12 col-md-4 col-lg-3 mb-5">
-                        <a class="product-item" href="/product-details/`+product.id+`">
-                            <img loading="lazy" src="`+product.thumbnail+`" class="img-fluid product-thumbnail">
-                            <h3 class="product-title">`+product.name+`</h3>
-                            <strong class="product-price">$`+product.price+`</strong>
-                            <span class="icon-cross"><img loading="lazy" src="/template/web/images/cross.svg" class="img-fluid"></span>
-                        </a>
-                    </div>
-                `
+                    const productItemStr = `
+                        <div class="col-12 col-md-4 col-lg-3 mb-5">
+                            <a class="product-item" href="/product-details/` + product.id + `">
+                                <img loading="lazy" src="` + product.thumbnail + `" class="img-fluid product-thumbnail">
+                                <h3 class="product-title"
+                                    style="max-height: 40px; min-height: 40px;display: -webkit-box;
+                                        -webkit-box-orient: vertical;
+                                        -webkit-line-clamp: 2;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        white-space: normal;
+                                    "
+                                    >` + product.name + `</h3>
+                                <strong class="product-price">` + new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price) + `</strong>
+                                <span class="icon-cross"><img loading="lazy" src="/template/web/images/cross.svg" class="img-fluid"></span>
+                            </a>
+                        </div>
+                    `
+                    listProductHtml+=productItemStr;
                 }
-            } else if (listProduct.length==0 && productName!="" && page==2) {
-                const notFoundHtml = `<div class="d-flex">
-                        <p class="mx-auto">Not found product</p>
+            } else if (listProduct.length == 0 && productName!="" && page==2) {
+                listProductHtml = `<div class="d-flex">
+                        <p class="mx-auto">Không tìm thấy sản phẩm</p>
                     </div>`
-                $("#listProduct").append(notFoundHtml);
             } else if (listProduct.length==0) {
                 isDone = true;
             }
-            $("#listProduct").append(listProductHtml);
+            isLoadProduct = false;
+            $("#loadingProduct").remove();
+            listProductDOM.append(listProductHtml);
         }
-        $(window).scroll(function() {
-            if (!isDone){
+        $(window).scroll(async function() {
+            if (!isDone && !isLoadProduct){
                 const scrollContainer = $('#listProduct');
                 const scrollPosition = $(window).scrollTop() + $(window).height();
-                const containerPosition = scrollContainer.offset().top + 500; // Adjust as needed
+                const containerPosition = scrollContainer.offset().top + scrollContainer.height() + 150;
                 if (scrollPosition >= containerPosition) {
-                    renderMoreProduct(productName);
+                    await renderMoreProduct(productName);
                 }
             }
-
+        });
+        let debounceGetProduct;
+        $('#sortFilter, .categoryFilter, .sizeFilter').change(() => {
+            clearTimeout(debounceGetProduct)
+            debounceGetProduct = setTimeout(()=> {
+                renderMoreProduct(productName, true);
+            },400)
         });
         renderMoreProduct(productName);
     })

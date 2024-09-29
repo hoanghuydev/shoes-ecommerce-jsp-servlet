@@ -1,10 +1,14 @@
 package com.ltweb_servlet_ecommerce.service.impl;
 
+import com.ltweb_servlet_ecommerce.constant.SystemConstant;
 import com.ltweb_servlet_ecommerce.dao.IAddressDAO;
+import com.ltweb_servlet_ecommerce.log.LoggerHelper;
 import com.ltweb_servlet_ecommerce.model.AddressModel;
 import com.ltweb_servlet_ecommerce.paging.Pageble;
 import com.ltweb_servlet_ecommerce.service.IAddressService;
 import com.ltweb_servlet_ecommerce.subquery.SubQuery;
+import com.ltweb_servlet_ecommerce.utils.RuntimeInfo;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import java.sql.SQLException;
@@ -18,7 +22,7 @@ public class AddressService implements IAddressService {
 
     @Override
     public List<AddressModel> findAllWithFilter(AddressModel model, Pageble pageble) throws SQLException {
-        return addressDAO.findAllWithFilter(model,pageble);
+        return addressDAO.findAllWithFilter(model, pageble);
     }
 
     @Override
@@ -28,11 +32,12 @@ public class AddressService implements IAddressService {
 
     @Override
     public List<AddressModel> findByColumnValues(List<SubQuery> subQueryList, Pageble pageble) throws SQLException {
-        return addressDAO.findByColumnValues(subQueryList,pageble);
+        return addressDAO.findByColumnValues(subQueryList, pageble);
     }
+
     @Override
-    public Map<String,Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException {
-        return addressDAO.findWithCustomSQL(sql,params);
+    public Map<String, Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException {
+        return addressDAO.findWithCustomSQL(sql, params);
     }
 
     @Override
@@ -72,6 +77,16 @@ public class AddressService implements IAddressService {
     @Override
     public AddressModel save(AddressModel model) throws SQLException {
         Long productId = addressDAO.save(model);
-        return addressDAO.findById(productId);
+        AddressModel result = addressDAO.findById(productId);
+
+        //logging
+        String status = String.format("Saved user address %s", result != null ? "successfully" : "failed");
+        JSONObject value = new JSONObject().put(SystemConstant.STATUS_LOG, status)
+                .put(SystemConstant.VALUE_LOG, result != null ? new JSONObject(result) : new JSONObject());
+
+        LoggerHelper.log(result != null ? SystemConstant.WARN_LEVEL : SystemConstant.ERROR_LEVEL,
+                "INSERT", RuntimeInfo.getCallerClassNameAndLineNumber(), value);
+
+        return result;
     }
 }

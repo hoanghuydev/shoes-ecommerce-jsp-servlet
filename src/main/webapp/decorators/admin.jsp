@@ -3,6 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%--    <link rel="stylesheet" href="<c:url value="/template/admin/assets/css/admin-product.css"/>">--%>
+    <link rel="stylesheet" href="<c:url value="/template/admin/assets/css/admin-order.css"/>">
+
     <link href="<c:url value="/template/admin/assets/css/editImage.css"/>" rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value="https://www.nike.com/favicon.ico"/> ">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
@@ -13,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link href="<c:url value="/template/web/css/custom.css"/>" rel="stylesheet">
+    <link rel="stylesheet" href="<c:url value="/template/admin/assets/css/admin-log.css"/>">
 
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -99,6 +103,7 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="/template/admin/assets/js/core/popper.min.js"></script>
 <script src="/template/admin/assets/js/core/bootstrap.min.js"></script>
@@ -115,6 +120,7 @@
 <script src="/template/admin/assets/js/material-dashboard.min.js?v=3.1.0"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/2.0.2/timeago.min.js" integrity="sha512-sl01o/gVwybF1FNzqO4NDRDNPJDupfN0o2+tMm4K2/nr35FjGlxlvXZ6kK6faa9zhXbnfLIXioHnExuwJdlTMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
         var options = {
@@ -136,9 +142,9 @@
         const opinionData = JSON.parse(message.data);
         console.log(opinionData)
         if (opinionData.isDeleted) {
-            showToastAdmin("warning","A Review Has Been Deleted","User "+opinionData.userName+ " deleted them review product id : "+opinionData.productId,opinionData.createAt);
+            showToastAdmin("warning","Một đánh giá đã bị xóa","Người dùng "+opinionData.userName+ " đã xóa đánh giá của sản phẩm có mã là : "+opinionData.productId,opinionData.createAt);
         } else {
-            showToastAdmin("info","New Review Has Been Added","User "+opinionData.userName+ " added them review product id : "+opinionData.productId,opinionData.createAt);
+            showToastAdmin("info","Đánh giá mới đã được thêm","Người dùng "+opinionData.userName+ " đã thêm đánh giá cho sản phẩm có mã là : "+opinionData.productId,opinionData.createAt);
         }
     }
 </script>

@@ -1,7 +1,6 @@
 package com.ltweb_servlet_ecommerce.model;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 public class AbstractModel<T> {
     private Long id;
@@ -11,8 +10,6 @@ public class AbstractModel<T> {
     private boolean isDeleted = false;
 
     private String actionExcute;
-
-
 
     public String getActionExcute() {
         return actionExcute;
@@ -33,6 +30,7 @@ public class AbstractModel<T> {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }

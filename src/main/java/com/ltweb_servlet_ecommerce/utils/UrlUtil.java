@@ -3,6 +3,8 @@ package com.ltweb_servlet_ecommerce.utils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Random;
 
 public class UrlUtil {
@@ -24,6 +26,4 @@ public class UrlUtil {
         }
         return encodedString.toString();
     }
-
-
 }

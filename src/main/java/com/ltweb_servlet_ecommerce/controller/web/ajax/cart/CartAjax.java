@@ -2,12 +2,19 @@ package com.ltweb_servlet_ecommerce.controller.web.ajax.cart;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ltweb_servlet_ecommerce.model.*;
-import com.ltweb_servlet_ecommerce.service.*;
+import com.ltweb_servlet_ecommerce.constant.SystemConstant;
+import com.ltweb_servlet_ecommerce.log.LoggerHelper;
+import com.ltweb_servlet_ecommerce.model.CartModel;
+import com.ltweb_servlet_ecommerce.model.OrderDetailsModel;
+import com.ltweb_servlet_ecommerce.model.UserModel;
+import com.ltweb_servlet_ecommerce.service.ICartService;
+import com.ltweb_servlet_ecommerce.service.IOrderDetailsService;
+import com.ltweb_servlet_ecommerce.service.IProductSizeService;
 import com.ltweb_servlet_ecommerce.utils.HttpUtil;
+import com.ltweb_servlet_ecommerce.utils.RuntimeInfo;
 import com.ltweb_servlet_ecommerce.utils.SessionUtil;
-import com.restfb.types.User;
-import org.junit.jupiter.api.Order;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -16,18 +23,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/ajax/cart"})
 public class CartAjax extends HttpServlet {
     @Inject
     IProductSizeService productSizeService;
-    @Inject
-    IProductService productService;
-    @Inject
-    IUserOrderService userOrderService;
     @Inject
     ICartService cartService;
     @Inject
@@ -36,17 +38,17 @@ public class CartAjax extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        addAndUpdateCart(req,resp);
+        addAndUpdateCart(req, resp);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        addAndUpdateCart(req,resp);
+        addAndUpdateCart(req, resp);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        addAndUpdateCart(req,resp);
+        addAndUpdateCart(req, resp);
     }
 
     private void addAndUpdateCart(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -58,8 +60,8 @@ public class CartAjax extends HttpServlet {
             Integer quantity = Integer.parseInt(String.valueOf(dataJson.get("quantity")));
             UserModel user = (UserModel) SessionUtil.getInstance().getValue(req, "USER_MODEL");
             List<OrderDetailsModel> orderDetailsModelList = null;
-            //            Get id product size and subTotal
-            String sqlProductSizeId = " select productSize.id as productSizeId, product.price as priceProduct from productSize,product where productSize.productId = product.id and productSize.productId = ? and productSize.sizeId = ?";
+            //Get id product size and subTotal
+            String sqlProductSizeId = " select product_sizes.id as productSizeId, product_sizes.price as priceProduct from product_sizes,products where product_sizes.productId = products.id and product_sizes.productId = ? and product_sizes.sizeId = ?";
             List<Object> params = new ArrayList<>();
             params.add(productId);
             params.add(sizeId);
@@ -72,10 +74,10 @@ public class CartAjax extends HttpServlet {
             orderDetailsModel.setQuantity(quantity);
             orderDetailsModel.setSubTotal(subTotal);
             if (user != null) {
-                String sqlExistCartItem = "select orderDetails.id as id from cart,orderDetails,productSize " +
-                        "where cart.orderDetailsId = orderDetails.id " +
-                        "and orderDetails.productSizeId = ? " +
-                        "and cart.userId = ?";
+                String sqlExistCartItem = "select order_details.id as id from carts,order_details,product_sizes " +
+                        "where carts.orderDetailsId = order_details.id " +
+                        "and order_details.productSizeId = ? " +
+                        "and carts.userId = ?";
                 List<Object> paramsExistCartItem = new ArrayList<>();
                 paramsExistCartItem.add(productSizeId);
                 paramsExistCartItem.add(user.getId());
@@ -92,14 +94,14 @@ public class CartAjax extends HttpServlet {
                         orderDetailsModel = orderDetailsService.delete(orderDetailsId);
                         objectMapper.writeValue(resp.getOutputStream(), orderDetailsModel);
 
-                    } else  {
+                    } else {
                         orderDetailsModel.setQuantity(quantity);
                         orderDetailsModel.setId(orderDetailsId);
                         orderDetailsModel = orderDetailsService.update(orderDetailsModel);
                         objectMapper.writeValue(resp.getOutputStream(), orderDetailsModel);
                     }
                 } else {
-//                Save new cart if not exist
+                    //Save new cart if not exist
                     orderDetailsModel = orderDetailsService.save(orderDetailsModel);
                     cartModel.setOrderDetailsId(orderDetailsModel.getId());
                     cartModel.setUserId(user.getId());
@@ -107,21 +109,25 @@ public class CartAjax extends HttpServlet {
                     objectMapper.writeValue(resp.getOutputStream(), cartModel);
                 }
             } else {
+                OrderDetailsModel existOrderDetails = null;
                 orderDetailsModelList = (List<OrderDetailsModel>) SessionUtil.getInstance().getValue(req, "LIST_ORDER_DETAILS");
+                List<OrderDetailsModel> orderDetailsOld = null;
                 if (orderDetailsModelList == null) {
                     orderDetailsModelList = new ArrayList<>();
                     orderDetailsModelList.add(orderDetailsModel);
+                    orderDetailsOld = new ArrayList<>();
                 } else {
-                    OrderDetailsModel existOrderDetails = orderDetailsModelList.stream()
+                    orderDetailsOld = new ArrayList<>(orderDetailsModelList);
+                    existOrderDetails = orderDetailsModelList.stream()
                             .filter(orderDetails -> orderDetails.getProductSizeId().equals(productSizeId))
                             .findFirst()
                             .orElse(null);
 //                    If exist orderDetails in session then update quantity
                     if (existOrderDetails != null) {
                         Integer indexOfOrderDetails = orderDetailsModelList.indexOf(existOrderDetails);
-                        if (req.getMethod().equalsIgnoreCase("DELETE") || quantity <1) {
+                        if (req.getMethod().equalsIgnoreCase("DELETE") || quantity < 1) {
                             orderDetailsModelList.remove(indexOfOrderDetails.intValue());
-                        } else  {
+                        } else {
                             orderDetailsModelList.set(indexOfOrderDetails, orderDetailsModel);
                         }
                     } else {
@@ -129,10 +135,48 @@ public class CartAjax extends HttpServlet {
                     }
                 }
                 SessionUtil.getInstance().putValue(req, "LIST_ORDER_DETAILS", orderDetailsModelList);
+
+                // LogController the activity of adding or updating order details
+                logging(existOrderDetails, orderDetailsOld, orderDetailsModelList);
+
                 objectMapper.writeValue(resp.getOutputStream(), orderDetailsModel);
             }
-        } catch (Exception e){
-            HttpUtil.returnError500Json(objectMapper,resp,e.toString());
+        } catch (Exception e) {
+            HttpUtil.returnError500Json(objectMapper, resp, e.toString());
         }
     }
+
+    private void logging(OrderDetailsModel existOrderDetails, List<OrderDetailsModel> orderDetailsOld,
+                         List<OrderDetailsModel> orderDetailsModel) {
+        String logStatus;
+        String logAction;
+        if (existOrderDetails != null) {
+            logStatus = "Updated cart";
+            logAction = "UPDATE";
+        } else {
+            logStatus = "Added into cart";
+            logAction = "INSERT";
+        }
+
+        JSONArray preValueArray = new JSONArray();
+        for (OrderDetailsModel oldOrderDetail : orderDetailsOld) {
+            preValueArray.put(new JSONObject(oldOrderDetail));
+        }
+
+        JSONArray valueArray = new JSONArray();
+        for (OrderDetailsModel newOrderDetail : orderDetailsModel) {
+            valueArray.put(new JSONObject(newOrderDetail));
+        }
+
+        JSONObject preValue = new JSONObject()
+                .put(SystemConstant.VALUE_LOG, preValueArray);
+
+        JSONObject value = new JSONObject()
+                .put(SystemConstant.STATUS_LOG, logStatus)
+                .put(SystemConstant.VALUE_LOG, valueArray);
+
+        LoggerHelper.log(SystemConstant.WARN_LEVEL, logAction,
+                RuntimeInfo.getCallerClassNameAndLineNumber(), preValue, value);
+    }
+
 }

@@ -15,9 +15,11 @@ public interface ICartDAO {
     List<CartModel> findByColumnValues(List<SubQuery> subQueryList, Pageble pageble) throws SQLException;
     List<CartModel> findAllWithFilter(CartModel model,Pageble pageble) throws SQLException;
     Long save(CartModel model) throws SQLException;
-    void update(CartModel model) throws SQLException;
-    void delete(Long id) throws SQLException;
+    int update(CartModel model) throws SQLException;
+    int delete(Long id) throws SQLException;
 
     void softDelete(Long id) throws SQLException;
     Map<String,Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException;
+
+    void deleteByUserId(Long id);
 }

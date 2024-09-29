@@ -4,16 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.ltweb_servlet_ecommerce.filter.AuthenticationAjax;
 import com.ltweb_servlet_ecommerce.model.OpinionModel;
-import com.ltweb_servlet_ecommerce.model.UserModel;
 import com.ltweb_servlet_ecommerce.paging.PageRequest;
 import com.ltweb_servlet_ecommerce.paging.Pageble;
 import com.ltweb_servlet_ecommerce.service.IOpinionService;
 import com.ltweb_servlet_ecommerce.service.IUserService;
 import com.ltweb_servlet_ecommerce.sort.Sorter;
 import com.ltweb_servlet_ecommerce.utils.HttpUtil;
-import com.ltweb_servlet_ecommerce.utils.SessionUtil;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -22,7 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +45,7 @@ public class OpinionAjax extends HttpServlet {
             ArrayNode opinionsArray = objectMapper.createArrayNode();
 //                Return json list opinions
             for (OpinionModel model : opinionModelList) {
-                String sql = " select fullName from user where id = ?";
+                String sql = " select fullName from users where id = ?";
                 List<Object> params = new ArrayList<>();
                 params.add(model.getUserId());
                 Map<String,Object> sqlMap = userService.findWithCustomSQL(sql,params);
@@ -60,14 +56,14 @@ public class OpinionAjax extends HttpServlet {
             }
             jsonResult.put("opinions", opinionsArray);
 //                Get amount opinion of that product
-            String sql = " select count(*) as total from opinion where productId = ? and isDeleted = false";
+            String sql = " select count(*) as total from opinions where productId = ? and isDeleted = false";
             List<Object> params = new ArrayList<>();
             params.add(productId);
             Map<String,Object> countRating = opinionService.findWithCustomSQL(sql,params);
             int totalCountRating = Integer.parseInt(countRating.get("total").toString());
             jsonResult.put("countRating", totalCountRating);
 //                Get sum rating of that product
-            String sqlRating = "select sum(rating) as sumRating from opinion where productId =? and isDeleted = false";
+            String sqlRating = "select sum(rating) as sumRating from opinions where productId =? and isDeleted = false";
             List<Object> params2 = new ArrayList<>();
             params2.add(productId);
             Map<String,Object> sumRating = opinionService.findWithCustomSQL(sqlRating,params2);

@@ -5,6 +5,9 @@ import com.ltweb_servlet_ecommerce.paging.Pageble;
 import com.ltweb_servlet_ecommerce.sort.Sorter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class PagingUtil {
     public static Pageble setUpPagingAndSort(HttpServletRequest req) {

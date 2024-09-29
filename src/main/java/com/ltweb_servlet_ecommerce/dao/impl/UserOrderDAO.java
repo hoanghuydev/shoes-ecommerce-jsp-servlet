@@ -16,7 +16,7 @@ import java.util.Map;
 public class UserOrderDAO extends AbstractDAO<UserOrderModel> implements IUserOrderDAO {
     @Override
     public List<UserOrderModel> findAllWithFilter(UserOrderModel model, Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM userOrder WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM user_orders WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new UserOrderMapper().mapSQLAndParams(sqlStrBuilder,model,"select",pageble);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -25,14 +25,14 @@ public class UserOrderDAO extends AbstractDAO<UserOrderModel> implements IUserOr
     }
     @Override
     public List<UserOrderModel> findAll(Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM userOrder");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM user_orders");
         SqlPagebleUtil.addSQlPageble(sqlStrBuilder,pageble);
         return query(sqlStrBuilder.toString(),new UserOrderMapper(),null, UserOrderModel.class);
     }
 
     @Override
     public UserOrderModel findById(Long id) throws SQLException {
-        String sql = "select * from userOrder where id=?";
+        String sql = "select * from user_orders where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         List<UserOrderModel> result =  query(sql,new UserOrderMapper(),params,UserOrderModel.class);
@@ -40,7 +40,7 @@ public class UserOrderDAO extends AbstractDAO<UserOrderModel> implements IUserOr
     }
     @Override
     public UserOrderModel findWithFilter(UserOrderModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM userOrder WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM user_orders WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new UserOrderMapper().mapSQLAndParams(sqlStrBuilder,model,"select",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -50,14 +50,14 @@ public class UserOrderDAO extends AbstractDAO<UserOrderModel> implements IUserOr
 
     @Override
     public List<UserOrderModel> findByColumnValues(List<SubQuery> subQueryList, Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM userOrder WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM user_orders WHERE 1=1 ");
         List<UserOrderModel> result = queryWithSubQuery(sqlStrBuilder,new UserOrderMapper(),subQueryList,"in",UserOrderModel.class,pageble);
         return result;
     }
 
     @Override
     public Long save(UserOrderModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO userOrder SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO user_orders SET ");
         MapSQLAndParamsResult sqlAndParams = new UserOrderMapper().mapSQLAndParams(sqlStrBuilder,model,"insert",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -66,7 +66,7 @@ public class UserOrderDAO extends AbstractDAO<UserOrderModel> implements IUserOr
 
     @Override
     public void update(UserOrderModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE userOrder SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE user_orders SET ");
         MapSQLAndParamsResult sqlAndParams = new UserOrderMapper().mapSQLAndParams(sqlStrBuilder,model,"update",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -75,7 +75,7 @@ public class UserOrderDAO extends AbstractDAO<UserOrderModel> implements IUserOr
 
     @Override
     public void delete(Long id) throws SQLException {
-        String sql = "delete from userOrder where id=?";
+        String sql = "delete from user_orders where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         delete(sql,params);
@@ -86,7 +86,7 @@ public class UserOrderDAO extends AbstractDAO<UserOrderModel> implements IUserOr
         UserOrderModel model = new UserOrderModel();
         model.setId(id);
         model.setIsDeleted(true);
-        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE userOrder SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE user_orders SET ");
         MapSQLAndParamsResult sqlAndParams = new UserOrderMapper().mapSQLAndParams(sqlStrBuilder,model,"update",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();

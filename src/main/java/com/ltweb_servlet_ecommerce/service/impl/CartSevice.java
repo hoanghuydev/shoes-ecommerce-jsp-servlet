@@ -1,14 +1,20 @@
 package com.ltweb_servlet_ecommerce.service.impl;
 
+import com.ltweb_servlet_ecommerce.constant.SystemConstant;
 import com.ltweb_servlet_ecommerce.dao.ICartDAO;
+import com.ltweb_servlet_ecommerce.log.LoggerHelper;
 import com.ltweb_servlet_ecommerce.model.CartModel;
 import com.ltweb_servlet_ecommerce.paging.Pageble;
 import com.ltweb_servlet_ecommerce.service.ICartService;
 import com.ltweb_servlet_ecommerce.subquery.SubQuery;
+import com.ltweb_servlet_ecommerce.utils.ObjectComparator;
+import com.ltweb_servlet_ecommerce.utils.RuntimeInfo;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +24,7 @@ public class CartSevice implements ICartService {
 
     @Override
     public List<CartModel> findAllWithFilter(CartModel model, Pageble pageble) throws SQLException {
-        return cartDAO.findAllWithFilter(model,pageble);
+        return cartDAO.findAllWithFilter(model, pageble);
     }
 
     @Override
@@ -28,11 +34,17 @@ public class CartSevice implements ICartService {
 
     @Override
     public List<CartModel> findByColumnValues(List<SubQuery> subQueryList, Pageble pageble) throws SQLException {
-        return cartDAO.findByColumnValues(subQueryList,pageble);
+        return cartDAO.findByColumnValues(subQueryList, pageble);
     }
+
     @Override
-    public Map<String,Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException {
-        return cartDAO.findWithCustomSQL(sql,params);
+    public Map<String, Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException {
+        return cartDAO.findWithCustomSQL(sql, params);
+    }
+
+    @Override
+    public void deleteByUserId(Long id) {
+        cartDAO.deleteByUserId(id);
     }
 
     @Override
@@ -46,7 +58,17 @@ public class CartSevice implements ICartService {
     @Override
     public CartModel delete(Long id) throws SQLException {
         CartModel oldModel = cartDAO.findById(id);
-        cartDAO.delete(id);
+        boolean isDeleted = cartDAO.delete(id) > 0;
+
+        //logging
+        JSONObject preValue = new JSONObject().put(SystemConstant.VALUE_LOG, new JSONObject(oldModel));
+
+        String status = String.format("Deleted cart with id = %d %s", id, isDeleted ? "successfully" : "failed");
+        JSONObject value = new JSONObject().put(SystemConstant.STATUS_LOG, status);
+
+        LoggerHelper.log(isDeleted ? SystemConstant.WARN_LEVEL : SystemConstant.ERROR_LEVEL,
+                "DELETE", RuntimeInfo.getCallerClassNameAndLineNumber(), preValue, value);
+
         return oldModel;
     }
 
@@ -60,8 +82,19 @@ public class CartSevice implements ICartService {
         CartModel model = cartDAO.findById(id);
         model.setUpdateAt(new Timestamp(System.currentTimeMillis()));
         model.setIsDeleted(true);
-        cartDAO.update(model);
-        return cartDAO.findById(model.getId());
+        boolean isDeleted = cartDAO.update(model) > 0;
+        CartModel newModel = cartDAO.findById(model.getId());
+        LinkedHashMap<String, String>[] results = ObjectComparator.compareObjects(model, newModel);
+        //logging
+        JSONObject preValue = new JSONObject().put(SystemConstant.VALUE_LOG, new JSONObject(results[0]));
+        String status = String.format("Deleted cart with id = %d %s", id, isDeleted ? "successfully" : "failed");
+        JSONObject value = new JSONObject().put(SystemConstant.STATUS_LOG, status)
+                .put(SystemConstant.VALUE_LOG, new JSONObject(results[1]));
+
+        LoggerHelper.log(isDeleted ? SystemConstant.WARN_LEVEL : SystemConstant.ERROR_LEVEL,
+                "DELETE", RuntimeInfo.getCallerClassNameAndLineNumber(), preValue, value);
+
+        return newModel;
     }
 
     @Override
@@ -72,6 +105,16 @@ public class CartSevice implements ICartService {
     @Override
     public CartModel save(CartModel model) throws SQLException {
         Long productId = cartDAO.save(model);
-        return cartDAO.findById(productId);
+        CartModel result = cartDAO.findById(productId);
+
+        //logging
+        String status = String.format("Saved cart %s",  result !=null ? "successfully" : "failed");
+        JSONObject value = new JSONObject().put(SystemConstant.STATUS_LOG, status)
+                .put(SystemConstant.VALUE_LOG, new JSONObject(result));
+
+        LoggerHelper.log(result != null ? SystemConstant.WARN_LEVEL : SystemConstant.ERROR_LEVEL,
+                "INSERT", RuntimeInfo.getCallerClassNameAndLineNumber(), value);
+
+        return result;
     }
 }

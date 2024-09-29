@@ -22,7 +22,7 @@ import java.util.Map;
 public class ProductImageDAO extends AbstractDAO<ProductImageModel> implements IProductImageDAO {
     @Override
     public List<ProductImageModel> findAllWithFilter(ProductImageModel model,Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM productImage WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM product_images WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new ProductImageMapper().mapSQLAndParams(sqlStrBuilder,model,"select",pageble);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -31,14 +31,14 @@ public class ProductImageDAO extends AbstractDAO<ProductImageModel> implements I
     }
     @Override
     public List<ProductImageModel> findAll(Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM productImage");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM product_images");
         SqlPagebleUtil.addSQlPageble(sqlStrBuilder,pageble);
         return query(sqlStrBuilder.toString(),new ProductImageMapper(),null, ProductImageModel.class);
     }
 
     @Override
     public ProductImageModel findById(Long id) throws SQLException {
-        String sql = "select * from productImage where id=?";
+        String sql = "select * from product_images where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         List<ProductImageModel> result =  query(sql,new ProductImageMapper(),params,ProductImageModel.class);
@@ -46,7 +46,7 @@ public class ProductImageDAO extends AbstractDAO<ProductImageModel> implements I
     }
     @Override
     public ProductImageModel findWithFilter(ProductImageModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM productImage WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM product_images WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new ProductImageMapper().mapSQLAndParams(sqlStrBuilder,model,"select",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -56,14 +56,14 @@ public class ProductImageDAO extends AbstractDAO<ProductImageModel> implements I
 
     @Override
     public List<ProductImageModel> findByColumnValues(List<SubQuery> subQueryList,Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM productImage WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM product_images WHERE 1=1 ");
         List<ProductImageModel> result = queryWithSubQuery(sqlStrBuilder,new ProductImageMapper(),subQueryList,"in",ProductImageModel.class,pageble);
         return result;
     }
 
     @Override
     public Long save(ProductImageModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO productImage SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO product_images SET ");
         MapSQLAndParamsResult sqlAndParams = new ProductImageMapper().mapSQLAndParams(sqlStrBuilder,model,"insert",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -72,7 +72,7 @@ public class ProductImageDAO extends AbstractDAO<ProductImageModel> implements I
 
     @Override
     public void update(ProductImageModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE productImage SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE product_images SET ");
         MapSQLAndParamsResult sqlAndParams = new ProductImageMapper().mapSQLAndParams(sqlStrBuilder,model,"update",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -81,7 +81,7 @@ public class ProductImageDAO extends AbstractDAO<ProductImageModel> implements I
 
     @Override
     public void delete(Long id) throws SQLException {
-        String sql = "delete from productImage where id=?";
+        String sql = "delete from product_images where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         delete(sql,params);

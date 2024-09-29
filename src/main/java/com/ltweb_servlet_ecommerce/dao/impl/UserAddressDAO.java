@@ -16,7 +16,7 @@ import java.util.Map;
 public class UserAddressDAO extends AbstractDAO<UserAddressModel> implements IUserAddressDAO {
     @Override
     public List<UserAddressModel> findAllWithFilter(UserAddressModel model, Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM userAddress WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM user_addresses WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new UserAddressMapper().mapSQLAndParams(sqlStrBuilder,model,"select",pageble);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -25,14 +25,14 @@ public class UserAddressDAO extends AbstractDAO<UserAddressModel> implements IUs
     }
     @Override
     public List<UserAddressModel> findAll(Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM userAddress");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM user_addresses");
         SqlPagebleUtil.addSQlPageble(sqlStrBuilder,pageble);
         return query(sqlStrBuilder.toString(),new UserAddressMapper(),null, UserAddressModel.class);
     }
 
     @Override
     public UserAddressModel findById(Long id) throws SQLException {
-        String sql = "select * from userAddress where id=?";
+        String sql = "select * from user_addresses where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         List<UserAddressModel> result =  query(sql,new UserAddressMapper(),params,UserAddressModel.class);
@@ -40,7 +40,7 @@ public class UserAddressDAO extends AbstractDAO<UserAddressModel> implements IUs
     }
     @Override
     public UserAddressModel findWithFilter(UserAddressModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM userAddress WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM user_addresses WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new UserAddressMapper().mapSQLAndParams(sqlStrBuilder,model,"select",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -50,14 +50,14 @@ public class UserAddressDAO extends AbstractDAO<UserAddressModel> implements IUs
 
     @Override
     public List<UserAddressModel> findByColumnValues(List<SubQuery> subQueryList, Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM userAddress WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM user_addresses WHERE 1=1 ");
         List<UserAddressModel> result = queryWithSubQuery(sqlStrBuilder,new UserAddressMapper(),subQueryList,"in",UserAddressModel.class,pageble);
         return result;
     }
 
     @Override
     public Long save(UserAddressModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO userAddress SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO user_addresses SET ");
         MapSQLAndParamsResult sqlAndParams = new UserAddressMapper().mapSQLAndParams(sqlStrBuilder,model,"insert",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -66,7 +66,7 @@ public class UserAddressDAO extends AbstractDAO<UserAddressModel> implements IUs
 
     @Override
     public void update(UserAddressModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE userAddress SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE user_addresses SET ");
         MapSQLAndParamsResult sqlAndParams = new UserAddressMapper().mapSQLAndParams(sqlStrBuilder,model,"update",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -75,7 +75,7 @@ public class UserAddressDAO extends AbstractDAO<UserAddressModel> implements IUs
 
     @Override
     public void delete(Long id) throws SQLException {
-        String sql = "delete from userAddress where id=?";
+        String sql = "delete from user_addresses where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         delete(sql,params);
@@ -86,7 +86,7 @@ public class UserAddressDAO extends AbstractDAO<UserAddressModel> implements IUs
         UserAddressModel model = new UserAddressModel();
         model.setId(id);
         model.setIsDeleted(true);
-        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE userAddress SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE user_addresses SET ");
         MapSQLAndParamsResult sqlAndParams = new UserAddressMapper().mapSQLAndParams(sqlStrBuilder,model,"update",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();

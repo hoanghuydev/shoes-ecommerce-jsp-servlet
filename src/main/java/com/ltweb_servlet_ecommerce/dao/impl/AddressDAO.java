@@ -16,7 +16,7 @@ import java.util.Map;
 public class AddressDAO extends AbstractDAO<AddressModel> implements IAddressDAO {
     @Override
     public List<AddressModel> findAllWithFilter(AddressModel model, Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM address WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM addresses WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new AddressMapper().mapSQLAndParams(sqlStrBuilder,model,"select",pageble);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -25,14 +25,14 @@ public class AddressDAO extends AbstractDAO<AddressModel> implements IAddressDAO
     }
     @Override
     public List<AddressModel> findAll(Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM address");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM addresses");
         SqlPagebleUtil.addSQlPageble(sqlStrBuilder,pageble);
         return query(sqlStrBuilder.toString(),new AddressMapper(),null, AddressModel.class);
     }
 
     @Override
     public AddressModel findById(Long id) throws SQLException {
-        String sql = "select * from address where id=?";
+        String sql = "select * from addresses where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         List<AddressModel> result =  query(sql,new AddressMapper(),params,AddressModel.class);
@@ -40,7 +40,7 @@ public class AddressDAO extends AbstractDAO<AddressModel> implements IAddressDAO
     }
     @Override
     public AddressModel findWithFilter(AddressModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM address WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM addresses WHERE 1=1 ");
         MapSQLAndParamsResult sqlAndParams = new AddressMapper().mapSQLAndParams(sqlStrBuilder,model,"select",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -50,14 +50,14 @@ public class AddressDAO extends AbstractDAO<AddressModel> implements IAddressDAO
 
     @Override
     public List<AddressModel> findByColumnValues(List<SubQuery> subQueryList, Pageble pageble) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM address WHERE 1=1 ");
+        StringBuilder sqlStrBuilder = new StringBuilder("SELECT * FROM addresses WHERE 1=1 ");
         List<AddressModel> result = queryWithSubQuery(sqlStrBuilder,new AddressMapper(),subQueryList,"in",AddressModel.class,pageble);
         return result;
     }
 
     @Override
     public Long save(AddressModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO address SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("INSERT INTO addresses SET ");
         MapSQLAndParamsResult sqlAndParams = new AddressMapper().mapSQLAndParams(sqlStrBuilder,model,"insert",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -66,7 +66,7 @@ public class AddressDAO extends AbstractDAO<AddressModel> implements IAddressDAO
 
     @Override
     public void update(AddressModel model) throws SQLException {
-        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE address SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE addresses SET ");
         MapSQLAndParamsResult sqlAndParams = new AddressMapper().mapSQLAndParams(sqlStrBuilder,model,"update",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();
@@ -75,7 +75,7 @@ public class AddressDAO extends AbstractDAO<AddressModel> implements IAddressDAO
 
     @Override
     public void delete(Long id) throws SQLException {
-        String sql = "delete from address where id=?";
+        String sql = "delete from addresses where id=?";
         List<Object> params = new ArrayList<>();
         params.add(id);
         delete(sql,params);
@@ -86,7 +86,7 @@ public class AddressDAO extends AbstractDAO<AddressModel> implements IAddressDAO
         AddressModel model = new AddressModel();
         model.setId(id);
         model.setIsDeleted(true);
-        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE address SET ");
+        StringBuilder sqlStrBuilder = new StringBuilder("UPDATE addresses SET ");
         MapSQLAndParamsResult sqlAndParams = new AddressMapper().mapSQLAndParams(sqlStrBuilder,model,"update",null);
         String sql = sqlAndParams.getSql();
         List<Object> params = sqlAndParams.getParams();

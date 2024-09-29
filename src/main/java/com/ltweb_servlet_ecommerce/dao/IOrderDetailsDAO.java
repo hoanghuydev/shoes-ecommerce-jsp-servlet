@@ -15,9 +15,10 @@ public interface IOrderDetailsDAO {
     List<OrderDetailsModel> findByColumnValues(List<SubQuery> subQueryList, Pageble pageble) throws SQLException;
     List<OrderDetailsModel> findAllWithFilter(OrderDetailsModel model,Pageble pageble) throws SQLException;
     Long save(OrderDetailsModel model) throws SQLException;
-    void update(OrderDetailsModel model) throws SQLException;
-    void delete(Long id) throws SQLException;
+    int update(OrderDetailsModel model) throws SQLException;
+    int delete(Long id) throws SQLException;
 
-    void softDelete(Long id) throws SQLException;
+    int softDelete(Long id) throws SQLException;
     Map<String,Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException;
+    public List<OrderDetailsModel> findAllByOrderId(Long orderId) throws SQLException;
 }

@@ -9,13 +9,13 @@
 <%@include file="/common/taglib.jsp" %>
 <html>
 <head>
-    <title>Admin Nai - Edit Image</title>
+    <title>Admin Nai - Chỉnh sửa ảnh</title>
 </head>
 <body>
 <%--Choose img and preview--%>
     <div id="fileAndPreview" class="d-flex  justify-content-between p-4" style="background: #f3f3f3; border-radius: 10px;margin-bottom: 15px;max-height: 45vh;overflow-y: auto ">
         <div>
-            <input type="file" accept="image/*" multiple id="listImageEdit"/>
+            <input type="file" accept="image/*" multiple id="listImageEdit" placeholder="Chọn hình ảnh cần chỉnh sửa"/>
         </div>
        <div style="min-width: 300px; max-width: 400px;display: flex" >
            <div id="preview" style="margin: auto;overflow: hidden;">
@@ -28,11 +28,11 @@
         <div id="edit" style="position: sticky; z-index : 100;padding : 20px;top : -20px; right: 0px; left: 0px;background: #f3f3f3;box-shadow:0px 2px 0px 0px rgba(0, 0, 0, .2);">
             <div id="actionConfigEdit" style="display: flex">
                 <button class="mb-3 me-4" id="addText" disabled="">
-                    Add text<i class="ms-2 fa-solid fa-paragraph"></i>
+                    Thêm văn bản<i class="ms-2 fa-solid fa-paragraph"></i>
                 </button>
                 <button id="addOverlay" disabled>
-                    Add Overlay Image<i class=" ms-2 fa-solid fa-images"></i>
-                </button> <button class="btn btn-outline-primary mx-auto" id="exportImg" disabled>EXPORT</button>
+                    Thêm lớp phủ<i class=" ms-2 fa-solid fa-images"></i>
+                </button> <button class="btn btn-outline-primary mx-auto" id="exportImg" disabled>Xuất</button>
             </div>
         </div>
 <%--        List config edit--%>
@@ -257,7 +257,7 @@
             return `
     <div class="my-2" id="`+id+`">
         <div style="display: flex">
-            <p class="me-4">Overlay</p>
+            <p class="me-4">Lớp phủ</p>
             <p class="removeEdit" data-id="`+id+`" style="color :red; font-size: 16px"><i class="fa-solid fa-trash"></i></p>
         </div>
         <div class="row">
@@ -268,25 +268,25 @@
             </div>
             <div class="col-6">
                 <div class="input-group  input-group-outline">
-                    <label class="">Overlay width</label>
+                    <label class="">Chiều rộng lớp phủ</label>
                     <input type="number" class="form-control" value="`+infoConfig.width+`" name="width" data-id="`+id+`" id="overlayW`+id+`">
                 </div>
             </div>
             <div class="col-6 ">
                 <div class="input-group  input-group-outline">
-                    <label class="">Overlay height</label>
+                    <label class="">Chiều cao lớp phủ</label>
                     <input type="number" class="form-control" name="height" value="`+infoConfig.height+`" data-id="`+id+`" id="overlayH`+id+`">
                 </div>
             </div>
             <div class=" col-6">
                 <div class="input-group  input-group-outline">
-                    <label class="">Overlay position x</label>
+                    <label class="">Vị trí trục x</label>
                     <input type="number" class="form-control" name="x" value="`+infoConfig.x+`" data-id="`+id+`" id="overlayX`+id+`">
                 </div>
             </div>
             <div class=" col-6">
                 <div class="input-group  input-group-outline">
-                    <label class="">Overlay position y</label>
+                    <label class="">Vị trí trục y</label>
                     <input type="number" class="form-control" name="y" value="`+infoConfig.y+`" data-id="`+id+`" id="overlayY`+id+`">
                 </div>
             </div>
@@ -298,31 +298,31 @@
             return `
                 <div class="my-2" id="`+id+`">
                 <div style="display: flex">
-                    <p class="me-4">Text</p>
+                    <p class="me-4">Văn bản</p>
                     <p class="removeEdit" data-id="`+id+`" style="color :red; font-size: 16px"><i class="fa-solid fa-trash"></i></p>
                 </div>
                 <div class="row">
                     <div class=" col-6">
                         <div class="input-group  input-group-outline">
-                            <label class="">Text content</label>
+                            <label class="">Nội dung văn bản</label>
                             <input type="text" class="form-control" name="content" value="`+infoConfig.content+`" data-id="`+id+`" id="textContent`+id+`">
                         </div>
                     </div>
                     <div class=" col-6">
                         <div class="input-group  input-group-outline">
-                            <label class="">Text size</label>
+                            <label class="">Cỡ chữ</label>
                             <input type="number" class="form-control" name="width" value="`+infoConfig.width+`" data-id="`+id+`" id="textSize`+id+`">
                         </div>
                     </div>
                     <div class=" col-6">
                         <div class="input-group  input-group-outline">
-                            <label class="">Text position x</label>
+                            <label class="">Vị trí trục x</label>
                             <input type="number" class="form-control" name="x" value="`+infoConfig.x+`" data-id="`+id+`" id="textX`+id+`">
                         </div>
                     </div>
                     <div class=" col-6">
                         <div class="input-group  input-group-outline">
-                            <label class="">Text position y</label>
+                            <label class="">Vị trí trục y</label>
                             <input type="number" class="form-control" name="y" value="`+infoConfig.y+`" data-id="`+id+`" id="textY`+id+`">
                         </div>
                     </div>

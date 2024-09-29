@@ -1,7 +1,13 @@
 package com.ltweb_servlet_ecommerce.model;
 
+import com.ltweb_servlet_ecommerce.constant.SystemConstant;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.sql.Timestamp;
 import java.util.Date;
+
 
 public class UserModel extends AbstractModel<UserModel> {
     private  String userName;
@@ -10,23 +16,21 @@ public class UserModel extends AbstractModel<UserModel> {
     private  String fullName;
     private String birthDay;
     private Timestamp lastLogged;
+    private String association;
+//    Info render
     private Boolean admin;
-    private String association = "none";
+    private  Boolean moderator;
+    private Boolean user;
+    private  Long roleId;
+    private RoleModel role;
+    private String phone;
 
-    public Timestamp getLastLogged() {
-        return lastLogged;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setLastLogged(Timestamp lastLogged) {
-        this.lastLogged = lastLogged;
-    }
-
-    public String getAssociation() {
-        return association;
-    }
-
-    public void setAssociation(String association) {
-        this.association = association;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getUserName() {
@@ -69,24 +73,46 @@ public class UserModel extends AbstractModel<UserModel> {
         this.birthDay = birthDay;
     }
 
+    public Timestamp getLastLogged() {
+        return lastLogged;
+    }
+
+    public void setLastLogged(Timestamp lastLogged) {
+        this.lastLogged = lastLogged;
+    }
+
+    public String getAssociation() {
+        return association;
+    }
+
+    public void setAssociation(String association) {
+        this.association = association;
+    }
+
+    public RoleModel getRole() {
+        return role;
+    }
+
+    public void setRole(RoleModel role) {
+        this.role = role;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
     public Boolean getAdmin() {
-        return admin;
+        return (this.role != null && this.role.getValue().equalsIgnoreCase(SystemConstant.ADMIN_ROLE));
+    }
+    public Boolean getModerator() {
+        return (this.role != null && this.role.getValue().equalsIgnoreCase(SystemConstant.MODERATOR_ROLE));
+    }
+    public Boolean getUser() {
+        return (this.role != null && this.role.getValue().equalsIgnoreCase(SystemConstant.USER_MODEL));
     }
 
-    public void setAdmin(Boolean admin) {
-        this.admin = admin;
-    }
-
-    @Override
-    public String toString() {
-        return "UserModel{" +
-                "userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", birthDay='" + birthDay + '\'' +
-                ", admin=" + admin +
-                ", association='" + association + '\'' +
-                '}';
-    }
 }

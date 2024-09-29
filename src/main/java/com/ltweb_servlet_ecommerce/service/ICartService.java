@@ -19,4 +19,6 @@ public interface ICartService {
     List<CartModel> findAll(Pageble pageble) throws SQLException;
     CartModel softDelete(Long id) throws SQLException;
     Map<String,Object> findWithCustomSQL(String sql, List<Object> params) throws SQLException;
+
+    void deleteByUserId(Long id);
 }

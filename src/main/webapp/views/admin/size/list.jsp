@@ -10,22 +10,22 @@
 
 <html>
 <head>
-    <title>Admin Nai - Size Product</title>
+    <title>Admin Nai - Kích thước</title>
 </head>
 <body>
     <div class="col-12 mt-4">
         <!-- Add new size -->
         <div class="mb-5 ps-3">
-            <a class="btn bg-gradient-dark mb-0" id="toggleAddProduct" data-bs-toggle="collapse" href="#formNewProduct"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add New Size</a>
+            <a class="btn bg-gradient-dark mb-0" id="toggleAddProduct" data-bs-toggle="collapse" href="#formNewProduct"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Thêm kích thước mới</a>
             <div class="collapse multi-collapse my-3" id="formNewProduct">
                 <div class="card py-2 px-4" >
                     <form id="saveNewProduct" method="POST">
                         <div class="input-group input-group-outline my-3">
-                            <label class="form-label">Size Name</label>
+                            <label class="form-label">Tên kích thước</label>
                             <input type="text" class="form-control" name="name">
                         </div>
                         <input type="hidden" name="action" value="add">
-                        <button class="btn btn-primary" type="submit">Add Size</button>
+                        <button class="btn btn-primary" type="submit">Thêm kích thước mới</button>
                     </form>
                 </div>
             </div>
@@ -35,7 +35,7 @@
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                    <h6 class="text-white text-capitalize ps-3">Sizes Table</h6>
+                    <h6 class="text-white text-capitalize ps-3">Danh sách kích thước</h6>
                 </div>
             </div>
 
@@ -45,8 +45,8 @@
                         <thead>
                         <tr>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Size Name</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Update At</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên kích thước</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cập nhật lúc</th>
                             <th class="text-secondary opacity-7"></th>
                         </tr>
                         </thead>
@@ -79,8 +79,8 @@
                                     <!-- End Size Name -->
                                     <!-- Action -->
                                     <td class="align-middle">
-                                        <a class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" href="#updateModal" onclick="setIdUpdate(${item.id},'${item.name}')"><i class="material-icons text-sm me-1">edit</i>Edit</a>
-                                        <a class="btn btn-link text-danger text-gradient px-1 mb-0"  data-bs-toggle="modal" href="#deleteModal" onclick="setIdDelete(${item.id},'${item.name}')"><i class="material-icons text-sm me-1">delete</i>Delete</a>
+                                        <a class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" href="#updateModal" onclick="setIdUpdate(${item.id},'${item.name}')"><i class="material-icons text-sm me-1">edit</i>Sửa</a>
+                                        <a class="btn btn-link text-danger text-gradient px-1 mb-0"  data-bs-toggle="modal" href="#deleteModal" onclick="setIdDelete(${item.id},'${item.name}')"><i class="material-icons text-sm me-1">delete</i>Xóa</a>
                                     </td>
                                     <!-- End action -->
                                 </tr>
@@ -105,15 +105,15 @@
                 <form method="POST">
                     <div class="modal-body">
                         <div class="input-group input-group-outline my-3">
-                            <label class="form-label">Size Name</label>
+                            <label class="form-label">Tên kích thước</label>
                             <input type="text" class="form-control" name="name" id="sizeNameUpdate">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-block btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-block btn-light" data-bs-dismiss="modal">Đóng</button>
                         <input type="hidden" name="action" value="update">
                         <input type="hidden" name="id" id="idUpdate">
-                        <button type="submit" class="btn bg-gradient-danger">Update</button>
+                        <button type="submit" class="btn bg-gradient-danger">Lưu</button>
                     </div>
                 </form>
 
@@ -131,14 +131,14 @@
               </button>
             </div>
             <div class="modal-body">
-              Are you sure to delete?
+              Bạn có chắc chắn muốn xóa?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-block btn-light" data-bs-dismiss="modal">Close</button>
                 <form method="POST">
                     <input type="hidden" name="action" value="delete">
                     <input type="hidden" name="id" id="idDelete">
-                    <button type="submit" class="btn bg-gradient-danger">Delete</button>
+                    <button type="submit" class="btn bg-gradient-danger">Xóa</button>
                 </form>
             </div>
           </div>
@@ -146,11 +146,11 @@
       </div>
       <script>
         const setIdDelete = (id,name) => {
-            $("#deleteModalLabel").text("Delete Size "+name+"?");
+            $("#deleteModalLabel").text("Xóa kích thước "+name+"?");
             $("#idDelete").val(id);
         }
         const setIdUpdate = (id,name) => {
-            $("#updateModalLabel").text("Update Size "+name);
+            $("#updateModalLabel").text("Cập nhật kích thước "+name);
             $("#idUpdate").val(id);
             $("#sizeNameUpdate").val(name);
         }

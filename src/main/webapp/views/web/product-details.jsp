@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="vi_VN"/>
 <!doctype html>
 <html lang="en">
 <head>
@@ -79,19 +81,21 @@
                                 </div>
                                 <span class="ms-1 text-primary averageRating">5</span>
                             </div>
-                            <span class="text-muted">${CATEGORY.name}</span>
+<%--                            <span class="text-muted">${CATEGORY.name}</span>--%>
                         </div>
-
+                        <p class="text-muted" style="font-size: 16px; font-weight: 600;">Loại: <span>${CATEGORY.name}</span></p>
                         <div class="mb-3">
-                            <span class="h5">$${MODEL.price}</span>
-                            <span class="text-muted">/per shoes</span>
+
+                            <span class="product-price h5"><fmt:formatNumber type="currency" value="${MODEL.price}"/> đ</span>
+                            <span class="text-muted">/ đôi</span>
+
                         </div>
 
                         <c:out value="${MODEL.content}" escapeXml="false"/>
                         <hr />
                             <div class="row mb-4">
                                 <div class="col-md-4 col-6">
-                                    <label class="mb-2">Size</label>
+                                    <label class="mb-2">Kích cỡ</label>
                                     <select class="form-select border border-secondary" name="sizeId" id="sizeId" style="height: 35px;" required>
                                         <c:forEach var="size_item" items="${LIST_SIZE}">
                                             <option value="${size_item.id}">${size_item.name}</option>
@@ -100,9 +104,17 @@
                                 </div>
                                 <input type="hidden" name="productId" value="${MODEL.id}">
                             </div>
-                            <button class="btn btn-warning shadow-0" id="buyNow"> Buy now </button>
-                            <button  class="btn btn-primary shadow-0" id="addToCart"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </button>
-                            <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i> Save </a>
+                        <div class="d-flex justify-content-between">
+                            <div id="inOfStock">
+                                <button class="btn btn-warning shadow-0" id="buyNow"> Mua ngay </button>
+                                <button  class="btn btn-primary shadow-0" id="addToCart"> <i class="me-1 fa fa-shopping-basket"></i> Thêm vào giỏ hàng </button>
+                            </div>
+                            <div id="outOfStock" class="hidden">
+                                <button class="btn shadow-0" style="opacity: 0.8; cursor: no-drop;"> Out of stock </button>
+                            </div>
+<%--                            <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i> Lưu </a>--%>
+
+                        </div>
                     </div>
                 </main>
             </div>
@@ -113,7 +125,7 @@
     <section class="mb-5">
         <div class="row justify-content-center mx-auto">
             <div class="col" style="z-index: 10;">
-                <h4 class="fw-bold mb-2">Reviews (<span id="amountOpinion">0</span>)</h4>
+                <h4 class="fw-bold mb-2">Đánh giá (<span id="amountOpinion">0</span>)</h4>
                 <div class="d-flex align-items-center mb-4">
                     <h5 class="mb-0" ><span class="averageRating" id="averageRating">5</span><span class="text-muted">/5</span></h5>
                     <div class="ms-2 averageRatingStar">
@@ -142,7 +154,7 @@
                     <form method="POST" id="addNewOpinion">
                             <%--                    Star--%>
                         <div class="form-group mb-3">
-                            <label class="text-black">Overall rating<span style="color :red"><sup>*</sup></span></label>
+                            <label class="text-black">Đánh giá tổng thể<span style="color :red"><sup>*</sup></span></label>
                             <div class="row mt-1">
                                 <div class="col-md-12">
                                     <div class="stars">
@@ -170,15 +182,15 @@
                             </div>
                         </div>
                         <div class="form-group mb-5">
-                            <label class="text-black" for="contentOpinion">Your review<span style="color :red"><sup>*</sup></span></label>
+                            <label class="text-black" for="contentOpinion">Đánh giá của bạn<span style="color :red"><sup>*</sup></span></label>
                             <textarea class="form-control" id="contentOpinion" name="content" rows="5" required></textarea>
                         </div>
                         <div class="form-group mb-5">
-                            <label class="text-black" for="titleOpinion">Your title<span style="color :red"><sup>*</sup></span></label>
+                            <label class="text-black" for="titleOpinion">Tiêu đề của bạn<span style="color :red"><sup>*</sup></span></label>
                             <input type="text" class="form-control" id="titleOpinion" name="title" required>
                         </div>
 
-                        <button class="btn btn-primary mt-2" type="submit">Submit</button>
+                        <button class="btn btn-primary mt-2" type="submit">Gửi</button>
                     </form>
                 </div>
             </div>
@@ -188,16 +200,16 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Your Review?</h1>
+                        <h1 class="modal-title fs-5" id="deleteModalLabel">Xóa đánh giá của bạn?</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Are you sure to delete?This action cannot be undone.
+                        Bạn có chắc chắn xóa không? Hành động này không thể hoàn tác.
                     </div>
                     <div class="modal-footer" style="background-color: #e5e5e5">
-                        <button type="button" class="btn btn-white-outline" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-white-outline" data-bs-dismiss="modal">Đóng</button>
                         <input type="hidden" id="idOpinionDelete"/>
-                        <button type="button" id="btnDeleteOpinion" class="btn btn-secondary" data-bs-dismiss="modal">Delete</button>
+                        <button type="button" id="btnDeleteOpinion" class="btn btn-secondary" data-bs-dismiss="modal">Xóa</button>
                     </div>
                 </div>
             </div>
@@ -205,6 +217,55 @@
     </c:if>
     <script !src="">
         window.addEventListener("DOMContentLoaded",function (){
+            // Update total view product to stat
+            $.ajax({
+                url : '/product/view/${MODEL.id}',
+                method : 'POST'
+            })
+            // Update price
+            const listProductSize = JSON.parse(('${LIST_PRODUCT_SIZE}'));
+            function updatePriceWhenChangeSize() {
+                const sizeId =  $("#sizeId").val();
+                const productSizePrice =listProductSize.filter((productSize) => productSize.sizeId+'' ==sizeId)[0];
+                console.log(productSizePrice)
+                $(".product-price").text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(productSizePrice.price));
+            }
+            $("#sizeId").on("change",function () {
+                updatePriceWhenChangeSize();
+                checkQuantity();
+            })
+            updatePriceWhenChangeSize();
+
+
+            // checking quantity in DB
+            const checkQuantity = ()=> {
+                const sizeId = parseInt($("#sizeId").val());
+                $.ajax({
+                    url : '<c:url value="/ajax/product-quantity"/>',
+                    type : 'GET',
+                    data : {
+                        productId: ${MODEL.id},
+                        sizeId: sizeId
+                    },
+                    success : function (data) {
+                        const inStockElement = $('#inOfStock');
+                        const outStockElement = $('#outOfStock');
+                        if(data > 0) {
+                            inStockElement.show();
+                            outStockElement.hide();
+                        }else {
+                            outStockElement.show();
+                            inStockElement.hide();
+                        }
+                    },
+                    error : function (e) {
+                        console.log('error', e)
+                    }
+                })
+            }
+            checkQuantity();
+
+
 
             const maxPageItemOpinion = 3;
             let totalCurrentItem = 0;
@@ -412,10 +473,10 @@
                 <div class="container" >
                     <div class="row mb-5">
                         <div class="col-md-6">
-                            <h2 class="section-title">You Might Also Like</h2>
+                            <h2 class="section-title">Bạn cũng có thể thích</h2>
                         </div>
                         <div class="col-md-6 text-start text-md-end">
-                            <a href="#" class="more">View All Shoes</a>
+                            <a href="#" class="more">Xem tất cả</a>
                         </div>
                     </div>
                     <div class="splide ">
@@ -434,7 +495,8 @@
                                                 <div class="post-content-entry">
                                                     <h3><a href="#">${product_item.name}</a></h3>
                                                     <div class="meta">
-                                                        <span>$${product_item.price}</span>
+                                                        <span><fmt:formatNumber type="currency" value="${product_item.price} "/></span>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -466,6 +528,7 @@
 <%--Socket Opinion Real-time--%>
 <script>
     window.addEventListener("DOMContentLoaded",function (){
+
         $(".item-thumb").hover(function (){
             const idMainImage = $(this).attr("data-bs-mainimageproduct");
             $(".preview-image-product").css("display","none");
