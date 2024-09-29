@@ -31,7 +31,7 @@ Web Shoes Ecommerce is a Java-based web application that allows users to browse,
 
 **CRUD Operations:** Implement CRUD operations for orders, products, users, sizes, etc.
 
-**ETC**
+**ETC** : Voucher, Logging, Stats revenue, Check IP, Forgot password, Update user info, Address 4 depth,...
 
 ## Demo
 
